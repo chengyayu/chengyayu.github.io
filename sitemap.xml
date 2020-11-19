@@ -3,11 +3,22 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://chengyayu.github.io/categories/</loc>
+    <loc>https://chengyayu.github.io/posts/page1/</loc>
+    <lastmod>2020-11-19T01:08:43+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://chengyayu.github.io/</loc>
+    <lastmod>2020-11-19T01:08:43+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://chengyayu.github.io/posts/</loc>
+    <lastmod>2020-11-19T01:08:43+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://chengyayu.github.io/categories/</loc>
   </url>
   
   <url>
