@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <meta http-equiv="content-language" content="zh-CN" />
+        
+        
+        
+        
+        
+        <title>低层级重构基本手法</title>
+
+        
+            
+            
+            
+            <script src="https://cdn.bootcss.com/clipboard.js/2.0.4/clipboard.min.js"></script>
+            <link href="https://chengyayu.github.io/css/tooltips.css" rel="stylesheet">
+            
+
+            
+            
+            <link rel="stylesheet" href="https://chengyayu.github.io/css/main.css">
+            
+
+            
+            
+            <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css" rel="stylesheet">
+            
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+             <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/go.min.js"></script>
+            
+            <script>hljs.initHighlightingOnLoad();</script>
+
+        
+    </head>
+    
+    <body>
+        
+        
+
+    <div class="inner" style="position:relative;">
+        
+        <div class="blog-post">
+            <h2>低层级重构基本手法</h2>
+                <h3 id="什么是好代码的特征">什么是好代码的特征</h3>
+<p>评价代码好坏，如同审美，不仅关乎个人品味，而且存在客观标准。
+好的代码直接了当，如果需要被修改，能让“修理工”轻易找到修改点，并且快速做出更改，同时不易引入其他错误。
+检验标准可以归纳成 ETC（Easy To Change）原则，就是人们是否能轻而易举地修改它。</p>
+<p>遗憾的是，我们面对不断变化的业务需求很难一步到位。只能快速实现，时时修缮，以期达到小步快跑的节奏感。</p>
+<h3 id="何为重构">何为重构</h3>
+<p>在不改变软件可观察行为的前提下，调整其结构。使之无限接近 ETC。</p>
+<ul>
+<li>可被测试是否影响软件原有行为</li>
+<li>人类肉眼可见的结构变动</li>
+<li>更加 ETC</li>
+</ul>
+<h3 id="何时重构">何时重构</h3>
+<p>杀人动机是什么？</p>
+<ul>
+<li>预备性重构：添加新功能很费劲</li>
+<li>帮助理解的重构：代码看不懂</li>
+<li>捡垃圾式重构：代码能看懂，但是烂</li>
+<li>长期重构：每次改一点，就算改个名字也是好的</li>
+<li>不重构：不需要理解则不必重构</li>
+</ul>
+<h3 id="重构的挑战">重构的挑战</h3>
+<p>不是人家不想，是人家不能。</p>
+<ul>
+<li>延缓新功能开发</li>
+<li>遗留代码</li>
+<li>代码所有权*</li>
+<li>测试*</li>
+<li>独立系统（数据库）*</li>
+</ul>
+<p>尺度大一点</p>
+<ul>
+<li>是不是不需要做架构了？渐进式架构乌托邦</li>
+<li>无限增加可读性会不会影响性能？可能会，但道就是道。</li>
+</ul>
+<h3 id="代码坏味道">代码坏味道</h3>
+<p>以貌取人是一种歧视，但是也给人类带来了效率。</p>
+<ol>
+<li>神秘命名</li>
+<li>重复代码</li>
+<li>过长函数</li>
+<li>过长参数列表</li>
+<li>全局数据</li>
+<li>可变数据</li>
+<li>发散式变化</li>
+<li>霰弹式修改</li>
+<li>依恋情结</li>
+<li>数据泥团</li>
+<li>原语偏执</li>
+<li>重复的 switch</li>
+<li>循环语句</li>
+<li>冗赘元素</li>
+<li>夸夸其谈通用性</li>
+<li>临时字段</li>
+<li>过长的消息链</li>
+<li>中间人</li>
+<li>内幕交易</li>
+<li>过大的类</li>
+<li>异曲同工的类</li>
+<li>纯数据类</li>
+<li>被拒绝的馈赠</li>
+<li>注释
+<ul>
+<li>todo</li>
+<li>why</li>
+</ul>
+</li>
+</ol>
+<h3 id="重构基本手法">重构基本手法</h3>
+<ol>
+<li>
+<p>提炼函数（Extract Function）</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">printOwing</span>(<span style="color:#a6e22e">invoice</span> <span style="color:#a6e22e">Invoice</span>) {
+    <span style="color:#a6e22e">outstanding</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>
+
+    <span style="color:#a6e22e">printBanner</span>()
+
+    <span style="color:#75715e">// calculate outstanding
+</span><span style="color:#75715e"></span>    <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">v</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">invoice</span>.<span style="color:#a6e22e">Orders</span> {
+        <span style="color:#a6e22e">outstanding</span> <span style="color:#f92672">+=</span> <span style="color:#a6e22e">v</span>.<span style="color:#a6e22e">Amount</span>
+    }
+
+    <span style="color:#a6e22e">recordDueDate</span>(<span style="color:#a6e22e">invoice</span>)
+    <span style="color:#a6e22e">printDetails</span>(<span style="color:#a6e22e">invoice</span>, <span style="color:#a6e22e">outstanding</span>)
+}
+</code></pre></div><p>Step 1:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">printOwing</span> (<span style="color:#a6e22e">invoice</span> <span style="color:#a6e22e">Invoice</span>) {
+
+    <span style="color:#a6e22e">printBanner</span>()
+
+    <span style="color:#75715e">// calculate outstanding
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">outstanding</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>
+    <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">v</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">invoice</span>.<span style="color:#a6e22e">Orders</span> {
+        <span style="color:#a6e22e">outstanding</span> <span style="color:#f92672">+=</span> <span style="color:#a6e22e">v</span>.<span style="color:#a6e22e">Amount</span>
+    }
+
+    <span style="color:#a6e22e">recordDueDate</span>(<span style="color:#a6e22e">invoice</span>)
+    <span style="color:#a6e22e">printDetails</span>(<span style="color:#a6e22e">invoice</span>, <span style="color:#a6e22e">outstanding</span>)
+}
+</code></pre></div><p>Step 2:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">printOwing</span> (<span style="color:#a6e22e">invoice</span> <span style="color:#a6e22e">Invoice</span>) {
+
+    <span style="color:#a6e22e">printBanner</span>()
+
+    <span style="color:#75715e">// calculate outstanding
+</span><span style="color:#75715e"></span>    <span style="color:#a6e22e">outstanding</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>
+    <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">v</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">invoice</span>.<span style="color:#a6e22e">Orders</span> {
+        <span style="color:#a6e22e">outstanding</span> <span style="color:#f92672">+=</span> <span style="color:#a6e22e">v</span>.<span style="color:#a6e22e">Amount</span>
+    }
+
+    <span style="color:#a6e22e">recordDueDate</span>(<span style="color:#a6e22e">invoice</span>)
+    <span style="color:#a6e22e">printDetails</span>(<span style="color:#a6e22e">invoice</span>, <span style="color:#a6e22e">outstanding</span>)
+}
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">calculateOutstanding</span> (<span style="color:#a6e22e">invoice</span> <span style="color:#a6e22e">Invoice</span>) {
+    <span style="color:#a6e22e">outstanding</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>
+    <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">v</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">invoice</span>.<span style="color:#a6e22e">Orders</span> {
+        <span style="color:#a6e22e">outstanding</span> <span style="color:#f92672">+=</span> <span style="color:#a6e22e">v</span>.<span style="color:#a6e22e">Amount</span>
+    }
+    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">outstanding</span>
+}
+</code></pre></div><p>Step 3:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">printOwing</span> (<span style="color:#a6e22e">invoice</span> <span style="color:#a6e22e">Invoice</span>) {
+    <span style="color:#a6e22e">printBanner</span>()
+    <span style="color:#a6e22e">outstanding</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">calculateOutstanding</span>(<span style="color:#a6e22e">invoice</span>)
+    <span style="color:#a6e22e">recordDueDate</span>(<span style="color:#a6e22e">invoice</span>)
+    <span style="color:#a6e22e">printDetails</span>(<span style="color:#a6e22e">invoice</span>, <span style="color:#a6e22e">outstanding</span>)
+}
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">calculateOutstanding</span> (<span style="color:#a6e22e">invoice</span> <span style="color:#a6e22e">Invoice</span>) {
+    <span style="color:#a6e22e">outstanding</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>
+    <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">v</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">invoice</span>.<span style="color:#a6e22e">Orders</span> {
+        <span style="color:#a6e22e">outstanding</span> <span style="color:#f92672">+=</span> <span style="color:#a6e22e">v</span>.<span style="color:#a6e22e">Amount</span>
+    }
+    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">outstanding</span>
+}
+</code></pre></div><p>Step 4:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">printOwing</span> (<span style="color:#a6e22e">invoice</span> <span style="color:#a6e22e">Invoice</span>) {
+    <span style="color:#a6e22e">printBanner</span>()
+    <span style="color:#a6e22e">outstanding</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">calculateOutstanding</span>(<span style="color:#a6e22e">invoice</span>)
+    <span style="color:#a6e22e">recordDueDate</span>(<span style="color:#a6e22e">invoice</span>)
+    <span style="color:#a6e22e">printDetails</span>(<span style="color:#a6e22e">invoice</span>, <span style="color:#a6e22e">outstanding</span>)
+}
+   
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">calculateOutstanding</span> (<span style="color:#a6e22e">invoice</span> <span style="color:#a6e22e">Invoice</span>) {
+    <span style="color:#a6e22e">rest</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>
+    <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">v</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">invoice</span>.<span style="color:#a6e22e">Orders</span> {
+        <span style="color:#a6e22e">rest</span> <span style="color:#f92672">+=</span> <span style="color:#a6e22e">v</span>.<span style="color:#a6e22e">Amount</span>
+    }
+    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">rest</span>
+}
+</code></pre></div></li>
+<li>
+<p>内联函数（Inline Function）</p>
+</li>
+<li>
+<p>提炼变量（Extract Variable）</p>
+</li>
+<li>
+<p>内联变量（Inline Variable）</p>
+</li>
+<li>
+<p>改变函数声明（Change Function Declaration）</p>
+</li>
+<li>
+<p>封装变量（Encapsulate Variable）</p>
+</li>
+<li>
+<p>变量改名（Rename Variable）</p>
+</li>
+<li>
+<p>引入参数对象（Introduce Parameter Object）</p>
+</li>
+<li>
+<p>函数组合成类（Combine Functions into Class）</p>
+</li>
+<li>
+<p>函数组合成变换（Combine Functions into Transform）</p>
+</li>
+<li>
+<p>拆分阶段（Split Phase）</p>
+</li>
+</ol>
+
+        </div>
+
+        <br>
+
+        
+        <script src="https://chengyayu.github.io/js/copyCode.js"></script>
+        <script src="https://chengyayu.github.io/js/tooltips.js"></script>
+        
+
+        <footer>
+        
+
+        <ul class="tags" style="float: left!important;">
+            
+                <span>标签:</span>
+                <li><a class="link" href="https://chengyayu.github.io/tags/Refactoring"> #Refactoring </a></li>
+            
+            
+                
+                <span>分类:</span>
+                <li><a class="link" href="https://chengyayu.github.io/categories/Refactoring"> #Refactoring </a></li>
+            
+        </ul>
+        
+        <br>
+        </footer>
+
+    </div> 
+    
+    
+    <script src="https://cdn.staticfile.org/jquery/3.3.1/jquery.min.js" crossorigin="anonymous" defer="defer"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.1/js/bootstrap.min.js" defer="defer"></script>
+</body>
+</html>

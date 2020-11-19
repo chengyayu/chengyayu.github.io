@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts on Negentropy</title>
-    <link>https://chengyayu.github.io/posts/</link>
-    <description>Recent content in Posts on Negentropy</description>
+    <title>Refactoring on Negentropy</title>
+    <link>https://chengyayu.github.io/categories/refactoring/</link>
+    <description>Recent content in Refactoring on Negentropy</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Thu, 19 Nov 2020 01:08:43 +0800</lastBuildDate><atom:link href="https://chengyayu.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 19 Nov 2020 01:08:43 +0800</lastBuildDate><atom:link href="https://chengyayu.github.io/categories/refactoring/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>低层级重构基本手法</title>
       <link>https://chengyayu.github.io/posts/%E4%BD%8E%E5%B1%82%E7%BA%A7%E9%87%8D%E6%9E%84%E5%9F%BA%E6%9C%AC%E6%89%8B%E6%B3%95/</link>

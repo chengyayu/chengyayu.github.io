@@ -3,7 +3,7 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://chengyayu.github.io/posts/page1/</loc>
+    <loc>https://chengyayu.github.io/categories/</loc>
     <lastmod>2020-11-19T01:08:43+08:00</lastmod>
   </url>
   
@@ -18,11 +18,23 @@
   </url>
   
   <url>
-    <loc>https://chengyayu.github.io/categories/</loc>
+    <loc>https://chengyayu.github.io/tags/refactoring/</loc>
+    <lastmod>2020-11-19T01:08:43+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://chengyayu.github.io/categories/refactoring/</loc>
+    <lastmod>2020-11-19T01:08:43+08:00</lastmod>
   </url>
   
   <url>
     <loc>https://chengyayu.github.io/tags/</loc>
+    <lastmod>2020-11-19T01:08:43+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://chengyayu.github.io/posts/%E4%BD%8E%E5%B1%82%E7%BA%A7%E9%87%8D%E6%9E%84%E5%9F%BA%E6%9C%AC%E6%89%8B%E6%B3%95/</loc>
+    <lastmod>2020-11-19T01:08:43+08:00</lastmod>
   </url>
   
 </urlset>
