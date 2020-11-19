@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>My New Hugo Site</title>
+    <title>Negentropy</title>
     <link>https://chengyayu.github.io/</link>
-    <description>Recent content on My New Hugo Site</description>
+    <description>Recent content on Negentropy</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
     <lastBuildDate>Thu, 19 Nov 2020 01:08:43 +0800</lastBuildDate><atom:link href="https://chengyayu.github.io/index.xml" rel="self" type="application/rss+xml" />
