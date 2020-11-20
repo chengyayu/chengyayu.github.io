@@ -65,7 +65,6 @@
 <li>不重构：不需要理解则不必重构</li>
 </ul>
 <h3 id="重构的挑战">重构的挑战</h3>
-<p>不是人家不想，是人家不能。</p>
 <ul>
 <li>延缓新功能开发</li>
 <li>遗留代码</li>
@@ -112,9 +111,8 @@
 </li>
 </ol>
 <h3 id="重构基本手法">重构基本手法</h3>
-<ol>
-<li>
-<p>提炼函数（Extract Function）</p>
+<p>1 提炼函数（Extract Function）</p>
+<p>墒增之后的借助外界能量建立新秩序。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">printOwing</span>(<span style="color:#a6e22e">invoice</span> <span style="color:#a6e22e">Invoice</span>) {
     <span style="color:#a6e22e">outstanding</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>
 
@@ -186,7 +184,7 @@
     <span style="color:#a6e22e">recordDueDate</span>(<span style="color:#a6e22e">invoice</span>)
     <span style="color:#a6e22e">printDetails</span>(<span style="color:#a6e22e">invoice</span>, <span style="color:#a6e22e">outstanding</span>)
 }
-   
+
 <span style="color:#66d9ef">func</span> <span style="color:#a6e22e">calculateOutstanding</span> (<span style="color:#a6e22e">invoice</span> <span style="color:#a6e22e">Invoice</span>) {
     <span style="color:#a6e22e">rest</span> <span style="color:#f92672">:=</span> <span style="color:#ae81ff">0</span>
     <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">v</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">invoice</span>.<span style="color:#a6e22e">Orders</span> {
@@ -194,38 +192,202 @@
     }
     <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">rest</span>
 }
-</code></pre></div></li>
-<li>
-<p>内联函数（Inline Function）</p>
-</li>
-<li>
-<p>提炼变量（Extract Variable）</p>
-</li>
-<li>
-<p>内联变量（Inline Variable）</p>
-</li>
-<li>
-<p>改变函数声明（Change Function Declaration）</p>
-</li>
-<li>
-<p>封装变量（Encapsulate Variable）</p>
-</li>
-<li>
-<p>变量改名（Rename Variable）</p>
-</li>
-<li>
-<p>引入参数对象（Introduce Parameter Object）</p>
-</li>
-<li>
-<p>函数组合成类（Combine Functions into Class）</p>
-</li>
-<li>
-<p>函数组合成变换（Combine Functions into Transform）</p>
-</li>
-<li>
-<p>拆分阶段（Split Phase）</p>
-</li>
-</ol>
+</code></pre></div><p>2 内联函数（Inline Function）</p>
+<p>收敛零散的孤岛，中间过渡阶段，可以先将外部函数收敛成调用方中函数变量。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">getRating</span> (<span style="color:#a6e22e">driver</span>) <span style="color:#66d9ef">int</span> {
+    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">moreThanFiveLateDeliveries</span>(<span style="color:#a6e22e">driver</span>) {
+        <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">2</span>
+    }
+    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">1</span>
+}
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">moreThanFiveLateDeliveries</span> (<span style="color:#a6e22e">driver</span>) <span style="color:#66d9ef">bool</span> {
+    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">driver</span>.<span style="color:#a6e22e">NumberOfLateDeliveries</span> &gt; <span style="color:#ae81ff">5</span>;
+}
+</code></pre></div><p><strong>优化后</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">getRating</span> (<span style="color:#a6e22e">driver</span>) <span style="color:#66d9ef">int</span> {
+    <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">dirver</span>.<span style="color:#a6e22e">NumberOfLateDeliveries</span> &gt;<span style="color:#ae81ff">5</span> {
+        <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">2</span>
+    }
+    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">1</span>
+}
+</code></pre></div><p>3 提炼变量（Extract Variable）</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">getProfit</span> (<span style="color:#a6e22e">order</span> <span style="color:#a6e22e">Order</span>) <span style="color:#66d9ef">float64</span> {
+    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">order</span>.<span style="color:#a6e22e">quantity</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">order</span>.<span style="color:#a6e22e">itemPrice</span> <span style="color:#f92672">-</span> 
+    <span style="color:#a6e22e">Math</span>.<span style="color:#a6e22e">Max</span>(float64(<span style="color:#ae81ff">0</span>), <span style="color:#a6e22e">order</span>.<span style="color:#a6e22e">quantity</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">500</span>) <span style="color:#f92672">*</span> <span style="color:#a6e22e">order</span>.<span style="color:#a6e22e">itemPrice</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">0.05</span> <span style="color:#f92672">+</span>
+    <span style="color:#a6e22e">Math</span>.<span style="color:#a6e22e">Min</span>(<span style="color:#a6e22e">order</span>.<span style="color:#a6e22e">quantity</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">order</span>.<span style="color:#a6e22e">itemPrice</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">0.1</span>, float64(<span style="color:#ae81ff">100</span>)
+}
+</code></pre></div><p><strong>优化后</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">getProfit</span> (<span style="color:#a6e22e">order</span> <span style="color:#a6e22e">Order</span>) <span style="color:#66d9ef">float64</span> {
+    <span style="color:#a6e22e">basePrice</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">order</span>.<span style="color:#a6e22e">quantity</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">order</span>.<span style="color:#a6e22e">itemPrice</span>
+    <span style="color:#a6e22e">quantityDiscount</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">Math</span>.<span style="color:#a6e22e">Max</span>(float64(<span style="color:#ae81ff">0</span>), <span style="color:#a6e22e">order</span>.<span style="color:#a6e22e">quantity</span> <span style="color:#f92672">-</span> <span style="color:#ae81ff">500</span>) <span style="color:#f92672">*</span> <span style="color:#a6e22e">order</span>.<span style="color:#a6e22e">itemPrice</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">0.05</span>
+    <span style="color:#a6e22e">shipping</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">Math</span>.<span style="color:#a6e22e">Min</span>(<span style="color:#a6e22e">order</span>.<span style="color:#a6e22e">quantity</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">order</span>.<span style="color:#a6e22e">itemPrice</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">0.1</span>, float64(<span style="color:#ae81ff">100</span>)
+    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">basePrice</span> <span style="color:#f92672">-</span> <span style="color:#a6e22e">quantityDistcount</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">shipping</span>
+}
+</code></pre></div><p>4 内联变量（Inline Variable）</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">IsBigOrder</span> (<span style="color:#a6e22e">anOrder</span> <span style="color:#a6e22e">Order</span>) <span style="color:#66d9ef">bool</span> {
+    <span style="color:#a6e22e">basePrice</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">anOrder</span>.<span style="color:#a6e22e">BasePrice</span>
+    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">basePrice</span> &gt; <span style="color:#ae81ff">1000</span>
+} 
+</code></pre></div><p><strong>优化后</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">IsBigOrder</span> (<span style="color:#a6e22e">anOrder</span> <span style="color:#a6e22e">Order</span>) <span style="color:#66d9ef">bool</span> {
+    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">anOrder</span>.<span style="color:#a6e22e">BasePrice</span> &gt; <span style="color:#ae81ff">1000</span>
+} 
+</code></pre></div><p>5 改变函数声明（Change Function Declaration）</p>
+<ul>
+<li>改名</li>
+<li>修改参数列表</li>
+<li>修改返回列表</li>
+</ul>
+<p>6 封装变量（Encapsulate Variable）</p>
+<p>// 重要但是还没太理解</p>
+<p>7 变量改名（Rename Variable）</p>
+<blockquote>
+<p>There are only two hard things in Computer Science: cache invalidation and naming things. &ndash; Phil Karlton</p>
+</blockquote>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">a</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">height</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">width</span>
+</code></pre></div><p><strong>优化后</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">area</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">height</span> <span style="color:#f92672">*</span> <span style="color:#a6e22e">width</span>
+</code></pre></div><ul>
+<li><a href="https://golang.org/doc/effective_go.html#names">effective-go#names</a></li>
+<li><a href="https://github.com/uber-go/guide">https://github.com/uber-go/guide</a></li>
+</ul>
+<p>8 引入参数对象（Introduce Parameter Object）</p>
+<p>一组数据总是结伴同行，出没于一个又一个函数。可以用一个数据结构取代这坨数据泥土团。
+这样不仅在语义上表现得更加收敛，还可以给收敛后的对象添加方法。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Reading</span> <span style="color:#66d9ef">struct</span> {
+    <span style="color:#a6e22e">Temp</span> <span style="color:#66d9ef">int</span>
+    <span style="color:#a6e22e">Time</span> <span style="color:#66d9ef">string</span>
+}
+<span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Station</span> <span style="color:#66d9ef">struct</span> {
+    <span style="color:#a6e22e">Name</span>     <span style="color:#66d9ef">string</span>
+    <span style="color:#a6e22e">Readings</span> []<span style="color:#a6e22e">Reading</span>
+}
+
+<span style="color:#66d9ef">var</span> <span style="color:#a6e22e">station</span> = <span style="color:#a6e22e">Station</span>{
+    <span style="color:#a6e22e">Name</span>: <span style="color:#e6db74">&#34;tim&#34;</span>,
+    <span style="color:#a6e22e">Readings</span>: []<span style="color:#a6e22e">Reading</span>{
+        {<span style="color:#a6e22e">Temp</span>: <span style="color:#ae81ff">41</span>, <span style="color:#a6e22e">Time</span>: <span style="color:#e6db74">&#34;2016-11-10 09:10:00&#34;</span>},
+        {<span style="color:#a6e22e">Temp</span>: <span style="color:#ae81ff">42</span>, <span style="color:#a6e22e">Time</span>: <span style="color:#e6db74">&#34;2016-11-11 09:10:00&#34;</span>},
+        {<span style="color:#a6e22e">Temp</span>: <span style="color:#ae81ff">43</span>, <span style="color:#a6e22e">Time</span>: <span style="color:#e6db74">&#34;2016-11-12 09:10:00&#34;</span>},
+        {<span style="color:#a6e22e">Temp</span>: <span style="color:#ae81ff">44</span>, <span style="color:#a6e22e">Time</span>: <span style="color:#e6db74">&#34;2016-11-13 09:10:00&#34;</span>},
+        {<span style="color:#a6e22e">Temp</span>: <span style="color:#ae81ff">45</span>, <span style="color:#a6e22e">Time</span>: <span style="color:#e6db74">&#34;2016-11-14 09:10:00&#34;</span>},
+    },
+}
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">readingsOutsideRange</span> (<span style="color:#a6e22e">station</span> <span style="color:#a6e22e">Station</span>, <span style="color:#a6e22e">min</span>, <span style="color:#a6e22e">max</span> <span style="color:#66d9ef">int</span>) []<span style="color:#a6e22e">Reading</span> {
+    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">rest</span> []<span style="color:#a6e22e">Reading</span>
+    <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">v</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">station</span>.<span style="color:#a6e22e">Readings</span> {
+        <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">v</span>.<span style="color:#a6e22e">Temp</span> &lt; <span style="color:#a6e22e">min</span> <span style="color:#f92672">||</span> <span style="color:#a6e22e">v</span>.<span style="color:#a6e22e">Temp</span> &gt; <span style="color:#a6e22e">max</span> {
+            <span style="color:#a6e22e">rest</span> = append(<span style="color:#a6e22e">rest</span>, <span style="color:#a6e22e">v</span>)
+        }
+    }
+    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">rest</span>
+}
+</code></pre></div><p>调用方代码：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">alerts</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">readingsOutsideRang</span>(<span style="color:#a6e22e">station</span>,
+                                <span style="color:#a6e22e">operatingPlan</span>.<span style="color:#a6e22e">TemperatureFloor</span>,
+                                <span style="color:#a6e22e">operatingPlan</span>.<span style="color:#a6e22e">TemperatureCeiling</span>)
+</code></pre></div><p><strong>优化之后</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// 提取 min max 成一个结构
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">NumberRange</span> <span style="color:#66d9ef">struct</span> {
+    <span style="color:#a6e22e">min</span> <span style="color:#66d9ef">int</span>
+    <span style="color:#a6e22e">max</span> <span style="color:#66d9ef">int</span>
+}
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">NewNumberRange</span> (<span style="color:#a6e22e">min</span>, <span style="color:#a6e22e">max</span> <span style="color:#66d9ef">int</span>) <span style="color:#f92672">*</span><span style="color:#a6e22e">NumberRange</span> {
+    <span style="color:#66d9ef">return</span> <span style="color:#f92672">&amp;</span><span style="color:#a6e22e">NumberRange</span> {
+        <span style="color:#a6e22e">min</span>: <span style="color:#a6e22e">min</span>,
+        <span style="color:#a6e22e">max</span>: <span style="color:#a6e22e">max</span>,
+    }
+}
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">r</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">NumberRange</span>) <span style="color:#a6e22e">Min</span> () <span style="color:#66d9ef">int</span> {
+    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">min</span>
+}
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">r</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">NumberRange</span>) <span style="color:#a6e22e">Max</span> () <span style="color:#66d9ef">int</span> {
+    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">max</span>
+}
+
+<span style="color:#75715e">// 变更 readingsOutsideRange 声明
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> <span style="color:#a6e22e">readingsOutsideRange</span> (<span style="color:#a6e22e">station</span> <span style="color:#a6e22e">Station</span>, <span style="color:#a6e22e">rg</span> <span style="color:#a6e22e">NumberRange</span>) []<span style="color:#a6e22e">Reading</span> {
+    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">rest</span> []<span style="color:#a6e22e">Reading</span>
+    <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">v</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">station</span>.<span style="color:#a6e22e">Readings</span> {
+        <span style="color:#66d9ef">if</span> <span style="color:#a6e22e">v</span>.<span style="color:#a6e22e">Temp</span> &lt; <span style="color:#a6e22e">rg</span>.<span style="color:#a6e22e">Min</span>() <span style="color:#f92672">||</span> <span style="color:#a6e22e">v</span>.<span style="color:#a6e22e">Temp</span> &gt; <span style="color:#a6e22e">rg</span>.<span style="color:#a6e22e">Max</span>() {
+            <span style="color:#a6e22e">rest</span> = append(<span style="color:#a6e22e">rest</span>, <span style="color:#a6e22e">v</span>)
+        }
+    }
+    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">rest</span>
+}
+</code></pre></div><p>变更调用方代码：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">rg</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">NewNumberRange</span>(<span style="color:#a6e22e">operatingPlant</span>.<span style="color:#a6e22e">TemperatureFloor</span>, <span style="color:#a6e22e">operatingPlant</span>.<span style="color:#a6e22e">TemperatureCeiling</span>)
+<span style="color:#a6e22e">alerts</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">readingsOutsideRange</span>(<span style="color:#a6e22e">station</span>, <span style="color:#a6e22e">rg</span>)
+</code></pre></div><p>第一步已经完成，但是收益并不是很明显。另外一个收益是提高了扩展性。给新对象充血</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// 增加一个方法，测试一个数是否在范围内
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">r</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">NumberRange</span>) <span style="color:#a6e22e">Contains</span> (<span style="color:#a6e22e">arg</span> <span style="color:#66d9ef">int</span>) <span style="color:#66d9ef">bool</span> {
+    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">arg</span> <span style="color:#f92672">&gt;=</span> <span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">min</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">arg</span> <span style="color:#f92672">&lt;=</span> <span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">max</span>
+}
+
+<span style="color:#75715e">// 同时变更 readingsOutsideRange 实现
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">readingsOutsideRange</span> (<span style="color:#a6e22e">station</span> <span style="color:#a6e22e">Station</span>, <span style="color:#a6e22e">rg</span> <span style="color:#a6e22e">NumberRange</span>) []<span style="color:#a6e22e">Reading</span> {
+    <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">rest</span> []<span style="color:#a6e22e">Reading</span>
+    <span style="color:#66d9ef">for</span> <span style="color:#a6e22e">_</span>, <span style="color:#a6e22e">v</span> <span style="color:#f92672">:=</span> <span style="color:#66d9ef">range</span> <span style="color:#a6e22e">station</span>.<span style="color:#a6e22e">Readings</span> {
+        <span style="color:#66d9ef">if</span> !<span style="color:#a6e22e">rg</span>.<span style="color:#a6e22e">Contains</span>(<span style="color:#a6e22e">v</span>.<span style="color:#a6e22e">Temp</span>) {
+            <span style="color:#a6e22e">rest</span> = append(<span style="color:#a6e22e">rest</span>, <span style="color:#a6e22e">v</span>)
+        }
+    }
+    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">rest</span>
+}
+</code></pre></div><p>9 函数组合成类（Combine Functions into Class）</p>
+<p>封装包级函数为变量级方法</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#66d9ef">type</span> <span style="color:#a6e22e">Reading</span> <span style="color:#66d9ef">struct</span> {
+    <span style="color:#a6e22e">Coustomer</span> <span style="color:#66d9ef">string</span>
+    <span style="color:#a6e22e">Quantity</span> <span style="color:#66d9ef">int</span>
+    <span style="color:#a6e22e">Month</span> <span style="color:#66d9ef">int</span>
+    <span style="color:#a6e22e">Year</span> <span style="color:#66d9ef">int</span>
+}
+<span style="color:#a6e22e">reading</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">Reading</span>{
+    <span style="color:#a6e22e">Coustomer</span>: <span style="color:#e6db74">&#34;tim&#34;</span>, 
+    <span style="color:#a6e22e">Quantity</span>: <span style="color:#ae81ff">10</span>, 
+    <span style="color:#a6e22e">Month</span>: <span style="color:#ae81ff">5</span>,
+    <span style="color:#a6e22e">Year</span>: <span style="color:#ae81ff">2019</span>,
+}
+</code></pre></div><p>Client 1:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">aReading</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">acquireReading</span>()
+<span style="color:#a6e22e">baseCharge</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">baseRate</span>(<span style="color:#a6e22e">aReading</span>.<span style="color:#a6e22e">Month</span>, <span style="color:#a6e22e">aReading</span>.<span style="color:#a6e22e">Year</span>) <span style="color:#f92672">*</span> <span style="color:#a6e22e">aReading</span>.<span style="color:#a6e22e">Quantity</span>
+</code></pre></div><p>Client 2:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">aReading</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">acquireReading</span>()
+<span style="color:#a6e22e">base</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">baseRate</span>(<span style="color:#a6e22e">aReading</span>.<span style="color:#a6e22e">Month</span>, <span style="color:#a6e22e">aReading</span>.<span style="color:#a6e22e">Year</span>) <span style="color:#f92672">*</span> <span style="color:#a6e22e">aReading</span>.<span style="color:#a6e22e">Quantity</span>
+<span style="color:#a6e22e">taxableCharge</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">Math</span>.<span style="color:#a6e22e">Max</span>(<span style="color:#ae81ff">0</span>, <span style="color:#a6e22e">base</span> <span style="color:#f92672">-</span> <span style="color:#a6e22e">taxThreshold</span>(<span style="color:#a6e22e">aReading</span>.<span style="color:#a6e22e">Year</span>))
+</code></pre></div><p>发现了重复，想要提炼函数，但是&hellip;&hellip;</p>
+<p>Client 3:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#a6e22e">aReading</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">acquireReading</span>()
+<span style="color:#a6e22e">baseChargeAmount</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">calculateBaseCharge</span>(<span style="color:#a6e22e">aReading</span>)
+
+<span style="color:#66d9ef">func</span> <span style="color:#a6e22e">calculateBaseCharge</span> (<span style="color:#a6e22e">aReading</span> <span style="color:#a6e22e">Reading</span>){
+    <span style="color:#a6e22e">baseRate</span>(<span style="color:#a6e22e">aReading</span>.<span style="color:#a6e22e">Month</span>, <span style="color:#a6e22e">aReading</span>.<span style="color:#a6e22e">Year</span>) <span style="color:#f92672">*</span> <span style="color:#a6e22e">aReading</span>.<span style="color:#a6e22e">Quantity</span>
+} 
+</code></pre></div><p>将 Client1 与 Client2 中的代码替换成 Client3 中的函数是不是就可以了？
+为了更容易找到某批数据的相关操作，让结构更收敛一点，包级函数===&gt;变量级方法。</p>
+<p><strong>优化之后</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#75715e">// 补充方法
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">r</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Reading</span>) <span style="color:#a6e22e">BaseCharge</span> () {
+    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">baseRate</span>(<span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">Month</span>, <span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">Year</span>) <span style="color:#f92672">*</span> <span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">Quantity</span>
+}
+
+<span style="color:#66d9ef">func</span> (<span style="color:#a6e22e">r</span> <span style="color:#f92672">*</span><span style="color:#a6e22e">Reading</span>) <span style="color:#a6e22e">TaxableCharge</span> () {
+    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">Math</span>.<span style="color:#a6e22e">Max</span>(<span style="color:#ae81ff">0</span>, <span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">BaseCharge</span>() <span style="color:#f92672">-</span> <span style="color:#a6e22e">taxThreshold</span>(<span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">Year</span>))
+}
+
+<span style="color:#75715e">// 变更 Client 1
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">aReading</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">acquireReading</span>()
+<span style="color:#a6e22e">baseCharge</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">aReading</span>.<span style="color:#a6e22e">BaseCharge</span>()
+
+<span style="color:#75715e">// 变更 Client 2 &amp; Client 3
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">aReading</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">acquireReading</span>()
+<span style="color:#a6e22e">taxableCharge</span> <span style="color:#f92672">:=</span> <span style="color:#a6e22e">aReading</span>.<span style="color:#a6e22e">TaxableCharge</span>()
+</code></pre></div><p>10 函数组合成变换（Combine Functions into Transform）</p>
+<p>避免计算派生数据的逻辑到处重复，与 <strong>提炼函数</strong> 动机一样，但是孤立的函数常常很难找到，所以把函数和它们操作的数据放在一起，用起来才方便。
+这么看来，跟 <strong>函数组合成类</strong> 又很相似，确实如此，一体两面。</p>
+<p>11 拆分阶段（Split Phase）</p>
 
         </div>
 
