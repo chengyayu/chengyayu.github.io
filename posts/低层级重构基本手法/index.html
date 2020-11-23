@@ -59,31 +59,103 @@
 <p>4 过长参数列表</p>
 <p>5 全局数据</p>
 <ul>
+<li>特征：数据不符合预期的被改变，又找不到变动源头</li>
 <li>原因：
 <ul>
 <li>不可变：相对安全</li>
 <li>可变：作用域范围越大，被影响的概率越大，越难以探测影响源</li>
 </ul>
 </li>
-<li>方案：
+<li>改进：
 <ul>
 <li>封装到一个结构中，提供可以修改其值的方法</li>
 </ul>
 </li>
 </ul>
 <p>6 可变数据</p>
+<ul>
+<li>特征：一个变量拥有不同的语义</li>
+<li>原因：
+<ul>
+<li>副作用</li>
+</ul>
+</li>
+<li>改进：
+<ul>
+<li>将一个（多功能）变量拆分成多个功能单一的变量</li>
+<li>将没有副作用的代码和没有副作用的代码拆分开</li>
+<li>函数式编程：如果要更新一个数据结构，就返回一份新的数据副本</li>
+</ul>
+</li>
+</ul>
 <p>7 发散式变化</p>
+<ul>
+<li>特征：某个模块需经常因为不同的原因在不同的方向上发生变化</li>
+<li>原因：随着软件功能越来越多，上下文边界变得不够清晰</li>
+<li>改进：
+<ul>
+<li>如果有明显先后次序，拆分阶段</li>
+<li>如果两个方向有更多来回调用，将拆分出两个独立的模块</li>
+</ul>
+</li>
+</ul>
 <p>8 霰弹式修改</p>
+<ul>
+<li>特征：如果遇到某种变化，都必须在许多不同的结构内做出许多小修改</li>
+<li>原因：模块拆分不合适</li>
+<li>改进：先内联到一个大模块，再重新拆分</li>
+</ul>
 <p>9 依恋情结</p>
+<ul>
+<li>特征：
+<ul>
+<li>一个函数跟另一个模块的函数或者数据格外频繁，远胜于在自己所处模块内部的交流</li>
+<li>某个函数为了计算某个值，从另外一个对象那儿调用几乎半打的取值函数。</li>
+</ul>
+</li>
+<li>改进：将函数提炼出来搬到那个对象里去</li>
+</ul>
 <p>10 数据泥团</p>
-<p>11 原语偏执</p>
+<ul>
+<li>特征：数据项成群结队一起出入某个上下文，结构中的一坨字段，函数的一坨参数</li>
+<li>改进：提炼出单独的结构</li>
+</ul>
+<p>11 基本类型偏执</p>
 <p>12 重复的 switch</p>
+<ul>
+<li>特征：不同地方反复使用相同的 switch 逻辑（switch/case；if/else）</li>
+<li>原因：每当想增加一个选择分支时，必须找到所有 switch, 并逐一更新</li>
+<li>改进：以多态取代条件表达式</li>
+</ul>
 <p>13 循环语句</p>
+<ul>
+<li>？</li>
+<li><a href="https://medium.com/poka-techblog/simplify-your-javascript-use-map-reduce-and-filter-bd02c593cc2d">JS 中的 filter map</a></li>
+<li><a href="https://github.com/robpike/filter">Go 中更倾向哪一种？</a></li>
+<li>如果一定要用呢？
+<ul>
+<li><a href="https://github.com/thoas/go-funk">go-funk</a></li>
+<li><a href="https://github.com/ahmetb/go-linq">go-linq</a></li>
+</ul>
+</li>
+</ul>
 <p>14 冗赘元素</p>
+<ul>
+<li>单一引用的结构或函数</li>
+</ul>
 <p>15 夸夸其谈通用性</p>
+<ul>
+<li>过早优化出的接口</li>
+</ul>
 <p>16 临时字段</p>
 <p>17 过长的消息链</p>
+<ul>
+<li>如a.b.c().d()，链上任意类做修改都会影响整个调用</li>
+</ul>
 <p>18 中间人</p>
+<ul>
+<li>没有任何实质的逻辑，只做了一个中间调用</li>
+</ul>
 <p>19 内幕交易</p>
 <p>20 过大的类</p>
 <ul>
@@ -109,8 +181,15 @@
 <li>不要因为代码语义混乱而通过注释重复表达</li>
 <li>注释的内容应该是 why 和 todo</li>
 </ul>
+<h3 id="重构的前置条件测试体系">重构的前置条件：测试体系</h3>
+<ul>
+<li>编程之前先写测试</li>
+<li>编写一个测试case时，可以先让测试失败，再通过成功验证程序功能</li>
+<li>遇到bug时，先添加一个单元测试复现这个bug</li>
+<li>测试不能保证程序没有bug，编写测试样例也遵循82原则，当样例已经很多时，它带来的边际效果就没那么好了。应该更多考虑容易出错的边界条件，积极思考如何“破坏代码”。</li>
+</ul>
 <h3 id="重构基本手法">重构基本手法</h3>
-<p>1 提炼函数（Extract Function）</p>
+<h4 id="1-提炼函数extract-function">1 提炼函数（Extract Function）</h4>
 <p>墒增之后的借助外界能量建立新秩序。</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f" id="1"> 1</span><span style="color:#204a87;font-weight:bold">func</span> <span style="color:#000">printOwing</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">invoice</span> <span style="color:#000">Invoice</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f" id="2"> 2</span>    <span style="color:#000">outstanding</span> <span style="color:#ce5c00;font-weight:bold">:=</span> <span style="color:#0000cf;font-weight:bold">0</span>
@@ -191,7 +270,7 @@
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f" id="12">12</span>    <span style="color:#000;font-weight:bold">}</span>
 <span style="display:block;width:100%;background-color:#dfdfdf"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f" id="13">13</span>    <span style="color:#204a87;font-weight:bold">return</span> <span style="color:#000">rest</span>
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f" id="14">14</span><span style="color:#000;font-weight:bold">}</span>
-</code></pre></div><p>2 内联函数（Inline Function）</p>
+</code></pre></div><h4 id="2-内联函数inline-function">2 内联函数（Inline Function）</h4>
 <p>收敛零散的孤岛，中间过渡阶段，可以先将外部函数收敛成调用方中函数变量。</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f" id="1"> 1</span><span style="color:#204a87;font-weight:bold">func</span> <span style="color:#000">getRating</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#000">driver</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#204a87;font-weight:bold">int</span> <span style="color:#000;font-weight:bold">{</span>
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f" id="2"> 2</span>    <span style="color:#204a87;font-weight:bold">if</span> <span style="color:#000">moreThanFiveLateDeliveries</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">driver</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
@@ -210,7 +289,7 @@
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f" id="4">4</span>    <span style="color:#000;font-weight:bold">}</span>
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f" id="5">5</span>    <span style="color:#204a87;font-weight:bold">return</span> <span style="color:#0000cf;font-weight:bold">1</span>
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f" id="6">6</span><span style="color:#000;font-weight:bold">}</span>
-</code></pre></div><p>3 提炼变量（Extract Variable）</p>
+</code></pre></div><h4 id="3-提炼变量extract-variable">3 提炼变量（Extract Variable）</h4>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f" id="1">1</span><span style="color:#204a87;font-weight:bold">func</span> <span style="color:#000">getProfit</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#000">order</span> <span style="color:#000">Order</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#204a87;font-weight:bold">float64</span> <span style="color:#000;font-weight:bold">{</span>
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f" id="2">2</span>    <span style="color:#204a87;font-weight:bold">return</span> <span style="color:#000">order</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">quantity</span> <span style="color:#ce5c00;font-weight:bold">*</span> <span style="color:#000">order</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">itemPrice</span> <span style="color:#ce5c00;font-weight:bold">-</span> 
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f" id="3">3</span>    <span style="color:#000">Math</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Max</span><span style="color:#000;font-weight:bold">(</span><span style="color:#204a87">float64</span><span style="color:#000;font-weight:bold">(</span><span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">),</span> <span style="color:#000">order</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">quantity</span> <span style="color:#ce5c00;font-weight:bold">-</span> <span style="color:#0000cf;font-weight:bold">500</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#ce5c00;font-weight:bold">*</span> <span style="color:#000">order</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">itemPrice</span> <span style="color:#ce5c00;font-weight:bold">*</span> <span style="color:#0000cf;font-weight:bold">0.05</span> <span style="color:#ce5c00;font-weight:bold">+</span>
@@ -218,12 +297,12 @@
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f" id="5">5</span><span style="color:#000;font-weight:bold">}</span>
 </code></pre></div><p><strong>优化后</strong></p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f" id="1">1</span><span style="color:#204a87;font-weight:bold">func</span> <span style="color:#000">getProfit</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#000">order</span> <span style="color:#000">Order</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#204a87;font-weight:bold">float64</span> <span style="color:#000;font-weight:bold">{</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f" id="2">2</span>    <span style="color:#000">basePrice</span> <span style="color:#ce5c00;font-weight:bold">:=</span> <span style="color:#000">order</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">quantity</span> <span style="color:#ce5c00;font-weight:bold">*</span> <span style="color:#000">order</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">itemPrice</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f" id="3">3</span>    <span style="color:#000">quantityDiscount</span> <span style="color:#ce5c00;font-weight:bold">:=</span> <span style="color:#000">Math</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Max</span><span style="color:#000;font-weight:bold">(</span><span style="color:#204a87">float64</span><span style="color:#000;font-weight:bold">(</span><span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">),</span> <span style="color:#000">order</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">quantity</span> <span style="color:#ce5c00;font-weight:bold">-</span> <span style="color:#0000cf;font-weight:bold">500</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#ce5c00;font-weight:bold">*</span> <span style="color:#000">order</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">itemPrice</span> <span style="color:#ce5c00;font-weight:bold">*</span> <span style="color:#0000cf;font-weight:bold">0.05</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f" id="4">4</span>    <span style="color:#000">shipping</span> <span style="color:#ce5c00;font-weight:bold">:=</span> <span style="color:#000">Math</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Min</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">order</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">quantity</span> <span style="color:#ce5c00;font-weight:bold">*</span> <span style="color:#000">order</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">itemPrice</span> <span style="color:#ce5c00;font-weight:bold">*</span> <span style="color:#0000cf;font-weight:bold">0.1</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87">float64</span><span style="color:#000;font-weight:bold">(</span><span style="color:#0000cf;font-weight:bold">100</span><span style="color:#000;font-weight:bold">)</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f" id="5">5</span>    <span style="color:#204a87;font-weight:bold">return</span> <span style="color:#000">basePrice</span> <span style="color:#ce5c00;font-weight:bold">-</span> <span style="color:#000">quantityDistcount</span> <span style="color:#ce5c00;font-weight:bold">+</span> <span style="color:#000">shipping</span>
+<span style="display:block;width:100%;background-color:#dfdfdf"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f" id="2">2</span>    <span style="color:#000">basePrice</span> <span style="color:#ce5c00;font-weight:bold">:=</span> <span style="color:#000">order</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">quantity</span> <span style="color:#ce5c00;font-weight:bold">*</span> <span style="color:#000">order</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">itemPrice</span>
+</span><span style="display:block;width:100%;background-color:#dfdfdf"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f" id="3">3</span>    <span style="color:#000">quantityDiscount</span> <span style="color:#ce5c00;font-weight:bold">:=</span> <span style="color:#000">Math</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Max</span><span style="color:#000;font-weight:bold">(</span><span style="color:#204a87">float64</span><span style="color:#000;font-weight:bold">(</span><span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">),</span> <span style="color:#000">order</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">quantity</span> <span style="color:#ce5c00;font-weight:bold">-</span> <span style="color:#0000cf;font-weight:bold">500</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#ce5c00;font-weight:bold">*</span> <span style="color:#000">order</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">itemPrice</span> <span style="color:#ce5c00;font-weight:bold">*</span> <span style="color:#0000cf;font-weight:bold">0.05</span>
+</span><span style="display:block;width:100%;background-color:#dfdfdf"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f" id="4">4</span>    <span style="color:#000">shipping</span> <span style="color:#ce5c00;font-weight:bold">:=</span> <span style="color:#000">Math</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Min</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">order</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">quantity</span> <span style="color:#ce5c00;font-weight:bold">*</span> <span style="color:#000">order</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">itemPrice</span> <span style="color:#ce5c00;font-weight:bold">*</span> <span style="color:#0000cf;font-weight:bold">0.1</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87">float64</span><span style="color:#000;font-weight:bold">(</span><span style="color:#0000cf;font-weight:bold">100</span><span style="color:#000;font-weight:bold">)</span>
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f" id="5">5</span>    <span style="color:#204a87;font-weight:bold">return</span> <span style="color:#000">basePrice</span> <span style="color:#ce5c00;font-weight:bold">-</span> <span style="color:#000">quantityDistcount</span> <span style="color:#ce5c00;font-weight:bold">+</span> <span style="color:#000">shipping</span>
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f" id="6">6</span><span style="color:#000;font-weight:bold">}</span>
-</code></pre></div><p>4 内联变量（Inline Variable）</p>
+</code></pre></div><h4 id="4-内联变量inline-variable">4 内联变量（Inline Variable）</h4>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f" id="1">1</span><span style="color:#204a87;font-weight:bold">func</span> <span style="color:#000">IsBigOrder</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#000">anOrder</span> <span style="color:#000">Order</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#204a87;font-weight:bold">bool</span> <span style="color:#000;font-weight:bold">{</span>
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f" id="2">2</span>    <span style="color:#000">basePrice</span> <span style="color:#ce5c00;font-weight:bold">:=</span> <span style="color:#000">anOrder</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">BasePrice</span>
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f" id="3">3</span>    <span style="color:#204a87;font-weight:bold">return</span> <span style="color:#000">basePrice</span> <span style="color:#000;font-weight:bold">&gt;</span> <span style="color:#0000cf;font-weight:bold">1000</span>
@@ -232,26 +311,28 @@
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f" id="1">1</span><span style="color:#204a87;font-weight:bold">func</span> <span style="color:#000">IsBigOrder</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#000">anOrder</span> <span style="color:#000">Order</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#204a87;font-weight:bold">bool</span> <span style="color:#000;font-weight:bold">{</span>
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f" id="2">2</span>    <span style="color:#204a87;font-weight:bold">return</span> <span style="color:#000">anOrder</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">BasePrice</span> <span style="color:#000;font-weight:bold">&gt;</span> <span style="color:#0000cf;font-weight:bold">1000</span>
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f" id="3">3</span><span style="color:#000;font-weight:bold">}</span> 
-</code></pre></div><p>5 改变函数声明（Change Function Declaration）</p>
+</code></pre></div><h4 id="5-改变函数声明change-function-declaration">5 改变函数声明（Change Function Declaration）</h4>
 <ul>
 <li>改名</li>
 <li>修改参数列表</li>
 <li>修改返回列表</li>
 </ul>
-<p>6 封装变量（Encapsulate Variable）</p>
-<p>// 重要但是还没太理解</p>
-<p>7 变量改名（Rename Variable）</p>
+<h4 id="6-封装变量encapsulate-variable">6 封装变量（Encapsulate Variable）</h4>
+<ul>
+<li>getter/setter/NewXX</li>
+</ul>
+<h4 id="7-变量改名rename-variable">7 变量改名（Rename Variable）</h4>
 <blockquote>
 <p>There are only two hard things in Computer Science: cache invalidation and naming things. &ndash; Phil Karlton</p>
 </blockquote>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f" id="1">1</span><span style="color:#000">a</span> <span style="color:#ce5c00;font-weight:bold">:=</span> <span style="color:#000">height</span> <span style="color:#ce5c00;font-weight:bold">*</span> <span style="color:#000">width</span>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#000">a</span> <span style="color:#ce5c00;font-weight:bold">:=</span> <span style="color:#000">height</span> <span style="color:#ce5c00;font-weight:bold">*</span> <span style="color:#000">width</span>
 </code></pre></div><p><strong>优化后</strong></p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f" id="1">1</span><span style="color:#000">area</span> <span style="color:#ce5c00;font-weight:bold">:=</span> <span style="color:#000">height</span> <span style="color:#ce5c00;font-weight:bold">*</span> <span style="color:#000">width</span>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#000">area</span> <span style="color:#ce5c00;font-weight:bold">:=</span> <span style="color:#000">height</span> <span style="color:#ce5c00;font-weight:bold">*</span> <span style="color:#000">width</span>
 </code></pre></div><ul>
 <li><a href="https://golang.org/doc/effective_go.html#names">effective-go#names</a></li>
 <li><a href="https://github.com/uber-go/guide">https://github.com/uber-go/guide</a></li>
 </ul>
-<p>8 引入参数对象（Introduce Parameter Object）</p>
+<h4 id="8-引入参数对象introduce-parameter-object">8 引入参数对象（Introduce Parameter Object）</h4>
 <p>一组数据总是结伴同行，出没于一个又一个函数。可以用一个数据结构取代这坨数据泥土团。
 这样不仅在语义上表现得更加收敛，还可以给收敛后的对象添加方法。</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f" id="1"> 1</span><span style="color:#204a87;font-weight:bold">type</span> <span style="color:#000">Reading</span> <span style="color:#204a87;font-weight:bold">struct</span> <span style="color:#000;font-weight:bold">{</span>
@@ -335,7 +416,7 @@
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f" id="13">13</span>    <span style="color:#000;font-weight:bold">}</span>
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f" id="14">14</span>    <span style="color:#204a87;font-weight:bold">return</span> <span style="color:#000">rest</span>
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f" id="15">15</span><span style="color:#000;font-weight:bold">}</span>
-</code></pre></div><p>9 函数组合成类（Combine Functions into Class）</p>
+</code></pre></div><h4 id="9-函数组合成类combine-functions-into-class">9 函数组合成类（Combine Functions into Class）</h4>
 <p>封装包级函数为变量级方法</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f" id="1"> 1</span><span style="color:#204a87;font-weight:bold">type</span> <span style="color:#000">Reading</span> <span style="color:#204a87;font-weight:bold">struct</span> <span style="color:#000;font-weight:bold">{</span>
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f" id="2"> 2</span>    <span style="color:#000">Coustomer</span> <span style="color:#204a87;font-weight:bold">string</span>
@@ -383,10 +464,10 @@
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f" id="14">14</span><span style="color:#8f5902;font-style:italic">// 变更 Client 2 &amp; Client 3
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f" id="15">15</span><span style="color:#8f5902;font-style:italic"></span><span style="color:#000">aReading</span> <span style="color:#ce5c00;font-weight:bold">:=</span> <span style="color:#000">acquireReading</span><span style="color:#000;font-weight:bold">()</span>
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f" id="16">16</span><span style="color:#000">taxableCharge</span> <span style="color:#ce5c00;font-weight:bold">:=</span> <span style="color:#000">aReading</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">TaxableCharge</span><span style="color:#000;font-weight:bold">()</span>
-</code></pre></div><p>10 函数组合成变换（Combine Functions into Transform）</p>
+</code></pre></div><h4 id="10-函数组合成变换combine-functions-into-transform">10 函数组合成变换（Combine Functions into Transform）··</h4>
 <p>避免计算派生数据的逻辑到处重复，与 <strong>提炼函数</strong> 动机一样，但是孤立的函数常常很难找到，所以把函数和它们操作的数据放在一起，用起来才方便。
 这么看来，跟 <strong>函数组合成类</strong> 又很相似，确实如此，一体两面。</p>
-<p>11 拆分阶段（Split Phase）</p>
+<h4 id="11-拆分阶段split-phase">11 拆分阶段（Split Phase）</h4>
 <ul>
 <li>编译器</li>
 <li>中间件</li>
