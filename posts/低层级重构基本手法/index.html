@@ -30,7 +30,6 @@
 <h3 id="何为重构">何为重构</h3>
 <p>在不改变软件可观察行为的前提下，调整其结构。使之无限接近 ETC。</p>
 <h3 id="何时重构">何时重构</h3>
-<p>杀人动机是什么？</p>
 <ul>
 <li>预备性重构：添加新功能很费劲</li>
 <li>帮助理解的重构：代码看不懂</li>
@@ -52,7 +51,6 @@
 <li>无限增加可读性会不会影响性能？</li>
 </ul>
 <h3 id="代码坏味道">代码坏味道</h3>
-<p>以貌取人是一种歧视，但是也给人类带来了效率。</p>
 <p>1 神秘命名</p>
 <p>2 重复代码</p>
 <p>3 过长函数</p>
@@ -156,7 +154,6 @@
 <ul>
 <li>没有任何实质的逻辑，只做了一个中间调用</li>
 </ul>
-<p>19 内幕交易</p>
 <p>20 过大的类</p>
 <ul>
 <li>有时也是难免的</li>
@@ -190,7 +187,6 @@
 </ul>
 <h3 id="重构基本手法">重构基本手法</h3>
 <h4 id="1-提炼函数extract-function">1 提炼函数（Extract Function）</h4>
-<p>墒增之后的借助外界能量建立新秩序。</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f" id="1"> 1</span><span style="color:#204a87;font-weight:bold">func</span> <span style="color:#000">printOwing</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">invoice</span> <span style="color:#000">Invoice</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f" id="2"> 2</span>    <span style="color:#000">outstanding</span> <span style="color:#ce5c00;font-weight:bold">:=</span> <span style="color:#0000cf;font-weight:bold">0</span>
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f" id="3"> 3</span>
@@ -566,7 +562,13 @@
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f" id="18">18</span>    <span style="color:#000;font-weight:bold">}</span>
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f" id="19">19</span>    <span style="color:#204a87;font-weight:bold">return</span> <span style="color:#4e9a06">&#34;beautiful&#34;</span>
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f" id="20">20</span><span style="color:#000;font-weight:bold">}</span>
-</code></pre></div>
+</code></pre></div><h3 id="总结">总结</h3>
+<ul>
+<li>以人为本</li>
+<li>直观，收敛，隔离</li>
+<li><a href="https://item.jd.com/12584498.html">&laquo;重构 2&raquo;</a></li>
+</ul>
+
         </div>
 
         <br>
