@@ -22,10 +22,10 @@
         
         <div class="blog-post">
             <h2>Functional Options Pattern</h2>
-                <h2 id="configuration-problem">Configuration Problem</h2>
-<p>配置一个 Server 需要很多选项，并不是所有的选项都是强制性的。
-如果 Addr 和 Port 是需要强制指定的选项，其他的选项非强制指定，且拥有缺省值。</p>
-<p>该如何设计 New Server 构造函数呢？</p>
+                <p>一个 Server 拥有很多配置选项，创建对象时一部分选项需要强制指定，另一部分选项非强制指定，且有缺省值。
+如何设计一个对调用方友好的 NewServer 构造函数 API ？</p>
+<h2 id="configuration-problem">Configuration Problem</h2>
+<p>例如 Addr 和 Port 是需要强制指定的选项，其他选项非强制指定，且有缺省值，该如何设计 New Server 构造函数呢？</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span style="color:#204a87;font-weight:bold">type</span> <span style="color:#000">Server</span> <span style="color:#204a87;font-weight:bold">struct</span> <span style="color:#000;font-weight:bold">{</span>
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>    <span style="color:#000">Addr</span>     <span style="color:#204a87;font-weight:bold">string</span>
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span>    <span style="color:#000">Port</span>     <span style="color:#204a87;font-weight:bold">int</span>
@@ -47,10 +47,10 @@
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span style="color:#204a87;font-weight:bold">func</span> <span style="color:#000">NewTLSServerWithMaxConnAndTimeout</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">addr</span> <span style="color:#204a87;font-weight:bold">string</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">port</span> <span style="color:#204a87;font-weight:bold">int</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">maxconns</span> <span style="color:#204a87;font-weight:bold">int</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">timeout</span> <span style="color:#000">time</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Duration</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">tls</span> <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">tls</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Config</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">Server</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87;font-weight:bold">error</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span>    <span style="color:#8f5902;font-style:italic">//...
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span style="color:#8f5902;font-style:italic"></span><span style="color:#000;font-weight:bold">}</span>
-</code></pre></div><p>但是如果使用这种方式解决问题，很快便会让构造函数的数量骤增，复杂度爆炸。如何优化呢？</p>
+</code></pre></div><p>但是随着 option 数量增加，这种方案很快便会让构造函数的数量骤增，不堪负重。如何改进呢？</p>
 <h2 id="a-common-solution">A Common Solution</h2>
 <p>将非强制性选项提取出一个配置结构。只需要一个构造函数，且不管 option 数量怎么增加，构造函数 API 都无需改变。</p>
-<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span style="color:#204a87;font-weight:bold">type</span> <span style="color:#000">Config</span> <span style="color:#204a87;font-weight:bold">struct</span> <span style="color:#000;font-weight:bold">{</span>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span style="color:#204a87;font-weight:bold">type</span> <span style="color:#000">ServerConfig</span> <span style="color:#204a87;font-weight:bold">struct</span> <span style="color:#000;font-weight:bold">{</span>
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span>	<span style="color:#000">Protocol</span> <span style="color:#204a87;font-weight:bold">string</span>
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span>	<span style="color:#000">Timeout</span>  <span style="color:#000">time</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Duration</span>
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span>	<span style="color:#000">Maxconns</span> <span style="color:#204a87;font-weight:bold">int</span>
@@ -60,10 +60,10 @@
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span style="color:#204a87;font-weight:bold">type</span> <span style="color:#000">Server</span> <span style="color:#204a87;font-weight:bold">struct</span> <span style="color:#000;font-weight:bold">{</span>
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span>	<span style="color:#000">Addr</span> <span style="color:#204a87;font-weight:bold">string</span>
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span>	<span style="color:#000">Port</span> <span style="color:#204a87;font-weight:bold">int</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span>	<span style="color:#000">Conf</span> <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">Config</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span>	<span style="color:#000">Conf</span> <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">ServerConfig</span>
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span style="color:#000;font-weight:bold">}</span>
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span style="color:#204a87;font-weight:bold">func</span> <span style="color:#000">NewServer</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">addr</span> <span style="color:#204a87;font-weight:bold">string</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">port</span> <span style="color:#204a87;font-weight:bold">int</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">conf</span> <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">Config</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">Server</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87;font-weight:bold">error</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span style="color:#204a87;font-weight:bold">func</span> <span style="color:#000">NewServer</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">addr</span> <span style="color:#204a87;font-weight:bold">string</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">port</span> <span style="color:#204a87;font-weight:bold">int</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">conf</span> <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">ServerConfig</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">Server</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87;font-weight:bold">error</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span>    <span style="color:#8f5902;font-style:italic">//...
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span style="color:#8f5902;font-style:italic"></span><span style="color:#000;font-weight:bold">}</span>
 </code></pre></div><p>调用方：</p>
@@ -73,13 +73,13 @@
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span style="color:#8f5902;font-style:italic">// Using the default configuration and another config object
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span style="color:#8f5902;font-style:italic"></span><span style="color:#000">conf</span> <span style="color:#ce5c00;font-weight:bold">:=</span> <span style="color:#000">ServerConfig</span><span style="color:#000;font-weight:bold">{</span><span style="color:#000">Protocol</span><span style="color:#000;font-weight:bold">:</span><span style="color:#4e9a06">&#34;tcp&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">Timeout</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#0000cf;font-weight:bold">60</span><span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">time</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Duration</span><span style="color:#000;font-weight:bold">}</span> 
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span style="color:#000">srv2</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">_</span> <span style="color:#ce5c00;font-weight:bold">:=</span> <span style="color:#000">NewServer</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;locahost&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">9000</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#ce5c00;font-weight:bold">&amp;</span><span style="color:#000">conf</span><span style="color:#000;font-weight:bold">)</span>
-</code></pre></div><p>带来了一些新问题：</p>
+</code></pre></div><p>问题：</p>
 <ul>
-<li>调用方使用 NewServer 默认行为时，不得不传入一个 nil，对调用方不友好</li>
-<li>调用方掌握着 Server 配置项对象指针，可以随时修改配置项的值</li>
+<li>调用方想使用 NewServer 默认行为，为什么不得不传入一个 nil ？</li>
+<li>调用方持有 ServerConfig 对象指针，当传入 NewServer 之后，将之修改，会发生什么？</li>
 </ul>
 <h2 id="functional-options-pattern">Functional Options Pattern</h2>
-<p>用操作 server 指针的 functions 取代用 config 结构中参数来处理。</p>
+<p>用操作 *Server 的 function 取代用 ServerConfig 结构中的 option 来处理。</p>
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span style="color:#204a87;font-weight:bold">type</span> <span style="color:#000">Option</span> <span style="color:#204a87;font-weight:bold">func</span><span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">Server</span><span style="color:#000;font-weight:bold">)</span>
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span>
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span style="color:#204a87;font-weight:bold">func</span> <span style="color:#000">Protocol</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">p</span> <span style="color:#204a87;font-weight:bold">string</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000">Option</span> <span style="color:#000;font-weight:bold">{</span>
@@ -122,7 +122,16 @@
 <div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span style="color:#000">s1</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">_</span> <span style="color:#ce5c00;font-weight:bold">:=</span> <span style="color:#000">NewServer</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;localhost&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">1024</span><span style="color:#000;font-weight:bold">)</span>
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span style="color:#000">s2</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">_</span> <span style="color:#ce5c00;font-weight:bold">:=</span> <span style="color:#000">NewServer</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;localhost&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">2048</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">Protocol</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;udp&#34;</span><span style="color:#000;font-weight:bold">))</span>
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span style="color:#000">s3</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">_</span> <span style="color:#ce5c00;font-weight:bold">:=</span> <span style="color:#000">NewServer</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;0.0.0.0&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">8080</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">Timeout</span><span style="color:#000;font-weight:bold">(</span><span style="color:#0000cf;font-weight:bold">300</span><span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">time</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Second</span><span style="color:#000;font-weight:bold">),</span> <span style="color:#000">MaxConns</span><span style="color:#000;font-weight:bold">(</span><span style="color:#0000cf;font-weight:bold">1000</span><span style="color:#000;font-weight:bold">))</span>
-</code></pre></div><h2 id="referances">Referances</h2>
+</code></pre></div><p>好处：</p>
+<ul>
+<li>Sensible defaults</li>
+<li>Highly configurable</li>
+<li>Easy to maintain</li>
+<li>Self documenting</li>
+<li>Safe for newcomers</li>
+<li>No need nil or an empty value</li>
+</ul>
+<h2 id="referances">Referances</h2>
 <ul>
 <li><a href="https://commandcenter.blogspot.com/2014/01/self-referential-functions-and-design.html">Self-referential functions and the design of options</a></li>
 <li><a href="https://dave.cheney.net/2014/10/17/functional-options-for-friendly-apis">Functional options for friendly APIs</a></li>
