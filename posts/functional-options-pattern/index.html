@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <meta http-equiv="content-language" content="zh-CN" />
+        <meta name="viewport" content="width=device-width, initial-scale=0.5, maximum-scale=1, user-scalable=no">
+        <title>Functional Options Pattern</title>
+
+        
+
+        
+        <link rel="stylesheet" href="https://chengyayu.github.io/css/main.css">
+
+        
+    </head>
+    
+    <body>
+        
+        
+
+    <div class="inner" style="position:relative;">
+        
+        <div class="blog-post">
+            <h2>Functional Options Pattern</h2>
+                <h2 id="configuration-problem">Configuration Problem</h2>
+<p>配置一个 Server 需要很多选项，并不是所有的选项都是强制性的。
+如果 Addr 和 Port 是需要强制指定的选项，其他的选项非强制指定，且拥有缺省值。</p>
+<p>该如何设计 New Server 构造函数呢？</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span style="color:#204a87;font-weight:bold">type</span> <span style="color:#000">Server</span> <span style="color:#204a87;font-weight:bold">struct</span> <span style="color:#000;font-weight:bold">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span>    <span style="color:#000">Addr</span>     <span style="color:#204a87;font-weight:bold">string</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span>    <span style="color:#000">Port</span>     <span style="color:#204a87;font-weight:bold">int</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span>    <span style="color:#000">Protocol</span> <span style="color:#204a87;font-weight:bold">string</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span>    <span style="color:#000">Timeout</span>  <span style="color:#000">time</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Duration</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span>    <span style="color:#000">MaxConns</span> <span style="color:#204a87;font-weight:bold">int</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7</span>    <span style="color:#000">TLS</span>      <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">tls</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Config</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8</span><span style="color:#000;font-weight:bold">}</span>
+</code></pre></div><p>我们可以创建一组针对不同情况的构造函数。</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span style="color:#204a87;font-weight:bold">func</span> <span style="color:#000">NewServer</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">addr</span> <span style="color:#204a87;font-weight:bold">string</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">port</span> <span style="color:#204a87;font-weight:bold">int</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">Server</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87;font-weight:bold">error</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span>    <span style="color:#8f5902;font-style:italic">//...
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span style="color:#8f5902;font-style:italic"></span><span style="color:#000;font-weight:bold">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span style="color:#204a87;font-weight:bold">func</span> <span style="color:#000">NewTLSServer</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">addr</span> <span style="color:#204a87;font-weight:bold">string</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">port</span> <span style="color:#204a87;font-weight:bold">int</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">tls</span> <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">tls</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Config</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">Server</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87;font-weight:bold">error</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span>    <span style="color:#8f5902;font-style:italic">//...
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span style="color:#8f5902;font-style:italic"></span><span style="color:#000;font-weight:bold">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span style="color:#204a87;font-weight:bold">func</span> <span style="color:#000">NewServerWithTimeout</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">addr</span> <span style="color:#204a87;font-weight:bold">string</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">port</span> <span style="color:#204a87;font-weight:bold">int</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">timeout</span> <span style="color:#000">time</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Duration</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">Server</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87;font-weight:bold">error</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span> 
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span>    <span style="color:#8f5902;font-style:italic">//...
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span style="color:#8f5902;font-style:italic"></span><span style="color:#000;font-weight:bold">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span style="color:#204a87;font-weight:bold">func</span> <span style="color:#000">NewTLSServerWithMaxConnAndTimeout</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">addr</span> <span style="color:#204a87;font-weight:bold">string</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">port</span> <span style="color:#204a87;font-weight:bold">int</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">maxconns</span> <span style="color:#204a87;font-weight:bold">int</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">timeout</span> <span style="color:#000">time</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Duration</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">tls</span> <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">tls</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Config</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">Server</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87;font-weight:bold">error</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span>    <span style="color:#8f5902;font-style:italic">//...
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span style="color:#8f5902;font-style:italic"></span><span style="color:#000;font-weight:bold">}</span>
+</code></pre></div><p>但是如果使用这种方式解决问题，很快便会让构造函数的数量骤增，复杂度爆炸。如何优化呢？</p>
+<h2 id="a-common-solution">A Common Solution</h2>
+<p>将非强制性选项提取出一个配置结构。只需要一个构造函数，且不管 option 数量怎么增加，构造函数 API 都无需改变。</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span style="color:#204a87;font-weight:bold">type</span> <span style="color:#000">Config</span> <span style="color:#204a87;font-weight:bold">struct</span> <span style="color:#000;font-weight:bold">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span>	<span style="color:#000">Protocol</span> <span style="color:#204a87;font-weight:bold">string</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span>	<span style="color:#000">Timeout</span>  <span style="color:#000">time</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Duration</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span>	<span style="color:#000">Maxconns</span> <span style="color:#204a87;font-weight:bold">int</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span>	<span style="color:#000">TLS</span>      <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">tls</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Config</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span style="color:#000;font-weight:bold">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span style="color:#204a87;font-weight:bold">type</span> <span style="color:#000">Server</span> <span style="color:#204a87;font-weight:bold">struct</span> <span style="color:#000;font-weight:bold">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span>	<span style="color:#000">Addr</span> <span style="color:#204a87;font-weight:bold">string</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span>	<span style="color:#000">Port</span> <span style="color:#204a87;font-weight:bold">int</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span>	<span style="color:#000">Conf</span> <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">Config</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span style="color:#000;font-weight:bold">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span style="color:#204a87;font-weight:bold">func</span> <span style="color:#000">NewServer</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">addr</span> <span style="color:#204a87;font-weight:bold">string</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">port</span> <span style="color:#204a87;font-weight:bold">int</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">conf</span> <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">Config</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">Server</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87;font-weight:bold">error</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span>    <span style="color:#8f5902;font-style:italic">//...
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span style="color:#8f5902;font-style:italic"></span><span style="color:#000;font-weight:bold">}</span>
+</code></pre></div><p>调用方：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span style="color:#8f5902;font-style:italic">// Using the default configuration
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span style="color:#8f5902;font-style:italic"></span><span style="color:#000">srv1</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">_</span> <span style="color:#ce5c00;font-weight:bold">:=</span> <span style="color:#000">NewServer</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;localhost&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">9000</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87;font-weight:bold">nil</span><span style="color:#000;font-weight:bold">)</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4</span><span style="color:#8f5902;font-style:italic">// Using the default configuration and another config object
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5</span><span style="color:#8f5902;font-style:italic"></span><span style="color:#000">conf</span> <span style="color:#ce5c00;font-weight:bold">:=</span> <span style="color:#000">ServerConfig</span><span style="color:#000;font-weight:bold">{</span><span style="color:#000">Protocol</span><span style="color:#000;font-weight:bold">:</span><span style="color:#4e9a06">&#34;tcp&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">Timeout</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#0000cf;font-weight:bold">60</span><span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">time</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Duration</span><span style="color:#000;font-weight:bold">}</span> 
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6</span><span style="color:#000">srv2</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">_</span> <span style="color:#ce5c00;font-weight:bold">:=</span> <span style="color:#000">NewServer</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;locahost&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">9000</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#ce5c00;font-weight:bold">&amp;</span><span style="color:#000">conf</span><span style="color:#000;font-weight:bold">)</span>
+</code></pre></div><p>带来了一些新问题：</p>
+<ul>
+<li>调用方使用 NewServer 默认行为时，不得不传入一个 nil，对调用方不友好</li>
+<li>调用方掌握着 Server 配置项对象指针，可以随时修改配置项的值</li>
+</ul>
+<h2 id="functional-options-pattern">Functional Options Pattern</h2>
+<p>用操作 server 指针的 functions 取代用 config 结构中参数来处理。</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span style="color:#204a87;font-weight:bold">type</span> <span style="color:#000">Option</span> <span style="color:#204a87;font-weight:bold">func</span><span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">Server</span><span style="color:#000;font-weight:bold">)</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span style="color:#204a87;font-weight:bold">func</span> <span style="color:#000">Protocol</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">p</span> <span style="color:#204a87;font-weight:bold">string</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000">Option</span> <span style="color:#000;font-weight:bold">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span>	<span style="color:#204a87;font-weight:bold">return</span> <span style="color:#204a87;font-weight:bold">func</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">s</span> <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">Server</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span>		<span style="color:#000">s</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Protocol</span> <span style="color:#000;font-weight:bold">=</span> <span style="color:#000">p</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span>	<span style="color:#000;font-weight:bold">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span style="color:#000;font-weight:bold">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span style="color:#204a87;font-weight:bold">func</span> <span style="color:#000">Timeout</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">timeout</span> <span style="color:#000">time</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Duration</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000">Option</span> <span style="color:#000;font-weight:bold">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span>	<span style="color:#204a87;font-weight:bold">return</span> <span style="color:#204a87;font-weight:bold">func</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">s</span> <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">Server</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span>		<span style="color:#000">s</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Timeout</span> <span style="color:#000;font-weight:bold">=</span> <span style="color:#000">timeout</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span>	<span style="color:#000;font-weight:bold">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span style="color:#000;font-weight:bold">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span style="color:#204a87;font-weight:bold">func</span> <span style="color:#000">MaxConns</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">maxconns</span> <span style="color:#204a87;font-weight:bold">int</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000">Option</span> <span style="color:#000;font-weight:bold">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span>	<span style="color:#204a87;font-weight:bold">return</span> <span style="color:#204a87;font-weight:bold">func</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">s</span> <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">Server</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span>		<span style="color:#000">s</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">MaxConns</span> <span style="color:#000;font-weight:bold">=</span> <span style="color:#000">maxconns</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span>	<span style="color:#000;font-weight:bold">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span style="color:#000;font-weight:bold">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span style="color:#204a87;font-weight:bold">func</span> <span style="color:#000">TLS</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">tls</span> <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">tls</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Config</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000">Option</span> <span style="color:#000;font-weight:bold">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span>	<span style="color:#204a87;font-weight:bold">return</span> <span style="color:#204a87;font-weight:bold">func</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">s</span> <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">Server</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span>		<span style="color:#000">s</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">TLS</span> <span style="color:#000;font-weight:bold">=</span> <span style="color:#000">tls</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span>	<span style="color:#000;font-weight:bold">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span style="color:#000;font-weight:bold">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span><span style="color:#204a87;font-weight:bold">func</span> <span style="color:#000">NewServer</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">addr</span> <span style="color:#204a87;font-weight:bold">string</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">port</span> <span style="color:#204a87;font-weight:bold">int</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">options</span> <span style="color:#ce5c00;font-weight:bold">...</span><span style="color:#204a87;font-weight:bold">func</span><span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">Server</span><span style="color:#000;font-weight:bold">))</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">Server</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87;font-weight:bold">error</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25</span>	<span style="color:#000">srv</span> <span style="color:#ce5c00;font-weight:bold">:=</span> <span style="color:#000">Server</span><span style="color:#000;font-weight:bold">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26</span>		<span style="color:#000">Addr</span><span style="color:#000;font-weight:bold">:</span>     <span style="color:#000">addr</span><span style="color:#000;font-weight:bold">,</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27</span>		<span style="color:#000">Port</span><span style="color:#000;font-weight:bold">:</span>     <span style="color:#000">port</span><span style="color:#000;font-weight:bold">,</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28</span>		<span style="color:#000">Protocol</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#4e9a06">&#34;tcp&#34;</span><span style="color:#000;font-weight:bold">,</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29</span>		<span style="color:#000">Timeout</span><span style="color:#000;font-weight:bold">:</span>  <span style="color:#0000cf;font-weight:bold">30</span> <span style="color:#ce5c00;font-weight:bold">*</span> <span style="color:#000">time</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Second</span><span style="color:#000;font-weight:bold">,</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30</span>		<span style="color:#000">MaxConns</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#0000cf;font-weight:bold">1000</span><span style="color:#000;font-weight:bold">,</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31</span>		<span style="color:#000">TLS</span><span style="color:#000;font-weight:bold">:</span>      <span style="color:#204a87;font-weight:bold">nil</span><span style="color:#000;font-weight:bold">,</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32</span>	<span style="color:#000;font-weight:bold">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33</span>	<span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000">_</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">option</span> <span style="color:#ce5c00;font-weight:bold">:=</span> <span style="color:#204a87;font-weight:bold">range</span> <span style="color:#000">options</span> <span style="color:#000;font-weight:bold">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34</span>		<span style="color:#000">option</span><span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">&amp;</span><span style="color:#000">srv</span><span style="color:#000;font-weight:bold">)</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35</span>	<span style="color:#000;font-weight:bold">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37</span>	<span style="color:#204a87;font-weight:bold">return</span> <span style="color:#ce5c00;font-weight:bold">&amp;</span><span style="color:#000">srv</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87;font-weight:bold">nil</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38</span><span style="color:#000;font-weight:bold">}</span>
+</code></pre></div><p>调用方：</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span style="color:#000">s1</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">_</span> <span style="color:#ce5c00;font-weight:bold">:=</span> <span style="color:#000">NewServer</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;localhost&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">1024</span><span style="color:#000;font-weight:bold">)</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span style="color:#000">s2</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">_</span> <span style="color:#ce5c00;font-weight:bold">:=</span> <span style="color:#000">NewServer</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;localhost&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">2048</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">Protocol</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;udp&#34;</span><span style="color:#000;font-weight:bold">))</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span style="color:#000">s3</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">_</span> <span style="color:#ce5c00;font-weight:bold">:=</span> <span style="color:#000">NewServer</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;0.0.0.0&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">8080</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">Timeout</span><span style="color:#000;font-weight:bold">(</span><span style="color:#0000cf;font-weight:bold">300</span><span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">time</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Second</span><span style="color:#000;font-weight:bold">),</span> <span style="color:#000">MaxConns</span><span style="color:#000;font-weight:bold">(</span><span style="color:#0000cf;font-weight:bold">1000</span><span style="color:#000;font-weight:bold">))</span>
+</code></pre></div><h2 id="referances">Referances</h2>
+<ul>
+<li><a href="https://commandcenter.blogspot.com/2014/01/self-referential-functions-and-design.html">Self-referential functions and the design of options</a></li>
+<li><a href="https://dave.cheney.net/2014/10/17/functional-options-for-friendly-apis">Functional options for friendly APIs</a></li>
+<li><a href="https://github.com/alitto/pond/blob/master/pond.go#L28-L132">One example</a></li>
+</ul>
+
+        </div>
+
+        <br>
+
+        <footer>
+        
+
+        <ul class="tags" style="float: left!important;">
+            
+                <span>标签:</span>
+                <li><a class="link" href="https://chengyayu.github.io/tags/go"> #go </a></li><li><a class="link" href="https://chengyayu.github.io/tags/patterns"> #patterns </a></li>
+            
+            
+                
+                <span>分类:</span>
+                <li><a class="link" href="https://chengyayu.github.io/categories/patterns"> #patterns </a></li>
+            
+        </ul>
+        
+        <br>
+        </footer>
+
+    </div> 
+    
+    
+    <script src="https://cdn.staticfile.org/jquery/3.3.1/jquery.min.js" crossorigin="anonymous" defer="defer"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.1/js/bootstrap.min.js" defer="defer"></script>
+</body>
+</html>

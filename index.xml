@@ -6,7 +6,19 @@
     <description>Recent content on Negentropy</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Thu, 19 Nov 2020 01:08:43 +0800</lastBuildDate><atom:link href="https://chengyayu.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 30 Nov 2020 13:38:02 +0800</lastBuildDate><atom:link href="https://chengyayu.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Functional Options Pattern</title>
+      <link>https://chengyayu.github.io/posts/functional-options-pattern/</link>
+      <pubDate>Mon, 30 Nov 2020 13:38:02 +0800</pubDate>
+      
+      <guid>https://chengyayu.github.io/posts/functional-options-pattern/</guid>
+      <description>Configuration Problem 配置一个 Server 需要很多选项，并不是所有的选项都是强制性的。 如果 Addr 和 Port 是需要强制指定的选项，其他的选项非强制指定，且拥有缺省值。
+该如何设计 New Server 构造函数呢？
+1type Server struct { 2 Addr string 3 Port int 4 Protocol string 5 Timeout time.Duration 6 MaxConns int 7 TLS *tls.Config 8} 我们可以创建一组针对不同情况的构造函数。
+1func NewServer(addr string, port int) (*Server, error) { 2 //... 3} 4func NewTLSServer(addr string, port int, tls *tls.Config) (*Server, error) { 5 //... 6} 7func NewServerWithTimeout(addr string, port int, timeout time.Duration) (*Server, error) { 8 //.</description>
+    </item>
+    
     <item>
       <title>低层级重构基本手法</title>
       <link>https://chengyayu.github.io/posts/%E4%BD%8E%E5%B1%82%E7%BA%A7%E9%87%8D%E6%9E%84%E5%9F%BA%E6%9C%AC%E6%89%8B%E6%B3%95/</link>
