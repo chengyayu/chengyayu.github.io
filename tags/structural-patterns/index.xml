@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>patterns on Negentropy</title>
-    <link>https://chengyayu.github.io/tags/patterns/</link>
-    <description>Recent content in patterns on Negentropy</description>
+    <title>structural patterns on Negentropy</title>
+    <link>https://chengyayu.github.io/tags/structural-patterns/</link>
+    <description>Recent content in structural patterns on Negentropy</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Tue, 20 Apr 2021 20:49:46 +0800</lastBuildDate><atom:link href="https://chengyayu.github.io/tags/patterns/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 20 Apr 2021 20:49:46 +0800</lastBuildDate><atom:link href="https://chengyayu.github.io/tags/structural-patterns/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Adapter Design Pattern</title>
       <link>https://chengyayu.github.io/posts/adapter-design-pattern/</link>
@@ -29,18 +29,6 @@ mac 电脑具备接入 Lightning 插头的能力。 windows 电脑具备接入 U
       <description>代理模式（Proxy Design Pattern）是一种结构型设计模式。在不改变主对象的前提下，通过引入额外的一层来为主对象提供控制和智能访问。
 在此模式中，创建一个新的代理类，它实现与主要对象相同的接口。这样可以保证在主对象的实际逻辑之前执行某些行为。
 UML Diagram Practical Example </description>
-    </item>
-    
-    <item>
-      <title>Functional Options Pattern</title>
-      <link>https://chengyayu.github.io/posts/functional-options-pattern/</link>
-      <pubDate>Mon, 30 Nov 2020 13:38:02 +0800</pubDate>
-      
-      <guid>https://chengyayu.github.io/posts/functional-options-pattern/</guid>
-      <description>一个 Server 拥有很多配置选项，创建对象时一部分选项需要强制指定，另一部分选项非强制指定，且有缺省值。 如何设计一个对调用方友好的 NewServer 构造函数 API ？
-Configuration Problem 例如 Addr 和 Port 是需要强制指定的选项，其他选项非强制指定，且有缺省值，该如何设计 New Server 构造函数呢？
-1type Server struct { 2 Addr string 3 Port int 4 Protocol string 5 Timeout time.Duration 6 MaxConns int 7 TLS *tls.Config 8} 我们可以创建一组针对不同情况的构造函数。
-1func NewServer(addr string, port int) (*Server, error) { 2 //... 3} 4func NewTLSServer(addr string, port int, tls *tls.Config) (*Server, error) { 5 //... 6} 7func NewServerWithTimeout(addr string, port int, timeout time.</description>
     </item>
     
   </channel>

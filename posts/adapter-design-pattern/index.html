@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <meta http-equiv="content-language" content="zh-CN" />
+        <meta name="viewport" content="width=device-width, initial-scale=0.5, maximum-scale=1, user-scalable=no">
+        <title>Adapter Design Pattern</title>
+
+        
+
+        
+        <link rel="stylesheet" href="https://chengyayu.github.io/css/main.css">
+
+        
+    </head>
+    
+    <body>
+        
+        
+
+    <div class="inner" style="position:relative;">
+        
+        <div class="blog-post">
+            <h2>Adapter Design Pattern</h2>
+                <p>适配器模式（Adapter Design Pattern）是一种结构型设计模式。它将不兼容的接口转换为可兼容的接口，让原本由于接口不兼容而不能一起工作的类可以一起工作。对于这个模式，有一个经常被拿来解释它的例子，就是 USB 转接头充当适配器，把两种不兼容的接口，通过转接变得可以一起工作。</p>
+<h3 id="uml-diagram">UML Diagram</h3>
+<p><img src="/img/adapter-design-pattern-1.jpg.webp" alt="image"></p>
+<ul>
+<li>Client 为主调方，依赖 Target 接口</li>
+<li>Target 表示目标接口定义</li>
+<li>Adaptee 为一组不兼容 Target 接口定义的接口（被适配的类）</li>
+<li>Adaptor 将 Adaptee 转化成一组符合 Target 接口定义的接口</li>
+</ul>
+<p>客户端代码只需通过接口与适配器交互即可， 无需与具体的适配器类耦合。 因此， 你可以向程序中添加新类型的适配器而无需修改已有代码。 这在服务类的接口被更改或替换时很有用： 你无需修改客户端代码就可以创建新的适配器类。</p>
+<h3 id="example">Example</h3>
+<p>Question：</p>
+<pre><code>mac 电脑具备接入 Lightning 插头的能力。
+windows 电脑具备接入 USB 插头的能力。
+client 希望将 Lightning 插头接入两台电脑，应如何处理？
+</code></pre><p>Code:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span style="color:#204a87;font-weight:bold">package</span> <span style="color:#000">main</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span style="color:#204a87;font-weight:bold">import</span> <span style="color:#4e9a06">&#34;fmt&#34;</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span style="color:#8f5902;font-style:italic">// 主调方依赖的目标接口
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span style="color:#8f5902;font-style:italic"></span><span style="color:#204a87;font-weight:bold">type</span> <span style="color:#000">computer</span> <span style="color:#204a87;font-weight:bold">interface</span> <span style="color:#000;font-weight:bold">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span>	<span style="color:#000">insertIntoLightningPort</span><span style="color:#000;font-weight:bold">()</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span style="color:#000;font-weight:bold">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span style="color:#8f5902;font-style:italic">// 已实现目标接口
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span style="color:#8f5902;font-style:italic"></span><span style="color:#204a87;font-weight:bold">type</span> <span style="color:#000">mac</span> <span style="color:#204a87;font-weight:bold">struct</span><span style="color:#000;font-weight:bold">{}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span style="color:#204a87;font-weight:bold">func</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#000">m</span> <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">mac</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000">insertIntoLightningPort</span><span style="color:#000;font-weight:bold">()</span> <span style="color:#000;font-weight:bold">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span>	<span style="color:#000">fmt</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Println</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;Lightning connector is plugged into mac machine.&#34;</span><span style="color:#000;font-weight:bold">)</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span style="color:#000;font-weight:bold">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span style="color:#8f5902;font-style:italic">// 未实现目标接口，待适配
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span style="color:#8f5902;font-style:italic"></span><span style="color:#204a87;font-weight:bold">type</span> <span style="color:#000">windows</span> <span style="color:#204a87;font-weight:bold">struct</span><span style="color:#000;font-weight:bold">{}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span style="color:#204a87;font-weight:bold">func</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#000">w</span> <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">windows</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000">insertIntoUSBPort</span><span style="color:#000;font-weight:bold">()</span> <span style="color:#000;font-weight:bold">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span>	<span style="color:#000">fmt</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Println</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;USB connector is plugged into windows machine.&#34;</span><span style="color:#000;font-weight:bold">)</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span style="color:#000;font-weight:bold">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span><span style="color:#8f5902;font-style:italic">// 适配器
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25</span><span style="color:#8f5902;font-style:italic"></span><span style="color:#204a87;font-weight:bold">type</span> <span style="color:#000">windowsAdapter</span> <span style="color:#204a87;font-weight:bold">struct</span> <span style="color:#000;font-weight:bold">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26</span>	<span style="color:#000">windowMachine</span> <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">windows</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27</span><span style="color:#000;font-weight:bold">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29</span><span style="color:#8f5902;font-style:italic">// 适配器通过能力转换（适配），实现目标接口
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30</span><span style="color:#8f5902;font-style:italic"></span><span style="color:#204a87;font-weight:bold">func</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#000">w</span> <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">windowsAdapter</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000">insertIntoLightningPort</span><span style="color:#000;font-weight:bold">()</span> <span style="color:#000;font-weight:bold">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31</span>	<span style="color:#000">fmt</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Println</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;Adapter converts Lightning signal to USB......&#34;</span><span style="color:#000;font-weight:bold">)</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32</span>	<span style="color:#000">w</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">windowMachine</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">insertIntoUSBPort</span><span style="color:#000;font-weight:bold">()</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33</span><span style="color:#000;font-weight:bold">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35</span><span style="color:#8f5902;font-style:italic">// 主调方
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36</span><span style="color:#8f5902;font-style:italic"></span><span style="color:#204a87;font-weight:bold">type</span> <span style="color:#000">client</span> <span style="color:#204a87;font-weight:bold">struct</span><span style="color:#000;font-weight:bold">{}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38</span><span style="color:#8f5902;font-style:italic">// 主调方的业务逻辑依赖的是目标接口，而非具体的实现
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39</span><span style="color:#8f5902;font-style:italic"></span><span style="color:#204a87;font-weight:bold">func</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#000">c</span> <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">client</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000">insertLightningConnectorIntoComputer</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">com</span> <span style="color:#000">computer</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40</span>	<span style="color:#000">com</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">insertIntoLightningPort</span><span style="color:#000;font-weight:bold">()</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41</span><span style="color:#000;font-weight:bold">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43</span><span style="color:#204a87;font-weight:bold">func</span> <span style="color:#000">main</span><span style="color:#000;font-weight:bold">()</span> <span style="color:#000;font-weight:bold">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44</span>	<span style="color:#000">client</span> <span style="color:#ce5c00;font-weight:bold">:=</span> <span style="color:#ce5c00;font-weight:bold">&amp;</span><span style="color:#000">client</span><span style="color:#000;font-weight:bold">{}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45</span>	<span style="color:#000">mac</span> <span style="color:#ce5c00;font-weight:bold">:=</span> <span style="color:#ce5c00;font-weight:bold">&amp;</span><span style="color:#000">mac</span><span style="color:#000;font-weight:bold">{}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47</span>	<span style="color:#000">client</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">insertLightningConnectorIntoComputer</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">mac</span><span style="color:#000;font-weight:bold">)</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">49</span>	<span style="color:#000">windowsMachine</span> <span style="color:#ce5c00;font-weight:bold">:=</span> <span style="color:#ce5c00;font-weight:bold">&amp;</span><span style="color:#000">windows</span><span style="color:#000;font-weight:bold">{}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">50</span>	<span style="color:#000">windowsMachineAdapter</span> <span style="color:#ce5c00;font-weight:bold">:=</span> <span style="color:#ce5c00;font-weight:bold">&amp;</span><span style="color:#000">windowsAdapter</span><span style="color:#000;font-weight:bold">{</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">51</span>		<span style="color:#000">windowMachine</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000">windowsMachine</span><span style="color:#000;font-weight:bold">,</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">52</span>	<span style="color:#000;font-weight:bold">}</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">53</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">54</span>	<span style="color:#000">client</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">insertLightningConnectorIntoComputer</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">windowsMachineAdapter</span><span style="color:#000;font-weight:bold">)</span>
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">55</span><span style="color:#000;font-weight:bold">}</span>
+</code></pre></div><p>Output:</p>
+<pre><code>Lightning connector is plugged into mac machine.
+Adapter converts Lightning signal to USB......
+USB connector is plugged into windows machine.
+</code></pre><h3 id="application-scenarios">Application Scenarios</h3>
+<ol>
+<li>封装有缺陷的接口设计</li>
+<li>统一多个类的接口设计</li>
+<li>替换依赖的外部系统</li>
+<li>兼容老版本接口</li>
+<li>适配不同格式的数据</li>
+</ol>
+
+        </div>
+
+        <br>
+
+        <footer>
+        
+
+        <ul class="tags" style="float: left!important;">
+            
+                <span>标签:</span>
+                <li><a class="link" href="https://chengyayu.github.io/tags/go"> #go </a></li><li><a class="link" href="https://chengyayu.github.io/tags/patterns"> #patterns </a></li><li><a class="link" href="https://chengyayu.github.io/tags/structural%20patterns"> #structural patterns </a></li>
+            
+            
+                
+                <span>分类:</span>
+                <li><a class="link" href="https://chengyayu.github.io/categories/patterns"> #patterns </a></li>
+            
+        </ul>
+        
+        <br>
+        </footer>
+
+    </div> 
+    
+    
+    <script src="https://cdn.staticfile.org/jquery/3.3.1/jquery.min.js" crossorigin="anonymous" defer="defer"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.1/js/bootstrap.min.js" defer="defer"></script>
+</body>
+</html>
