@@ -13,8 +13,8 @@
       <pubDate>Tue, 20 Apr 2021 20:49:46 +0800</pubDate>
       
       <guid>https://chengyayu.github.io/posts/adapter-design-pattern/</guid>
-      <description>适配器模式（Adapter Design Pattern）是一种结构型设计模式。它将不兼容的接口转换为可兼容的接口，让原本由于接口不兼容而不能一起工作的类可以一起工作。对于这个模式，有一个经常被拿来解释它的例子，就是 USB 转接头充当适配器，把两种不兼容的接口，通过转接变得可以一起工作。
-UML Diagram  Client 为主调方，依赖 Target 接口 Target 表示目标接口定义 Adaptee 为一组不兼容 Target 接口定义的接口（被适配的类） Adaptor 将 Adaptee 转化成一组符合 Target 接口定义的接口  客户端代码只需通过接口与适配器交互即可， 无需与具体的适配器类耦合。 因此， 你可以向程序中添加新类型的适配器而无需修改已有代码。 这在服务类的接口被更改或替换时很有用： 你无需修改客户端代码就可以创建新的适配器类。
+      <description>适配器模式（Adapter Design Pattern）是一种结构型设计模式。把一个类的接口转换成成客户端所期待的另一种接口，从而使原本因接口不匹配而无法一起工作的两个类能够一起工作。对于这个模式，有一个经常被拿来解释它的例子，就是 USB 转接头充当适配器，把两种不兼容的接口，通过转接变得可以一起工作。
+UML Diagram  Client 为主调方，依赖 Target 接口 Target 表示目标接口定义 Adaptee 为一组不兼容 Target 接口定义的接口（被适配的类） Adaptor 将 Adaptee 转化成一组符合 Target 接口定义的接口  适配器模式也可以称为 Wrapper 模式，通过构建（内嵌一个接口不匹配的 Adaptee）Wrapper 结构来对 Adaptee 进行能力转换以实现 Target 接口。由于 Client 的业务逻辑依赖的是抽象（Target 接口）而非具体的结构类型，原本无法与 Client 对接的 Adaptee 经过 Adapter 包装也可以与 Client 对接了。
 Example Question：
 mac 电脑具备接入 Lightning 插头的能力。 windows 电脑具备接入 USB 插头的能力。 client 希望将 Lightning 插头接入两台电脑，应如何处理？ Code:
 1package main 2 3import &amp;#34;fmt&amp;#34; 4 5// 主调方依赖的目标接口 6type computer interface { 7	insertIntoLightningPort() 8} 9 10// 已实现目标接口 11type mac struct{} 12 13func (m *mac) insertIntoLightningPort() { 14	fmt.</description>
