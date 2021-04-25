@@ -15,7 +15,7 @@
       <guid>https://chengyayu.github.io/posts/decorator-design-pattern/</guid>
       <description>修饰器模式（Decorator Design Pattern）是一种结构型设计模式。可以通过结构组合（面向对象编程范式）或者高阶函数（函数式编程范式）的方式实践这个模式。由于目标对象和装饰器遵循同一接口，因此可用装饰来对对象进行无限次的封装。结果对象将获得所有封装器叠加而来的行为。
 UML Diagram  Client 为主调方，依赖 Component 接口； Concrete Component 1(2) 是实现了 Component 接口的结构； Decorator 定义了实现契约的“抽象类”，Go 版本实现可以忽略  修饰器必须内嵌一个实现了 Component 接口的实例 修饰器本身必须实现 Compinent 接口   Concrete Decorator 1(2) 是遵循某种契约（Decorator）的结构；  修饰器本身与委托进修饰器的实例都实现了同样的接口，所以可以显示对接口的无限封装，以获得叠加的新能力。
-Example 1 （面向对象编程范式） Go 版本是通过（委托）组合玩法，创建内嵌 Component 实例的 Decorator 结构（本身也实现 Component 接口），来完成对既有接口的包装和扩展。
+Example 1 （面向对象编程范式） Go 实现的版本是通过（委托）组合玩法，创建内嵌 Component 实例的 Decorator 结构（本身也实现 Component 接口），来完成对既有接口的包装和扩展。
 Question:
 香河肉饼准备拓展业务卖披萨饼，暂定 Small 饼底 10 元， Large 饼底 15 元， Cocoa 配料 20 元， Fruit 配料 25 元， 饼底和口味(可叠加)可以随意组合，应如何设计？ Code:
 1package main 2 3import &amp;#34;fmt&amp;#34; 4 5type pizza interface { 6	getPrice() int 7} 8 9type SmallCrepes struct{} 10 11func (p *SmallCrepes) getPrice() int { 12	return 10 13} 14 15type LargeCrepes struct{} 16 17func (p *LargeCrepes) getPrice() int { 18	return 15 19} 20 21type CocoaTopping struct { 22	pizza pizza 23} 24 25func (c *CocoaTopping) getPrice() int { 26	pizzaPrice := c.</description>
