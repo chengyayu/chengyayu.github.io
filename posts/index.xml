@@ -13,12 +13,11 @@
       <pubDate>Thu, 22 Apr 2021 13:28:06 +0800</pubDate>
       
       <guid>https://chengyayu.github.io/posts/decorator-design-pattern/</guid>
-      <description>修饰器模式（Decorator Design Pattern）是一种结构型设计模式。由于目标对象和装饰器遵循同一接口，因此可用装饰来对对象进行无限次的封装。结果对象将获得所有封装器叠加而来的行为。这里的目标对象可以是一个结构，也可以是一个函数。与之相对可以通过结构组合（面向对象编程范式）或者高阶函数（函数式编程范式）的方式实现这个模式。
-UML Diagram  Client 为主调方，依赖 Component 接口； Concrete Component 1(2) 是实现了 Component 接口的结构； Decorator 定义了实现契约的“抽象类”：  修饰器必须内嵌一个实现了 Component 接口的实例 修饰器本身必须实现 Compinent 接口   Concrete Decorator 1(2) 是遵循某种契约（Decorator）的结构；  修饰器模式也是一种 Wrapper 模式，通过结构组合或高阶函数实现。这里的组合是有契约约束的，修饰器本身与修饰器持有的实例都实现了同样的接口。因此可以实现对接口的无限封装，以获得叠加的新能力。
+      <description>修饰器模式（Decorator Design Pattern）是一种结构型设计模式。意图在不改变原有接口的前提下无限增强原始功能。 因此修饰器应该遵循一个契约：持有 A 接口的实例，同时本身必须实现 A 接口。 由于目标实例和修饰器遵循同一接口，因此可用修饰器来对实例进行无限次的封装。结果实例将获得所有封装器叠加而来的行为。 目标实例可以是一个结构，也可以是一个函数。与之相对,可以分别通过结构组合（面向对象编程范式）或者高阶函数（函数式编程范式）的方式实现这个模式。
+UML Diagram  Client 为主调方，依赖 Component 接口； Concrete Component 1(2) 是实现了 Component 接口的结构； Decorator 定义了实现契约的“抽象类”：  修饰器必须内嵌一个实现了 Component 接口的实例 修饰器本身必须实现 Compinent 接口   Concrete Decorator 1(2) 是遵循 Decorator 契约的结构；  修饰器模式也是一种 Wrapper 模式。要想使用这种设计模式，我们应该清楚得知道 Concrete Decorator 结构应该遵循哪种契约。
 Example 1 （面向对象编程范式） Go 实现的版本是通过组合玩法，创建内嵌 Component 实例的 Decorator 结构（本身也实现 Component 接口），来完成对既有接口的包装和扩展。
 Question:
-香河肉饼准备拓展业务卖披萨饼，暂定 Small 饼底 10 元， Large 饼底 15 元， Cocoa 配料 20 元， Fruit 配料 25 元， 饼底和口味(可叠加)可以随意组合，应如何设计？ Code:
-1package main 2 3import &amp;#34;fmt&amp;#34; 4 5type pizza interface { 6	getPrice() int 7} 8 9type SmallCrepes struct{} 10 11func (p *SmallCrepes) getPrice() int { 12	return 10 13} 14 15type LargeCrepes struct{} 16 17func (p *LargeCrepes) getPrice() int { 18	return 15 19} 20 21type CocoaTopping struct { 22	pizza pizza 23} 24 25func (c *CocoaTopping) getPrice() int { 26	pizzaPrice := c.</description>
+香河肉饼准备拓展业务卖披萨饼，暂定 原味饼底 10 元， Cocoa 配料 20 元， Fruit 配料 25 元， 饼底和口味(可叠加)随意组合，应如何设计？ Code:</description>
     </item>
     
     <item>
