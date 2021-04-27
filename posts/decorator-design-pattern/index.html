@@ -10,6 +10,7 @@
 
         
         <link rel="stylesheet" href="https://chengyayu.github.io/css/main.css">
+        <link rel="stylesheet" href="https://chengyayu.github.io/css/copy-to-clipboard.css">
 
         
     </head>
@@ -85,11 +86,11 @@ Fruit 配料 25 元，
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34</span><span style="color:#000;font-weight:bold">}</span>
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35</span>
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36</span><span style="color:#204a87;font-weight:bold">func</span> <span style="color:#000">main</span><span style="color:#000;font-weight:bold">()</span> <span style="color:#000;font-weight:bold">{</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37</span>	<span style="color:#8f5902;font-style:italic">// 套娃第0层：原味薄饼
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37</span>	<span style="color:#8f5902;font-style:italic">// 套娃第 0 层：原味薄饼
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38</span><span style="color:#8f5902;font-style:italic"></span>	<span style="color:#000">pizza</span> <span style="color:#ce5c00;font-weight:bold">:=</span> <span style="color:#ce5c00;font-weight:bold">&amp;</span><span style="color:#000">Crepes</span><span style="color:#000;font-weight:bold">{}</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39</span>	<span style="color:#8f5902;font-style:italic">// 套娃第1层：添加 cocoa 配料
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39</span>	<span style="color:#8f5902;font-style:italic">// 套娃第 1 层：添加 cocoa 配料
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40</span><span style="color:#8f5902;font-style:italic"></span>	<span style="color:#000">pizzaWithCocoa</span> <span style="color:#ce5c00;font-weight:bold">:=</span> <span style="color:#000">WithTopping</span><span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">&amp;</span><span style="color:#000">Crepes</span><span style="color:#000;font-weight:bold">{},</span> <span style="color:#4e9a06">&#34;cocoa&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">20</span><span style="color:#000;font-weight:bold">)</span>
-<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41</span>	<span style="color:#8f5902;font-style:italic">// 套娃第2层：添加 fruit 配料
+<span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41</span>	<span style="color:#8f5902;font-style:italic">// 套娃第 2 层：添加 fruit 配料
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42</span><span style="color:#8f5902;font-style:italic"></span>	<span style="color:#000">pizzaWithCocaAndFruit</span> <span style="color:#ce5c00;font-weight:bold">:=</span> <span style="color:#000">WithTopping</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">pizzaWithCocoa</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;fruit&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">25</span><span style="color:#000;font-weight:bold">)</span>
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43</span>	<span style="color:#000">fmt</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Printf</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;price of crepes + toppings:%s is: %d\n&#34;</span><span style="color:#000;font-weight:bold">,</span>
 <span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44</span>		<span style="color:#000">pizzaWithCocaAndFruit</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">getTaste</span><span style="color:#000;font-weight:bold">(),</span>
@@ -219,5 +220,6 @@ Fruit 配料 25 元，
     
     <script src="https://cdn.staticfile.org/jquery/3.3.1/jquery.min.js" crossorigin="anonymous" defer="defer"></script>
     <script src="https://cdn.bootcss.com/bootstrap/3.3.1/js/bootstrap.min.js" defer="defer"></script>
+    <script src="https://chengyayu.github.io/js/copy-to-clipboard.js" defer="defer"></script>
 </body>
 </html>

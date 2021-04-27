@@ -123,8 +123,7 @@ blockquote p {
 }
 
 pre {
-  font-family: Inconsolata, Consolas, 'DEJA VU SANS MONO', 'DROID SANS MONO',
-    Proggy, monospace;
+  font-family: monospace;
   font-size: 85%;
   line-height: 1.45;
   font-weight: 500;
@@ -145,8 +144,7 @@ pre > code {
 
 code {
   width: 100%;
-  font-family: Inconsolata, Consolas, 'DEJA VU SANS MONO', 'DROID SANS MONO',
-    Proggy, monospace;
+  font-family: monospace;
   white-space: pre;
   padding: 1px 5px;
   font-size: 1em;
