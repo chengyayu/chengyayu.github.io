@@ -25,10 +25,12 @@ table td {
   border: 1px solid #dfe2e5;
 }
 
+/* table 中的代码样式 */
 table td pre {
   border: 0px;
   margin-top: 0em;
   margin-bottom: 0em;
+  padding: 0px !important;
 }
 
 details {
