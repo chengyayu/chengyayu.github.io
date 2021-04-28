@@ -129,7 +129,7 @@ blockquote p {
 }
 
 pre {
-  font-family: monospace;
+  font-family: monospace, Menlo, Monaco, Consolas, Andale Mono, lucida console, Courier New;
   font-size: 85%;
   line-height: 1.45;
   font-weight: 500;
@@ -150,7 +150,7 @@ pre > code {
 
 code {
   width: 100%;
-  font-family: monospace;
+  font-family: monospace, Menlo, Monaco, Consolas, Andale Mono, lucida console, Courier New;
   white-space: pre;
   padding: 1px 5px;
   font-size: 1em;
