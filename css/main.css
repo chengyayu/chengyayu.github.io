@@ -15,7 +15,7 @@ table tr:nth-child(2n) {
 
 table tr {
   background-color: #fff;
-  border-top: 1px solid #c6cbd1;
+  /* border-top: 1px solid #c6cbd1; */
 }
 
 table th,
@@ -23,6 +23,12 @@ table td {
   margin: 0;
   padding: 6px 13px;
   border: 1px solid #dfe2e5;
+}
+
+table td pre {
+  border: 0px;
+  margin-top: 0em;
+  margin-bottom: 0em;
 }
 
 details {

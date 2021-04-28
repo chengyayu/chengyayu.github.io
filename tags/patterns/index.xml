@@ -30,7 +30,7 @@ Question:
 UML Diagram  Client 为主调方，依赖 Target 接口; Target 表示目标接口定义; Adaptee 为一组不兼容 Target 接口定义的接口（被适配的结构）; Adaptor 将 Adaptee 转化成一组符合 Target 接口定义的接口;  适配器模式也可以称为 Wrapper 模式，通过构建（内嵌一个接口不匹配的 Adaptee）Wrapper 结构来对 Adaptee 进行能力转换以实现 Target 接口。由于 Client 的业务逻辑依赖的是抽象（Target 接口）而非具体的结构类型，原本无法与 Client 对接的 Adaptee 经过 Adapter 包装也可以与 Client 对接了。
 Example Question：
 mac 电脑具备接入 Lightning 插头的能力。 windows 电脑具备接入 USB 插头的能力。 client 希望将 Lightning 插头接入两台电脑，应如何处理？ Code:
-1package main 2 3import &amp;#34;fmt&amp;#34; 4 5// 主调方依赖的目标接口 6type computer interface { 7	insertIntoLightningPort() 8} 9 10// 已实现目标接口 11type mac struct{} 12 13func (m *mac) insertIntoLightningPort() { 14	fmt.</description>
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55  package main import &amp;#34;fmt&amp;#34; // 主调方依赖的目标接口 type computer interface { insertIntoLightningPort() } // 已实现目标接口 type mac struct{} func (m *mac) insertIntoLightningPort() { fmt.</description>
     </item>
     
     <item>
@@ -52,8 +52,8 @@ UML Diagram Practical Example </description>
       <guid>https://chengyayu.github.io/posts/functional-options-pattern/</guid>
       <description>一个 Server 拥有很多配置选项，创建对象时一部分选项需要强制指定，另一部分选项非强制指定，且有缺省值。 如何设计一个对调用方友好的 NewServer 构造函数 API ？
 Configuration Problem 例如 Addr 和 Port 是需要强制指定的选项，其他选项非强制指定，且有缺省值，该如何设计 New Server 构造函数呢？
-1type Server struct { 2 Addr string 3 Port int 4 Protocol string 5 Timeout time.Duration 6 MaxConns int 7 TLS *tls.Config 8} 我们可以创建一组针对不同情况的构造函数。
-1func NewServer(addr string, port int) (*Server, error) { 2 //... 3} 4func NewTLSServer(addr string, port int, tls *tls.Config) (*Server, error) { 5 //... 6} 7func NewServerWithTimeout(addr string, port int, timeout time.</description>
+1 2 3 4 5 6 7 8  type Server struct { Addr string Port int Protocol string Timeout time.Duration MaxConns int TLS *tls.Config }   我们可以创建一组针对不同情况的构造函数。
+1 2 3 4 5 6 7 8 9 10 11 12  func NewServer(addr string, port int) (*Server, error) { //... } func NewTLSServer(addr string, port int, tls *tls.</description>
     </item>
     
   </channel>
