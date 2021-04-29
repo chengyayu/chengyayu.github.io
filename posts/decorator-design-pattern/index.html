@@ -310,15 +310,8 @@ Fruit 配料 25 元，
 </code></pre></td></tr></table>
 </div>
 </div><p>重构之后便可以如下格式拼装</p>
-<div class="highlight"><div style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
-<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
-<pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
-</span></code></pre></td>
-<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
-<pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#000">http</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">HandleFunc</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;/v3/hello&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">Handler</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">hello</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">WithServerHeader</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">WithBasicAuth</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">WithDebugLog</span><span style="color:#000;font-weight:bold">))</span>
-</code></pre></td></tr></table>
-</div>
-</div><p>Output:</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#000">http</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">HandleFunc</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;/v3/hello&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">Handler</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">hello</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">WithServerHeader</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">WithBasicAuth</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">WithDebugLog</span><span style="color:#000;font-weight:bold">))</span>
+</code></pre></div><p>Output:</p>
 <pre><code>2021/04/26 11:02:57 ---&gt;Before WithServerHeader()
 2021/04/26 11:02:57 ---&gt;Before WithAuthCookie()
 2021/04/26 11:02:57 ---&gt;Before WithBasicAuth()
