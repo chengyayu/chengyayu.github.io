@@ -31,6 +31,15 @@ table td pre {
   margin-top: 0em;
   margin-bottom: 0em;
   padding: 0px !important;
+  border-radius: 0px;
+}
+
+table tr td:first-of-type code {
+  padding-right: 0px !important;
+}
+
+table tr td:last-of-type code {
+  padding-left: 0px !important;
 }
 
 details {

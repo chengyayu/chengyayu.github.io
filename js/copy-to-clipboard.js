@@ -57,5 +57,5 @@ function createCopyButton(highlightDiv) {
     wrapper.appendChild(highlightDiv);
   }
   
-  document.querySelectorAll(".highlight")
+  document.querySelectorAll(".highlight div")
     .forEach(highlightDiv => createCopyButton(highlightDiv));
