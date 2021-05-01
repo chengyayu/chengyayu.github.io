@@ -23,24 +23,24 @@
         
         <div class="blog-post">
             <h2>Decorator Design Pattern</h2>
-                <p>修饰器模式（Decorator Design Pattern）是一种结构型设计模式。意图在不改变原有接口的前提下无限增强原始功能。
-因此修饰器应该遵循一个契约：持有 A 接口的实例，同时本身必须实现 A 接口。
-由于目标实例和修饰器遵循同一接口，因此可用修饰器来对实例进行无限次的封装。结果实例将获得所有封装器叠加而来的行为。
-目标实例可以是一个结构，也可以是一个函数。与之相对,可以分别通过结构组合（面向对象编程范式）或者高阶函数（函数式编程范式）的方式实现这个模式。</p>
+                <p>修饰器模式（Decorator Design Pattern）是一种结构型设计模式。意图<strong>动态地为原始对象添加一层层附加能力，以完成对原始对象既有功能的扩展和增强</strong>。</p>
+<p>具体的修饰器应该遵循一个契约：持有 A 接口的实例，同时本身必须实现 A 接口。
+由于目标实例和修饰器遵循同一接口，因此可用修饰器来对实例进行无限次的封装。结果实例将获得所有封装器叠加而来的行为。</p>
+<p>目标对象可以是一个结构，也可以是一个函数。与之相对,可以分别通过结构组合（面向对象编程范式）或者高阶函数（函数式编程范式）的方式实现这个模式。</p>
 <h3 id="uml-diagram">UML Diagram</h3>
-<p><img src="/img/decorator-desgin-pattern-1.webp" alt="image"></p>
+<p><img src="/img/decorator-design-pattern.webp" alt="image"></p>
 <ul>
 <li>Client 为主调方，依赖 Component 接口；</li>
-<li>Concrete Component 1(2) 是实现了 Component 接口的结构；</li>
+<li>Concrete Component 是实现了 Component 接口的结构；</li>
 <li>Decorator 定义了实现契约的“抽象类”：
 <ul>
-<li>修饰器必须内嵌一个实现了 Component 接口的实例</li>
-<li>修饰器本身必须实现 Component 接口</li>
+<li><strong>修饰器必须内嵌一个实现了 Component 接口的实例</strong></li>
+<li><strong>修饰器本身必须实现 Component 接口</strong></li>
 </ul>
 </li>
 <li>Concrete Decorator 1(2) 是遵循 Decorator 契约的结构；</li>
 </ul>
-<p>修饰器模式也是一种 Wrapper 模式。要想使用这种设计模式，我们应该清楚得知道 Concrete Decorator 结构应该遵循哪种契约。</p>
+<p>修饰器模式也是一种 Wrapper 模式，使用这种设计模式可以很方便得实现“俄罗斯套娃”，完成对既有功能的扩展增强。</p>
 <h3 id="example-1-面向对象编程范式">Example 1 （面向对象编程范式）</h3>
 <p>Go 实现的版本是通过组合玩法，创建内嵌 Component 实例的 Decorator 结构（本身也实现 Component 接口），来完成对既有接口的包装和扩展。</p>
 <p>Question:</p>
@@ -140,7 +140,7 @@ Fruit 配料 25 元，
 	<span style="color:#8f5902;font-style:italic">// 套娃第 0 层：原味薄饼
 </span><span style="color:#8f5902;font-style:italic"></span>	<span style="color:#000">pizza</span> <span style="color:#ce5c00;font-weight:bold">:=</span> <span style="color:#ce5c00;font-weight:bold">&amp;</span><span style="color:#000">Crepes</span><span style="color:#000;font-weight:bold">{}</span>
 	<span style="color:#8f5902;font-style:italic">// 套娃第 1 层：添加 cocoa 配料
-</span><span style="color:#8f5902;font-style:italic"></span>	<span style="color:#000">pizzaWithCocoa</span> <span style="color:#ce5c00;font-weight:bold">:=</span> <span style="color:#000">WithTopping</span><span style="color:#000;font-weight:bold">(</span><span style="color:#ce5c00;font-weight:bold">&amp;</span><span style="color:#000">Crepes</span><span style="color:#000;font-weight:bold">{},</span> <span style="color:#4e9a06">&#34;cocoa&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">20</span><span style="color:#000;font-weight:bold">)</span>
+</span><span style="color:#8f5902;font-style:italic"></span>	<span style="color:#000">pizzaWithCocoa</span> <span style="color:#ce5c00;font-weight:bold">:=</span> <span style="color:#000">WithTopping</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">pizza</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;cocoa&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">20</span><span style="color:#000;font-weight:bold">)</span>
 	<span style="color:#8f5902;font-style:italic">// 套娃第 2 层：添加 fruit 配料
 </span><span style="color:#8f5902;font-style:italic"></span>	<span style="color:#000">pizzaWithCocaAndFruit</span> <span style="color:#ce5c00;font-weight:bold">:=</span> <span style="color:#000">WithTopping</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">pizzaWithCocoa</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;fruit&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">25</span><span style="color:#000;font-weight:bold">)</span>
 	<span style="color:#000">fmt</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Printf</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;price of crepes + toppings:%s is: %d\n&#34;</span><span style="color:#000;font-weight:bold">,</span>
