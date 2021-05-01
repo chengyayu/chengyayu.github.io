@@ -24,10 +24,209 @@
         <div class="blog-post">
             <h2>Proxy Design Pattern</h2>
                 <p>代理模式（Proxy Design Pattern）是一种结构型设计模式。意图<strong>为主对象提供额外的一层（代理）以控制对这个对象的访问</strong>。</p>
-<p>在此模式中，创建一个新的代理类，它实现与主要对象相同的接口。这样可以保证在主对象的实际逻辑之前执行某些行为。</p>
+<p>也是一种 Wrapper 设计模式，与修饰器模式代码结构相似，但是意图不同。</p>
 <h3 id="uml-diagram">UML Diagram</h3>
 <p><img src="/img/proxy-design-pattern.webp" alt="image"></p>
-<h3 id="practical-example">Practical Example</h3>
+<ul>
+<li>Client 为主调方，依赖 Subject 接口；</li>
+<li>Subject 表示抽象主题，Proxy 和 RealSubject 都需要实现该接口；</li>
+<li>RealSubject 表示实现 Subject 接口的主题结构，负责主要业务逻辑；</li>
+<li>Proxy 表示实现 Subject 接口的代理结构，持有 RealSubject 对象，控制着外部对 RealSubject 对象的请求；</li>
+</ul>
+<h3 id="example">Example</h3>
+<p>Question:</p>
+<pre><code>type server interface {
+	handleRequest(string, string) (int, string)
+}
+应用服务器 AppServer 满足 server 接口。
+如何为 AppServer 设计一个代理，对 handleRequest 接口进行流量控制？
+</code></pre><p>Code:</p>
+<div class="highlight"><div style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4">
+<table style="border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">36
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">37
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">38
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">39
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">40
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">41
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">42
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">43
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">44
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">45
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">46
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">47
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">48
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">49
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">50
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">51
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">52
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">53
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">54
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">55
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">56
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">57
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">58
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">59
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">60
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">61
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">62
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">63
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">64
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">65
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">66
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">67
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">68
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">69
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#204a87;font-weight:bold">package</span> <span style="color:#000">main</span>
+
+<span style="color:#204a87;font-weight:bold">import</span> <span style="color:#4e9a06">&#34;fmt&#34;</span>
+
+<span style="color:#204a87;font-weight:bold">type</span> <span style="color:#000">server</span> <span style="color:#204a87;font-weight:bold">interface</span> <span style="color:#000;font-weight:bold">{</span>
+	<span style="color:#000">handleRequest</span><span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">string</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87;font-weight:bold">string</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">int</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87;font-weight:bold">string</span><span style="color:#000;font-weight:bold">)</span>
+<span style="color:#000;font-weight:bold">}</span>
+
+<span style="color:#204a87;font-weight:bold">type</span> <span style="color:#000">nginx</span> <span style="color:#204a87;font-weight:bold">struct</span> <span style="color:#000;font-weight:bold">{</span>
+	<span style="color:#000">appServer</span>         <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">appServer</span>
+	<span style="color:#000">maxAllowedRequest</span> <span style="color:#204a87;font-weight:bold">int</span>
+	<span style="color:#000">rateLimiter</span>       <span style="color:#204a87;font-weight:bold">map</span><span style="color:#000;font-weight:bold">[</span><span style="color:#204a87;font-weight:bold">string</span><span style="color:#000;font-weight:bold">]</span><span style="color:#204a87;font-weight:bold">int</span>
+<span style="color:#000;font-weight:bold">}</span>
+
+<span style="color:#204a87;font-weight:bold">func</span> <span style="color:#000">newNginxServer</span><span style="color:#000;font-weight:bold">()</span> <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">nginx</span> <span style="color:#000;font-weight:bold">{</span>
+	<span style="color:#204a87;font-weight:bold">return</span> <span style="color:#ce5c00;font-weight:bold">&amp;</span><span style="color:#000">nginx</span><span style="color:#000;font-weight:bold">{</span>
+		<span style="color:#000">appServer</span><span style="color:#000;font-weight:bold">:</span>         <span style="color:#ce5c00;font-weight:bold">&amp;</span><span style="color:#000">appServer</span><span style="color:#000;font-weight:bold">{},</span>
+		<span style="color:#000">maxAllowedRequest</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#0000cf;font-weight:bold">2</span><span style="color:#000;font-weight:bold">,</span>
+		<span style="color:#000">rateLimiter</span><span style="color:#000;font-weight:bold">:</span>       <span style="color:#204a87">make</span><span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">map</span><span style="color:#000;font-weight:bold">[</span><span style="color:#204a87;font-weight:bold">string</span><span style="color:#000;font-weight:bold">]</span><span style="color:#204a87;font-weight:bold">int</span><span style="color:#000;font-weight:bold">),</span>
+	<span style="color:#000;font-weight:bold">}</span>
+<span style="color:#000;font-weight:bold">}</span>
+
+<span style="color:#204a87;font-weight:bold">func</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#000">n</span> <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">nginx</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000">handleRequest</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">url</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">method</span> <span style="color:#204a87;font-weight:bold">string</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">int</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87;font-weight:bold">string</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+	<span style="color:#000">allowed</span> <span style="color:#ce5c00;font-weight:bold">:=</span> <span style="color:#000">n</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">checkRateLimiting</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">url</span><span style="color:#000;font-weight:bold">)</span>
+	<span style="color:#204a87;font-weight:bold">if</span> <span style="color:#000;font-weight:bold">!</span><span style="color:#000">allowed</span> <span style="color:#000;font-weight:bold">{</span>
+		<span style="color:#204a87;font-weight:bold">return</span> <span style="color:#0000cf;font-weight:bold">403</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;Not Allowed&#34;</span>
+	<span style="color:#000;font-weight:bold">}</span>
+	<span style="color:#204a87;font-weight:bold">return</span> <span style="color:#000">n</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">appServer</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">handleRequest</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">url</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">method</span><span style="color:#000;font-weight:bold">)</span>
+<span style="color:#000;font-weight:bold">}</span>
+
+<span style="color:#204a87;font-weight:bold">func</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#000">n</span> <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">nginx</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000">checkRateLimiting</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">url</span> <span style="color:#204a87;font-weight:bold">string</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#204a87;font-weight:bold">bool</span> <span style="color:#000;font-weight:bold">{</span>
+	<span style="color:#204a87;font-weight:bold">if</span> <span style="color:#000">n</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">rateLimiter</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">url</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#ce5c00;font-weight:bold">==</span> <span style="color:#0000cf;font-weight:bold">0</span> <span style="color:#000;font-weight:bold">{</span>
+		<span style="color:#000">n</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">rateLimiter</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">url</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#000;font-weight:bold">=</span> <span style="color:#0000cf;font-weight:bold">1</span>
+	<span style="color:#000;font-weight:bold">}</span>
+	<span style="color:#204a87;font-weight:bold">if</span> <span style="color:#000">n</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">rateLimiter</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">url</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#000;font-weight:bold">&gt;</span> <span style="color:#000">n</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">maxAllowedRequest</span> <span style="color:#000;font-weight:bold">{</span>
+		<span style="color:#204a87;font-weight:bold">return</span> <span style="color:#204a87;font-weight:bold">false</span>
+	<span style="color:#000;font-weight:bold">}</span>
+	<span style="color:#000">n</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">rateLimiter</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">url</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#000;font-weight:bold">=</span> <span style="color:#000">n</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">rateLimiter</span><span style="color:#000;font-weight:bold">[</span><span style="color:#000">url</span><span style="color:#000;font-weight:bold">]</span> <span style="color:#ce5c00;font-weight:bold">+</span> <span style="color:#0000cf;font-weight:bold">1</span>
+	<span style="color:#204a87;font-weight:bold">return</span> <span style="color:#204a87;font-weight:bold">true</span>
+<span style="color:#000;font-weight:bold">}</span>
+
+<span style="color:#204a87;font-weight:bold">type</span> <span style="color:#000">appServer</span> <span style="color:#204a87;font-weight:bold">struct</span><span style="color:#000;font-weight:bold">{}</span>
+
+<span style="color:#204a87;font-weight:bold">func</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#000">a</span> <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">applServer</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000">handleRequest</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">url</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">method</span> <span style="color:#204a87;font-weight:bold">string</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#204a87;font-weight:bold">int</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#204a87;font-weight:bold">string</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+	<span style="color:#204a87;font-weight:bold">if</span> <span style="color:#000">url</span> <span style="color:#ce5c00;font-weight:bold">==</span> <span style="color:#4e9a06">&#34;/app/status&#34;</span> <span style="color:#ce5c00;font-weight:bold">&amp;&amp;</span> <span style="color:#000">method</span> <span style="color:#ce5c00;font-weight:bold">==</span> <span style="color:#4e9a06">&#34;GET&#34;</span> <span style="color:#000;font-weight:bold">{</span>
+		<span style="color:#204a87;font-weight:bold">return</span> <span style="color:#0000cf;font-weight:bold">200</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;Ok&#34;</span>
+	<span style="color:#000;font-weight:bold">}</span>
+	<span style="color:#204a87;font-weight:bold">if</span> <span style="color:#000">url</span> <span style="color:#ce5c00;font-weight:bold">==</span> <span style="color:#4e9a06">&#34;/create/user&#34;</span> <span style="color:#ce5c00;font-weight:bold">&amp;&amp;</span> <span style="color:#000">method</span> <span style="color:#ce5c00;font-weight:bold">==</span> <span style="color:#4e9a06">&#34;POST&#34;</span> <span style="color:#000;font-weight:bold">{</span>
+		<span style="color:#204a87;font-weight:bold">return</span> <span style="color:#0000cf;font-weight:bold">201</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;User Created&#34;</span>
+	<span style="color:#000;font-weight:bold">}</span>
+	<span style="color:#204a87;font-weight:bold">return</span> <span style="color:#0000cf;font-weight:bold">404</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;Not Ok&#34;</span>
+<span style="color:#000;font-weight:bold">}</span>
+
+<span style="color:#204a87;font-weight:bold">func</span> <span style="color:#000">main</span><span style="color:#000;font-weight:bold">()</span> <span style="color:#000;font-weight:bold">{</span>
+	<span style="color:#000">nginxServer</span> <span style="color:#ce5c00;font-weight:bold">:=</span> <span style="color:#000">newNginxServer</span><span style="color:#000;font-weight:bold">()</span>
+	<span style="color:#000">appStatusURL</span> <span style="color:#ce5c00;font-weight:bold">:=</span> <span style="color:#4e9a06">&#34;/app/status&#34;</span>
+	<span style="color:#000">createuserURL</span> <span style="color:#ce5c00;font-weight:bold">:=</span> <span style="color:#4e9a06">&#34;/create/user&#34;</span>
+
+	<span style="color:#204a87;font-weight:bold">for</span> <span style="color:#000">i</span> <span style="color:#ce5c00;font-weight:bold">:=</span> <span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#000">i</span> <span style="color:#ce5c00;font-weight:bold">&lt;=</span> <span style="color:#000">nginxServer</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">maxAllowedRequest</span><span style="color:#000;font-weight:bold">;</span> <span style="color:#000">i</span><span style="color:#ce5c00;font-weight:bold">++</span> <span style="color:#000;font-weight:bold">{</span>
+		<span style="color:#000">httpCode</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">body</span> <span style="color:#ce5c00;font-weight:bold">:=</span> <span style="color:#000">nginxServer</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">handleRequest</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">appStatusURL</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;GET&#34;</span><span style="color:#000;font-weight:bold">)</span>
+		<span style="color:#000">fmt</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Printf</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;\nUrl: %s\nHttpCode: %d\nBody: %s\n&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">appStatusURL</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">httpCode</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">body</span><span style="color:#000;font-weight:bold">)</span>
+	<span style="color:#000;font-weight:bold">}</span>
+
+	<span style="color:#000">httpCode</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">body</span> <span style="color:#ce5c00;font-weight:bold">:=</span> <span style="color:#000">nginxServer</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">handleRequest</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">createuserURL</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;POST&#34;</span><span style="color:#000;font-weight:bold">)</span>
+	<span style="color:#000">fmt</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Printf</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;\nUrl: %s\nHttpCode: %d\nBody: %s\n&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">createuserURL</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">httpCode</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">body</span><span style="color:#000;font-weight:bold">)</span>
+
+	<span style="color:#000">httpCode</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">body</span> <span style="color:#000;font-weight:bold">=</span> <span style="color:#000">nginxServer</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">handleRequest</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">createuserURL</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;GET&#34;</span><span style="color:#000;font-weight:bold">)</span>
+	<span style="color:#000">fmt</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Printf</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;\nUrl: %s\nHttpCode: %d\nBody: %s\n&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">createuserURL</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">httpCode</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">body</span><span style="color:#000;font-weight:bold">)</span>
+<span style="color:#000;font-weight:bold">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>Output:</p>
+<pre><code>Url: /app/status
+HttpCode: 200
+Body: Ok
+
+Url: /app/status
+HttpCode: 200
+Body: Ok
+
+Url: /app/status
+HttpCode: 403
+Body: Not Allowed
+
+Url: /create/user
+HttpCode: 201
+Body: User Created
+
+Url: /create/user
+HttpCode: 404
+Body: Not Ok
+</code></pre><h3 id="application-scenarios">Application Scenarios</h3>
+<ol>
+<li>
+<p>远程代理（Remote Proxy）
+本地的调用者持有的接口实际上是一个代理，这个代理负责把对接口的方法访问转换成远程调用，然后返回结果。例如：GRPC</p>
+</li>
+<li>
+<p>虚代理（Virtual Proxy）
+它让调用者先持有一个代理对象，但真正的对象尚未创建。如果没有必要，这个真正的对象是不会被创建的，直到客户端需要真的必须调用时，才创建真正的对象。JDBC的连接池返回的JDBC连接（Connection对象）就可以是一个虚代理，即获取连接时根本没有任何实际的数据库连接，直到第一次执行JDBC查询或更新操作时，才真正创建实际的JDBC连接。</p>
+</li>
+<li>
+<p>保护代理（Protection Proxy）
+它用代理对象控制对原始对象的访问。例如鉴权、限流、监控、统计。</p>
+</li>
+<li>
+<p>智能引用（Smart Reference）
+它也是一种代理对象，如果有很多客户端对它进行访问，通过内部的计数器可以在外部调用者都不使用后自动释放它。</p>
+</li>
+</ol>
+<h3 id="referances">Referances</h3>
+<p><a href="https://time.geekbang.org/column/article/201823">https://time.geekbang.org/column/article/201823</a></p>
+<p><a href="https://golangbyexample.com/proxy-design-pattern-in-golang/">https://golangbyexample.com/proxy-design-pattern-in-golang/</a></p>
 
         </div>
 

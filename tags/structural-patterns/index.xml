@@ -43,8 +43,10 @@ mac 电脑具备接入 Lightning 插头的能力。 windows 电脑具备接入 U
       
       <guid>https://chengyayu.github.io/posts/proxy-design-pattern/</guid>
       <description>代理模式（Proxy Design Pattern）是一种结构型设计模式。意图为主对象提供额外的一层（代理）以控制对这个对象的访问。
-在此模式中，创建一个新的代理类，它实现与主要对象相同的接口。这样可以保证在主对象的实际逻辑之前执行某些行为。
-UML Diagram Practical Example </description>
+也是一种 Wrapper 设计模式，与修饰器模式代码结构相似，但是意图不同。
+UML Diagram  Client 为主调方，依赖 Subject 接口； Subject 表示抽象主题，Proxy 和 RealSubject 都需要实现该接口； RealSubject 表示实现 Subject 接口的主题结构，负责主要业务逻辑； Proxy 表示实现 Subject 接口的代理结构，持有 RealSubject 对象，控制着外部对 RealSubject 对象的请求；  Example Question:
+type server interface { handleRequest(string, string) (int, string) } 应用服务器 AppServer 满足 server 接口。 如何为 AppServer 设计一个代理，对 handleRequest 接口进行流量控制？ Code:
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69  package main import &amp;#34;fmt&amp;#34; type server interface { handleRequest(string, string) (int, string) } type nginx struct { appServer *appServer maxAllowedRequest int rateLimiter map[string]int } func newNginxServer() *nginx { return &amp;amp;nginx{ appServer: &amp;amp;appServer{}, maxAllowedRequest: 2, rateLimiter: make(map[string]int), } } func (n *nginx) handleRequest(url, method string) (int, string) { allowed := n.</description>
     </item>
     
   </channel>
