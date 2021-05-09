@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <meta http-equiv="content-language" content="zh-CN" />
+        <meta name="viewport" content="width=device-width, initial-scale=0.5, maximum-scale=1, user-scalable=no">
+        <title>Facade Design Pattern</title>
+
+        
+
+        
+        <link rel="stylesheet" href="https://chengyayu.github.io/css/main.css">
+        <link rel="stylesheet" href="https://chengyayu.github.io/css/copy-to-clipboard.css">
+
+        
+    </head>
+    
+    <body>
+        
+        
+
+    <div class="inner" style="position:relative;">
+        
+        <div class="blog-post">
+            <h2>Facade Design Pattern</h2>
+                <p>门面（外观）模式（Facade Design Pattern）是一种结构型设计模式。意图<strong>隐藏底层系统的复杂性，并为客户端提供一个简单的操作界面</strong>。</p>
+<p>它为系统中许多底层接口提供了统一的接口，因此从客户端的角度来看，它更易于使用。 基本上，它在复杂的系统上提供了更高级别的抽象。</p>
+<p>这也正式<strong>依赖注入</strong>思想的践行方式。</p>
+<h3 id="uml-diagram">UML Diagram</h3>
+<p><img src="/img/facade-design-pattern.webp" alt="image"></p>
+<ul>
+<li>InternalSubsystem x 为底层系统，有其独有的一套操作接口</li>
+<li>Facade 为抽象出的外观结构，持有多个底层系统实例，并对外公开更简洁的操作接口</li>
+</ul>
+<h3 id="example">Example</h3>
+<p>Question:</p>
+<pre><code>设计一个电子钱包系统，支持一下功能：
+- 检查账户
+- 检查安全码
+- 借记/贷记余额
+- 账簿录入
+- 发送消息通知
+</code></pre><p>Code:</p>
+<p>walletFacade.go: 电子钱包门面模块</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#204a87;font-weight:bold">package</span> <span style="color:#000">main</span>
+
+<span style="color:#204a87;font-weight:bold">import</span> <span style="color:#4e9a06">&#34;fmt&#34;</span>
+
+<span style="color:#204a87;font-weight:bold">type</span> <span style="color:#000">walletFacade</span> <span style="color:#204a87;font-weight:bold">struct</span> <span style="color:#000;font-weight:bold">{</span>
+    <span style="color:#000">account</span>      <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">account</span>
+    <span style="color:#000">wallet</span>       <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">wallet</span>
+    <span style="color:#000">securityCode</span> <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">securityCode</span>
+    <span style="color:#000">notification</span> <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">notification</span>
+    <span style="color:#000">ledger</span>       <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">ledger</span>
+<span style="color:#000;font-weight:bold">}</span>
+
+<span style="color:#204a87;font-weight:bold">func</span> <span style="color:#000">newWalletFacade</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">accountID</span> <span style="color:#204a87;font-weight:bold">string</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">code</span> <span style="color:#204a87;font-weight:bold">int</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">walletFacade</span> <span style="color:#000;font-weight:bold">{</span>
+    <span style="color:#000">fmt</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Println</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;Starting create account&#34;</span><span style="color:#000;font-weight:bold">)</span>
+    <span style="color:#000">walletFacacde</span> <span style="color:#ce5c00;font-weight:bold">:=</span> <span style="color:#ce5c00;font-weight:bold">&amp;</span><span style="color:#000">walletFacade</span><span style="color:#000;font-weight:bold">{</span>
+        <span style="color:#000">account</span><span style="color:#000;font-weight:bold">:</span>      <span style="color:#000">newAccount</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">accountID</span><span style="color:#000;font-weight:bold">),</span>
+        <span style="color:#000">securityCode</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000">newSecurityCode</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">code</span><span style="color:#000;font-weight:bold">),</span>
+        <span style="color:#000">wallet</span><span style="color:#000;font-weight:bold">:</span>       <span style="color:#000">newWallet</span><span style="color:#000;font-weight:bold">(),</span>
+        <span style="color:#000">notification</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#ce5c00;font-weight:bold">&amp;</span><span style="color:#000">notification</span><span style="color:#000;font-weight:bold">{},</span>
+        <span style="color:#000">ledger</span><span style="color:#000;font-weight:bold">:</span>       <span style="color:#ce5c00;font-weight:bold">&amp;</span><span style="color:#000">ledger</span><span style="color:#000;font-weight:bold">{},</span>
+    <span style="color:#000;font-weight:bold">}</span>
+    <span style="color:#000">fmt</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Println</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;Account created&#34;</span><span style="color:#000;font-weight:bold">)</span>
+    <span style="color:#204a87;font-weight:bold">return</span> <span style="color:#000">walletFacacde</span>
+<span style="color:#000;font-weight:bold">}</span>
+
+<span style="color:#204a87;font-weight:bold">func</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#000">w</span> <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">walletFacade</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000">addMoneyToWallet</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">accountID</span> <span style="color:#204a87;font-weight:bold">string</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">securityCode</span> <span style="color:#204a87;font-weight:bold">int</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">amount</span> <span style="color:#204a87;font-weight:bold">int</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#204a87;font-weight:bold">error</span> <span style="color:#000;font-weight:bold">{</span>
+    <span style="color:#000">fmt</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Println</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;Starting add money to wallet&#34;</span><span style="color:#000;font-weight:bold">)</span>
+    <span style="color:#204a87;font-weight:bold">if</span> <span style="color:#000">err</span> <span style="color:#ce5c00;font-weight:bold">:=</span> <span style="color:#000">w</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">account</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">checkAccount</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">accountID</span><span style="color:#000;font-weight:bold">);</span> <span style="color:#000">err</span> <span style="color:#ce5c00;font-weight:bold">!=</span> <span style="color:#204a87;font-weight:bold">nil</span> <span style="color:#000;font-weight:bold">{</span>
+        <span style="color:#204a87;font-weight:bold">return</span> <span style="color:#000">err</span>
+    <span style="color:#000;font-weight:bold">}</span>
+    <span style="color:#204a87;font-weight:bold">if</span> <span style="color:#000">err</span> <span style="color:#ce5c00;font-weight:bold">:=</span> <span style="color:#000">w</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">securityCode</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">checkCode</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">securityCode</span><span style="color:#000;font-weight:bold">);</span> <span style="color:#000">err</span> <span style="color:#ce5c00;font-weight:bold">!=</span> <span style="color:#204a87;font-weight:bold">nil</span> <span style="color:#000;font-weight:bold">{</span>
+        <span style="color:#204a87;font-weight:bold">return</span> <span style="color:#000">err</span>
+    <span style="color:#000;font-weight:bold">}</span>
+    <span style="color:#000">w</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">wallet</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">creditBalance</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">amount</span><span style="color:#000;font-weight:bold">)</span>
+    <span style="color:#000">w</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">notification</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">sendWalletCreditNotification</span><span style="color:#000;font-weight:bold">()</span>
+    <span style="color:#000">w</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">ledger</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">makeEntry</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">accountID</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;credit&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">amount</span><span style="color:#000;font-weight:bold">)</span>
+    <span style="color:#204a87;font-weight:bold">return</span> <span style="color:#204a87;font-weight:bold">nil</span>
+<span style="color:#000;font-weight:bold">}</span>
+
+<span style="color:#204a87;font-weight:bold">func</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#000">w</span> <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">walletFacade</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000">deductMoneyFromWallet</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">accountID</span> <span style="color:#204a87;font-weight:bold">string</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">securityCode</span> <span style="color:#204a87;font-weight:bold">int</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">amount</span> <span style="color:#204a87;font-weight:bold">int</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#204a87;font-weight:bold">error</span> <span style="color:#000;font-weight:bold">{</span>
+    <span style="color:#000">fmt</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Println</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;Starting debit money from wallet&#34;</span><span style="color:#000;font-weight:bold">)</span>
+    <span style="color:#204a87;font-weight:bold">if</span> <span style="color:#000">err</span> <span style="color:#ce5c00;font-weight:bold">:=</span> <span style="color:#000">w</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">account</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">checkAccount</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">accountID</span><span style="color:#000;font-weight:bold">);</span> <span style="color:#000">err</span> <span style="color:#ce5c00;font-weight:bold">!=</span> <span style="color:#204a87;font-weight:bold">nil</span> <span style="color:#000;font-weight:bold">{</span>
+        <span style="color:#204a87;font-weight:bold">return</span> <span style="color:#000">err</span>
+    <span style="color:#000;font-weight:bold">}</span>
+
+    <span style="color:#204a87;font-weight:bold">if</span> <span style="color:#000">err</span> <span style="color:#ce5c00;font-weight:bold">:=</span> <span style="color:#000">w</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">securityCode</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">checkCode</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">securityCode</span><span style="color:#000;font-weight:bold">);</span> <span style="color:#000">err</span> <span style="color:#ce5c00;font-weight:bold">!=</span> <span style="color:#204a87;font-weight:bold">nil</span> <span style="color:#000;font-weight:bold">{</span>
+        <span style="color:#204a87;font-weight:bold">return</span> <span style="color:#000">err</span>
+    <span style="color:#000;font-weight:bold">}</span>
+    <span style="color:#204a87;font-weight:bold">if</span> <span style="color:#000">err</span> <span style="color:#000;font-weight:bold">=</span> <span style="color:#000">w</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">wallet</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">debitBalance</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">amount</span><span style="color:#000;font-weight:bold">);</span> <span style="color:#000">err</span> <span style="color:#ce5c00;font-weight:bold">!=</span> <span style="color:#204a87;font-weight:bold">nil</span> <span style="color:#000;font-weight:bold">{</span>
+        <span style="color:#204a87;font-weight:bold">return</span> <span style="color:#000">err</span>
+    <span style="color:#000;font-weight:bold">}</span>
+    <span style="color:#000">w</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">notification</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">sendWalletDebitNotification</span><span style="color:#000;font-weight:bold">()</span>
+    <span style="color:#000">w</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">ledger</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">makeEntry</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">accountID</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#4e9a06">&#34;credit&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">amount</span><span style="color:#000;font-weight:bold">)</span>
+    <span style="color:#204a87;font-weight:bold">return</span> <span style="color:#204a87;font-weight:bold">nil</span>
+<span style="color:#000;font-weight:bold">}</span>
+</code></pre></div><p>account.go: 账户模块</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#204a87;font-weight:bold">package</span> <span style="color:#000">main</span>
+
+<span style="color:#204a87;font-weight:bold">import</span> <span style="color:#4e9a06">&#34;fmt&#34;</span>
+
+<span style="color:#204a87;font-weight:bold">type</span> <span style="color:#000">account</span> <span style="color:#204a87;font-weight:bold">struct</span> <span style="color:#000;font-weight:bold">{</span>
+    <span style="color:#000">name</span> <span style="color:#204a87;font-weight:bold">string</span>
+<span style="color:#000;font-weight:bold">}</span>
+
+<span style="color:#204a87;font-weight:bold">func</span> <span style="color:#000">newAccount</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">accountName</span> <span style="color:#204a87;font-weight:bold">string</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">account</span> <span style="color:#000;font-weight:bold">{</span>
+    <span style="color:#204a87;font-weight:bold">return</span> <span style="color:#ce5c00;font-weight:bold">&amp;</span><span style="color:#000">account</span><span style="color:#000;font-weight:bold">{</span><span style="color:#000">name</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000">accountName</span><span style="color:#000;font-weight:bold">}</span>
+<span style="color:#000;font-weight:bold">}</span>
+
+<span style="color:#204a87;font-weight:bold">func</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#000">a</span> <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">account</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000">checkAccount</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">accountName</span> <span style="color:#204a87;font-weight:bold">string</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#204a87;font-weight:bold">error</span> <span style="color:#000;font-weight:bold">{</span>
+    <span style="color:#204a87;font-weight:bold">if</span> <span style="color:#000">a</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">name</span> <span style="color:#ce5c00;font-weight:bold">!=</span> <span style="color:#000">accountName</span> <span style="color:#000;font-weight:bold">{</span>
+        <span style="color:#204a87;font-weight:bold">return</span> <span style="color:#000">fmt</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Errorf</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;Account Name is incorrect&#34;</span><span style="color:#000;font-weight:bold">)</span>
+    <span style="color:#000;font-weight:bold">}</span>
+    <span style="color:#000">fmt</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Println</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;Account Verified&#34;</span><span style="color:#000;font-weight:bold">)</span>
+    <span style="color:#204a87;font-weight:bold">return</span> <span style="color:#204a87;font-weight:bold">nil</span>
+<span style="color:#000;font-weight:bold">}</span>
+</code></pre></div><p>securityCode.go: 安全模块</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#204a87;font-weight:bold">package</span> <span style="color:#000">main</span>
+
+<span style="color:#204a87;font-weight:bold">import</span> <span style="color:#4e9a06">&#34;fmt&#34;</span>
+
+<span style="color:#204a87;font-weight:bold">type</span> <span style="color:#000">securityCode</span> <span style="color:#204a87;font-weight:bold">struct</span> <span style="color:#000;font-weight:bold">{</span>
+    <span style="color:#000">code</span> <span style="color:#204a87;font-weight:bold">int</span>
+<span style="color:#000;font-weight:bold">}</span>
+
+<span style="color:#204a87;font-weight:bold">func</span> <span style="color:#000">newSecurityCode</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">code</span> <span style="color:#204a87;font-weight:bold">int</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">securityCode</span> <span style="color:#000;font-weight:bold">{</span>
+    <span style="color:#204a87;font-weight:bold">return</span> <span style="color:#ce5c00;font-weight:bold">&amp;</span><span style="color:#000">securityCode</span><span style="color:#000;font-weight:bold">{</span><span style="color:#000">code</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#000">code</span><span style="color:#000;font-weight:bold">}</span>
+<span style="color:#000;font-weight:bold">}</span>
+
+<span style="color:#204a87;font-weight:bold">func</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#000">s</span> <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">securityCode</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000">checkCode</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">incomingCode</span> <span style="color:#204a87;font-weight:bold">int</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#204a87;font-weight:bold">error</span> <span style="color:#000;font-weight:bold">{</span>
+    <span style="color:#204a87;font-weight:bold">if</span> <span style="color:#000">s</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">code</span> <span style="color:#ce5c00;font-weight:bold">!=</span> <span style="color:#000">incomingCode</span> <span style="color:#000;font-weight:bold">{</span>
+        <span style="color:#204a87;font-weight:bold">return</span> <span style="color:#000">fmt</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Errorf</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;Security Code is incorrect&#34;</span><span style="color:#000;font-weight:bold">)</span>
+    <span style="color:#000;font-weight:bold">}</span>
+    <span style="color:#000">fmt</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Println</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;SecurityCode Verified&#34;</span><span style="color:#000;font-weight:bold">)</span>
+    <span style="color:#204a87;font-weight:bold">return</span> <span style="color:#204a87;font-weight:bold">nil</span>
+<span style="color:#000;font-weight:bold">}</span>
+</code></pre></div><p>wallet.go: 钱包模块</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#204a87;font-weight:bold">package</span> <span style="color:#000">main</span>
+
+<span style="color:#204a87;font-weight:bold">import</span> <span style="color:#4e9a06">&#34;fmt&#34;</span>
+
+<span style="color:#204a87;font-weight:bold">type</span> <span style="color:#000">wallet</span> <span style="color:#204a87;font-weight:bold">struct</span> <span style="color:#000;font-weight:bold">{</span>
+    <span style="color:#000">balance</span> <span style="color:#204a87;font-weight:bold">int</span>
+<span style="color:#000;font-weight:bold">}</span>
+
+<span style="color:#204a87;font-weight:bold">func</span> <span style="color:#000">newWallet</span><span style="color:#000;font-weight:bold">()</span> <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">wallet</span> <span style="color:#000;font-weight:bold">{</span>
+    <span style="color:#204a87;font-weight:bold">return</span> <span style="color:#ce5c00;font-weight:bold">&amp;</span><span style="color:#000">wallet</span><span style="color:#000;font-weight:bold">{</span><span style="color:#000">balance</span><span style="color:#000;font-weight:bold">:</span> <span style="color:#0000cf;font-weight:bold">0</span><span style="color:#000;font-weight:bold">}</span>
+<span style="color:#000;font-weight:bold">}</span>
+
+<span style="color:#204a87;font-weight:bold">func</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#000">w</span> <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">wallet</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000">creditBalance</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">amount</span> <span style="color:#204a87;font-weight:bold">int</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+    <span style="color:#000">w</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">balance</span> <span style="color:#ce5c00;font-weight:bold">+=</span> <span style="color:#000">amount</span>
+    <span style="color:#000">fmt</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Println</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;Wallet balance added successfully&#34;</span><span style="color:#000;font-weight:bold">)</span>
+<span style="color:#000;font-weight:bold">}</span>
+
+<span style="color:#204a87;font-weight:bold">func</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#000">w</span> <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">wallet</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000">debitBalance</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">amount</span> <span style="color:#204a87;font-weight:bold">int</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#204a87;font-weight:bold">error</span> <span style="color:#000;font-weight:bold">{</span>
+    <span style="color:#204a87;font-weight:bold">if</span> <span style="color:#000">w</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">balance</span> <span style="color:#000;font-weight:bold">&lt;</span> <span style="color:#000">amount</span> <span style="color:#000;font-weight:bold">{</span>
+        <span style="color:#204a87;font-weight:bold">return</span> <span style="color:#000">fmt</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Errorf</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;Balance is not sufficient&#34;</span><span style="color:#000;font-weight:bold">)</span>
+    <span style="color:#000;font-weight:bold">}</span>
+    <span style="color:#000">fmt</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Println</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;Wallet balance is Sufficient&#34;</span><span style="color:#000;font-weight:bold">)</span>
+    <span style="color:#000">w</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">balance</span> <span style="color:#000;font-weight:bold">=</span> <span style="color:#000">w</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">balance</span> <span style="color:#ce5c00;font-weight:bold">-</span> <span style="color:#000">amount</span>
+    <span style="color:#204a87;font-weight:bold">return</span> <span style="color:#204a87;font-weight:bold">nil</span>
+<span style="color:#000;font-weight:bold">}</span>
+</code></pre></div><p>ledger.go: 账本模块</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#204a87;font-weight:bold">package</span> <span style="color:#000">main</span>
+
+<span style="color:#204a87;font-weight:bold">import</span> <span style="color:#4e9a06">&#34;fmt&#34;</span>
+
+<span style="color:#204a87;font-weight:bold">type</span> <span style="color:#000">ledger</span> <span style="color:#204a87;font-weight:bold">struct</span> <span style="color:#000;font-weight:bold">{}</span>
+
+<span style="color:#204a87;font-weight:bold">func</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#000">s</span> <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">ledger</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000">makeEntry</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">accountID</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">txnType</span> <span style="color:#204a87;font-weight:bold">string</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">amount</span> <span style="color:#204a87;font-weight:bold">int</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
+    <span style="color:#000">fmt</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Printf</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;Make ledger entry for accountId %s with txnType %s for amount %d\n&#34;</span><span style="color:#000;font-weight:bold">,</span> 
+        <span style="color:#000">accountID</span><span style="color:#000;font-weight:bold">,</span> 
+        <span style="color:#000">txnType</span><span style="color:#000;font-weight:bold">,</span> 
+        <span style="color:#000">amount</span><span style="color:#000;font-weight:bold">,</span>
+    <span style="color:#000;font-weight:bold">)</span>
+<span style="color:#000;font-weight:bold">}</span>
+</code></pre></div><p>notification.go: 通知模块</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#204a87;font-weight:bold">package</span> <span style="color:#000">main</span>
+
+<span style="color:#204a87;font-weight:bold">import</span> <span style="color:#4e9a06">&#34;fmt&#34;</span>
+
+<span style="color:#204a87;font-weight:bold">type</span> <span style="color:#000">notification</span> <span style="color:#204a87;font-weight:bold">struct</span> <span style="color:#000;font-weight:bold">{}</span>
+
+<span style="color:#204a87;font-weight:bold">func</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#000">n</span> <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">notification</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000">sendWalletCreditNotification</span><span style="color:#000;font-weight:bold">()</span> <span style="color:#000;font-weight:bold">{</span>
+    <span style="color:#000">fmt</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Println</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;Sending wallet credit notification&#34;</span><span style="color:#000;font-weight:bold">)</span>
+<span style="color:#000;font-weight:bold">}</span>
+
+<span style="color:#204a87;font-weight:bold">func</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#000">n</span> <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">notification</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000">sendWalletDebitNotification</span><span style="color:#000;font-weight:bold">()</span> <span style="color:#000;font-weight:bold">{</span>
+    <span style="color:#000">fmt</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Println</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;Sending wallet debit notification&#34;</span><span style="color:#000;font-weight:bold">)</span>
+<span style="color:#000;font-weight:bold">}</span>
+</code></pre></div><p>main.go</p>
+<div class="highlight"><pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#204a87;font-weight:bold">package</span> <span style="color:#000">main</span>
+
+<span style="color:#204a87;font-weight:bold">import</span> <span style="color:#000;font-weight:bold">(</span>
+    <span style="color:#4e9a06">&#34;fmt&#34;</span>
+    <span style="color:#4e9a06">&#34;log&#34;</span>
+<span style="color:#000;font-weight:bold">)</span>
+
+<span style="color:#204a87;font-weight:bold">func</span> <span style="color:#000">main</span><span style="color:#000;font-weight:bold">()</span> <span style="color:#000;font-weight:bold">{</span>
+    <span style="color:#000">fmt</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Println</span><span style="color:#000;font-weight:bold">()</span>
+    <span style="color:#000">walletFacade</span> <span style="color:#ce5c00;font-weight:bold">:=</span> <span style="color:#000">newWalletFacade</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;abc&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">1234</span><span style="color:#000;font-weight:bold">)</span>
+    <span style="color:#000">fmt</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Println</span><span style="color:#000;font-weight:bold">()</span>
+
+    <span style="color:#204a87;font-weight:bold">if</span> <span style="color:#000">err</span> <span style="color:#ce5c00;font-weight:bold">:=</span> <span style="color:#000">walletFacade</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">addMoneyToWallet</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;abc&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">1234</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">10</span><span style="color:#000;font-weight:bold">);</span> <span style="color:#000">err</span> <span style="color:#ce5c00;font-weight:bold">!=</span> <span style="color:#204a87;font-weight:bold">nil</span> <span style="color:#000;font-weight:bold">{</span>
+        <span style="color:#000">log</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Fatalf</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;Error: %s\n&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">err</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Error</span><span style="color:#000;font-weight:bold">())</span>
+    <span style="color:#000;font-weight:bold">}</span>
+
+    <span style="color:#000">fmt</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Println</span><span style="color:#000;font-weight:bold">()</span>
+    <span style="color:#204a87;font-weight:bold">if</span> <span style="color:#000">err</span> <span style="color:#ce5c00;font-weight:bold">:=</span> <span style="color:#000">walletFacade</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">deductMoneyFromWallet</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;abc&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">1234</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#0000cf;font-weight:bold">5</span><span style="color:#000;font-weight:bold">);</span> <span style="color:#000">err</span> <span style="color:#ce5c00;font-weight:bold">!=</span> <span style="color:#204a87;font-weight:bold">nil</span> <span style="color:#000;font-weight:bold">{</span>
+        <span style="color:#000">log</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Fatalf</span><span style="color:#000;font-weight:bold">(</span><span style="color:#4e9a06">&#34;Error: %s\n&#34;</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">err</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">Error</span><span style="color:#000;font-weight:bold">())</span>
+    <span style="color:#000;font-weight:bold">}</span>
+<span style="color:#000;font-weight:bold">}</span>
+</code></pre></div><p>Output:</p>
+<pre><code>Starting create account
+Account created
+
+Starting add money to wallet
+Account Verified
+SecurityCode Verified
+Wallet balance added successfully
+Sending wallet credit notification
+Make ledger entry for accountId abc with txnType credit for amount 10
+
+Starting debit money from wallet
+Account Verified
+SecurityCode Verified
+Wallet balance is Sufficient
+Sending wallet debit notification
+Make ledger entry for accountId abc with txnType debit for amount 5
+</code></pre><h3 id="application-scenarios">Application Scenarios</h3>
+<ul>
+<li>BFF（Backends For Frontends）层代码</li>
+<li>依赖注入</li>
+</ul>
+<h3 id="referances">Referances</h3>
+<p><a href="https://golangbyexample.com/facade-design-pattern-in-golang/">https://golangbyexample.com/facade-design-pattern-in-golang/</a></p>
+<p><a href="https://time.geekbang.org/column/article/206409">https://time.geekbang.org/column/article/206409</a></p>
+<p><a href="https://pkg.go.dev/github.com/google/wire">https://pkg.go.dev/github.com/google/wire</a></p>
+
+        </div>
+
+        <br>
+
+        <footer>
+        
+
+        <ul class="tags" style="float: left!important;">
+            
+                <span>标签:</span>
+                <li><a class="link" href="https://chengyayu.github.io/tags/go"> #go </a></li><li><a class="link" href="https://chengyayu.github.io/tags/patterns"> #patterns </a></li><li><a class="link" href="https://chengyayu.github.io/tags/structural-patterns"> #structural-patterns </a></li>
+            
+            
+                
+                <span>分类:</span>
+                <li><a class="link" href="https://chengyayu.github.io/categories/patterns"> #patterns </a></li>
+            
+        </ul>
+        
+        <br>
+        </footer>
+
+    </div> 
+    
+    
+    <script src="https://cdn.staticfile.org/jquery/3.3.1/jquery.min.js" crossorigin="anonymous" defer="defer"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.1/js/bootstrap.min.js" defer="defer"></script>
+    <script src="https://chengyayu.github.io/js/copy-to-clipboard.js" defer="defer"></script>
+</body>
+</html>

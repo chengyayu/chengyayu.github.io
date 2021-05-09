@@ -6,7 +6,22 @@
     <description>Recent content in go on Negentropy</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Thu, 22 Apr 2021 13:28:06 +0800</lastBuildDate><atom:link href="https://chengyayu.github.io/tags/go/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 07 May 2021 20:15:00 +0800</lastBuildDate><atom:link href="https://chengyayu.github.io/tags/go/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Facade Design Pattern</title>
+      <link>https://chengyayu.github.io/posts/facade-design-pattern/</link>
+      <pubDate>Fri, 07 May 2021 20:15:00 +0800</pubDate>
+      
+      <guid>https://chengyayu.github.io/posts/facade-design-pattern/</guid>
+      <description>门面（外观）模式（Facade Design Pattern）是一种结构型设计模式。意图隐藏底层系统的复杂性，并为客户端提供一个简单的操作界面。
+它为系统中许多底层接口提供了统一的接口，因此从客户端的角度来看，它更易于使用。 基本上，它在复杂的系统上提供了更高级别的抽象。
+这也正式依赖注入思想的践行方式。
+UML Diagram  InternalSubsystem x 为底层系统，有其独有的一套操作接口 Facade 为抽象出的外观结构，持有多个底层系统实例，并对外公开更简洁的操作接口  Example Question:
+设计一个电子钱包系统，支持一下功能： - 检查账户 - 检查安全码 - 借记/贷记余额 - 账簿录入 - 发送消息通知 Code:
+walletFacade.go: 电子钱包门面模块
+package main import &amp;#34;fmt&amp;#34; type walletFacade struct { account *account wallet *wallet securityCode *securityCode notification *notification ledger *ledger } func newWalletFacade(accountID string, code int) *walletFacade { fmt.Println(&amp;#34;Starting create account&amp;#34;) walletFacacde := &amp;amp;walletFacade{ account: newAccount(accountID), securityCode: newSecurityCode(code), wallet: newWallet(), notification: &amp;amp;notification{}, ledger: &amp;amp;ledger{}, } fmt.</description>
+    </item>
+    
     <item>
       <title>Decorator Design Pattern</title>
       <link>https://chengyayu.github.io/posts/decorator-design-pattern/</link>
