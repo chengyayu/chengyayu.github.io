@@ -33,15 +33,15 @@
 <h3 id="uml-diagram">UML Diagram</h3>
 <p><img src="/img/decorator-design-pattern.webp" alt="image"></p>
 <ul>
-<li>Client 为主调方，依赖 Component 接口。</li>
-<li>Concrete Component 是实现了 Component 接口的结构。</li>
+<li>Client 为主调方，依赖 Component 接口；</li>
+<li>Concrete Component 是实现了 Component 接口的结构；</li>
 <li>Decorator 定义了实现契约的“抽象类”：
 <ul>
-<li><strong>修饰器必须内嵌一个实现了 Component 接口的实例</strong></li>
-<li><strong>修饰器本身必须实现 Component 接口</strong></li>
+<li><strong>修饰器必须内嵌一个实现了 Component 接口的实例</strong>；</li>
+<li><strong>修饰器本身必须实现 Component 接口</strong>；</li>
 </ul>
 </li>
-<li>Concrete Decorator x 是遵循 Decorator 契约的结构。</li>
+<li>Concrete Decorator x 是遵循 Decorator 契约的结构；</li>
 </ul>
 <p>修饰器模式也是一种 Wrapper 模式，使用这种设计模式可以很方便得实现“俄罗斯套娃”，完成对既有<strong>功能</strong>的扩展增强。</p>
 <h3 id="example-1-面向对象编程范式">Example 1 （面向对象编程范式）</h3>
