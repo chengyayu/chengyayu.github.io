@@ -27,10 +27,10 @@ UML Diagram  Internal Subsystem x 为底层系统，各自拥有一套操作接�
       
       <guid>https://chengyayu.github.io/posts/decorator-design-pattern/</guid>
       <description>修饰器模式（Decorator Design Pattern）是一种结构型设计模式。意图动态地为原始对象添加一层层附加能力，以完成对原始对象既有功能的扩展和增强。
-具体的修饰器应该遵循一个契约：持有 A 接口的实例，同时本身必须实现 A 接口。 由于目标实例和修饰器遵循同一接口，因此可用修饰器来对实例进行无限次的封装。结果实例将获得所有封装器叠加而来的行为。
+具体的修饰器应该遵循一个契约：持有 A 接口的实例，同时本身必须实现 A 接口。 由于目标实例和修饰器遵循同一接口，因此可用修饰器来对实例进行无限次的封装。结果实例将获得所有修饰器叠加而来的行为。
 目标对象可以是一个结构，也可以是一个函数。与之相对,可以分别通过结构组合（面向对象编程范式）或者高阶函数（函数式编程范式）的方式实现这个模式。
-UML Diagram  Client 为主调方，依赖 Component 接口； Concrete Component 是实现了 Component 接口的结构； Decorator 定义了实现契约的“抽象类”：  修饰器必须内嵌一个实现了 Component 接口的实例 修饰器本身必须实现 Component 接口   Concrete Decorator 1(2) 是遵循 Decorator 契约的结构；  修饰器模式也是一种 Wrapper 模式，使用这种设计模式可以很方便得实现“俄罗斯套娃”，完成对既有功能的扩展增强。
-Example 1 （面向对象编程范式） Go 实现的版本是通过组合玩法，创建内嵌 Component 实例的 Decorator 结构（本身也实现 Component 接口），来完成对既有接口的包装和扩展。
+UML Diagram  Client 为主调方，依赖 Component 接口。 Concrete Component 是实现了 Component 接口的结构。 Decorator 定义了实现契约的“抽象类”：  修饰器必须内嵌一个实现了 Component 接口的实例 修饰器本身必须实现 Component 接口   Concrete Decorator x 是遵循 Decorator 契约的结构。  修饰器模式也是一种 Wrapper 模式，使用这种设计模式可以很方便得实现“俄罗斯套娃”，完成对既有功能的扩展增强。
+Example 1 （面向对象编程范式） Go 实现的版本是通过组合玩法，创建内嵌 Component 实例的 Decorator 结构（本身也实现 Component 接口）来完成对既有接口的包装和扩展。
 Question:
 香河肉饼准备拓展业务卖披萨饼，暂定 原味饼底 10 元， Cocoa 配料 20 元， Fruit 配料 25 元， 饼底和口味(可叠加)随意组合，应如何设计？ Code:
 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47  package main import &amp;#34;fmt&amp;#34; type IPizza interface { getTaste() []string getPrice() int } type Crepes struct{} func (p *Crepes) getTaste() []string { return []string{&amp;#34;default&amp;#34;} } func (p *Crepes) getPrice() int { return 10 } // Topping 是一个实现了 IPizza 的 decorator type Topping struct { pizza IPizza // 内嵌一个 IPizza 实例 	taste string price int } // WithTopping 通过不同参数创建不同 concrete decorator func WithTopping(pizza IPizza, taste string, price int) *Topping { return &amp;amp;Topping{pizza: pizza, taste: taste, price: price} } func (t *Topping) getTaste() []string { result := t.</description>
