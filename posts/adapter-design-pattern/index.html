@@ -36,7 +36,8 @@
 <li>Adaptee 为一组不兼容 Target 接口定义的接口（被适配的结构）;</li>
 <li>Adaptor 将 Adaptee 转化成一组符合 Target 接口定义的接口;</li>
 </ul>
-<p>适配器模式也可以称为 Wrapper 模式，通过构建（内嵌一个接口不匹配的 Adaptee）Wrapper 结构来对 Adaptee 进行能力转换以实现 Target 接口。由于 Client 的业务逻辑依赖的是抽象（Target 接口）而非具体的结构类型，原本无法与 Client 对接的 Adaptee 经过 Adapter 包装也可以与 Client 对接了。</p>
+<p>适配器模式也可以称为 Wrapper 模式，通过构建（内嵌一个接口不匹配的 Adaptee）Wrapper 结构来对 Adaptee 进行能力转换以实现 Target 接口。
+由于 Client 的业务逻辑依赖的是抽象（Target 接口）而非具体的结构类型，原本无法与 Client 对接的 Adaptee 经过 Adapter 包装也可以与 Client 对接了。</p>
 <h3 id="example">Example</h3>
 <p>Question：</p>
 <pre><code>mac 电脑具备接入 Lightning 插头的能力。
