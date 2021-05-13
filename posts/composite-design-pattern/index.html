@@ -28,7 +28,8 @@
             <h2>Composite Design Pattern</h2>
                 <p>组合模式（Composite Design Pattern）是一种结构型设计模式。<strong>意图通过构建树状数据结构并提供统一的处理方式来解决递归难题</strong>。
 树状结构中的每个单个对象都可以以相同的方式处理，而不管它们是的复合的还是原子的。</p>
-<p>我认为这个设计模式的本质在于，将<strong>非递归数据结构的递归算法</strong>转换成了<strong>递归数据结构的非递归算法</strong>。应用场景虽然单一，但是一旦用上就帮了兄弟大忙。</p>
+<p>组合模式的设计思路，与其说是一种设计模式，倒不如说是对业务场景的一种数据结构和算法的抽象。其中，数据可以表示成树这种数据结构，业务需求可以通过在树上的递归遍历算法来实现。
+应用场景虽然单一，但是一旦用上就帮了兄弟大忙。</p>
 <p>需要注意的是，管理树状数据结构的过程中，一定要有完备的检查机制，避免数据结构成环。同时需要思考的是，关键的计算型接口在计算环节如何提升性能。</p>
 <h3 id="uml-diagram">UML Diagram</h3>
 <p><img src="/img/composite-design-pattern.webp" alt="image"></p>
@@ -150,6 +151,7 @@
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">94
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">95
 </span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">96
+</span><span style="margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">97
 </span></code></pre></td>
 <td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
 <pre style="background-color:#f8f8f8;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-go" data-lang="go"><span style="color:#204a87;font-weight:bold">package</span> <span style="color:#000">main</span>
@@ -226,6 +228,7 @@
 <span style="color:#000;font-weight:bold">}</span>
 
 <span style="color:#8f5902;font-style:italic">// 目录节点需提供对子节点的管理
+</span><span style="color:#8f5902;font-style:italic">// 缺少检查机制
 </span><span style="color:#8f5902;font-style:italic"></span><span style="color:#204a87;font-weight:bold">func</span> <span style="color:#000;font-weight:bold">(</span><span style="color:#000">f</span> <span style="color:#ce5c00;font-weight:bold">*</span><span style="color:#000">Directory</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000">addSubNode</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">node</span> <span style="color:#ce5c00;font-weight:bold">...</span><span style="color:#000">fileNode</span><span style="color:#000;font-weight:bold">)</span> <span style="color:#000;font-weight:bold">{</span>
 	<span style="color:#000">f</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">components</span> <span style="color:#000;font-weight:bold">=</span> <span style="color:#204a87">append</span><span style="color:#000;font-weight:bold">(</span><span style="color:#000">f</span><span style="color:#000;font-weight:bold">.</span><span style="color:#000">components</span><span style="color:#000;font-weight:bold">,</span> <span style="color:#000">node</span><span style="color:#ce5c00;font-weight:bold">...</span><span style="color:#000;font-weight:bold">)</span>
 <span style="color:#000;font-weight:bold">}</span>
@@ -253,6 +256,11 @@
 </div><p>Output:</p>
 <pre><code>/ file num: 3
 / file size: 39
+</code></pre><p>Refactor：</p>
+<pre><code>目前，每次调用 getNum() 和 getSize() 时都需要重新遍历一遍子树。如何提升它们的效率？
+这个问题本质是如何优化递归算法的重复计算问题。
+可以用散列表存储每个 &lt;path,num&gt; 和 &lt;path,size&gt;，通过路径直接返回对应的 size。
+与此同时，在节点关系维护（删除或者添加自节点）的接口上同时对这些 map 进行维护。
 </code></pre><h3 id="application-scenarios">Application Scenarios</h3>
 <ul>
 <li>需要递归求解的业务问题</li>
