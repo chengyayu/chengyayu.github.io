@@ -345,6 +345,7 @@ pre .clippy {
 
 footer {
   padding-top: 10px !important;
+  overflow: auto;
 }
 
 .tags {
@@ -354,6 +355,7 @@ footer {
   letter-spacing: 0;
   font-weight: 400;
   font-style: normal;
+  margin-block-end: 0;
   padding: 0;
   list-style: none;
   list-style-image: none;
@@ -362,9 +364,9 @@ footer {
 .tags > li {
   display: inline-block;
   border: none;
-  color: rgba(0, 0, 0, 0.68);
-  background: rgba(0, 0, 0, 0.05);
-  padding: 5px 10px;
+  /* color: rgba(0, 0, 0, 0.68); */
+  /* background: rgba(0, 0, 0, 0.05); */
+  padding: 2px 4px;
   border-radius: 3px;
 }
 
