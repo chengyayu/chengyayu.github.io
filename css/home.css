@@ -1,81 +1,397 @@
 * {
-  box-sizing: border-box;
-}
+    box-sizing: border-box;
+  }
+  
+  table {
+    font-size: 100%;
+    border-collapse: collapse;
+  }
+  
+  table th,
+  table td {
+    margin: 0;
+    padding: 6px 13px;
+    border: 1px solid #dfe2e5;
+  }
+  
+  /* table 中的代码样式 */
+  table td pre {
+    border: 0px;
+    margin-top: 0em;
+    margin-bottom: 0em;
+    padding: 0px !important;
+    border-radius: 0px;
+  }
+  
+  table tr td:first-of-type code {
+    padding-right: 0px !important;
+  }
+  
+  table tr td:last-of-type code {
+    padding-left: 0px !important;
+  }
+  
+  body {
+    font-family: STFangSong, Helvetica, Arial, Vernada, Tahoma, STXihei, "Microsoft YaHei", "Songti SC", SimSun, Heiti, sans-serif;
+    font-size: 21px;
+  }
+  
+  body.mobile {
+    font-size: 36px;
+  }
+  
+  .navbar-brand {
+    font-family: "Palatino Linotype", "Book Antiqua", Palatino, Helvetica, STKaiti, SimSun, serif;
+    font-size: 100%;
+  }
+  
+  .title a {
+    display: block;
+  }
+  
+  .title {
+    cursor: pointer;
+    padding: 15px 20px;
+  }
+  
+  li.title:hover {
+    background-color: #eee;
+    font-size: 100%;
+  }
+  
+  .panel {
+    border-radius: 0;
+    font-size: 100%;
+  }
+  
+  .panel-default > .panel-heading {
+    background-image: none;
+    background-color: #fff;
+    font-size: 100%;
+  }
+  
+  .navbar-default {
+    background-image: none;
+    background-color: #fff;
+    box-shadow: none;
+    font-size: 100%;
+  }
+  
+  .navbar-brand, .navbar-nav {
+    font-size: 24px;
+  }
+  
+  body.mobile .navbar-brand {
+    font-size: 36px;
+  }
+  
+  body.mobile .navbar-nav {
+    font-size: 36px;
+  }
+  
+  div.outer {
+    margin: 5% 10% 2% 10%;
+  }
+  
+  div.date {
+    display: inline-block;
+    font-size: 80%;
+    color: darkgray;
+  }
+  
+  body.mobile div.outer {
+    margin: 4% 2% 2% 2%;
+  }
 
-/* reset CSS */
-table {
-  font-size: 100%;
-}
-/* end reset CSS */
-
-body {
-  font-family: STFangSong, Helvetica, Arial, Vernada, Tahoma, STXihei, "Microsoft YaHei", "Songti SC", SimSun, Heiti, sans-serif;
-  font-size: 21px;
-}
-
-body.mobile {
-  font-size: 36px;
-}
-
-.navbar-brand {
-  font-family: "Palatino Linotype", "Book Antiqua", Palatino, Helvetica, STKaiti, SimSun, serif;
-  font-size: 100%;
-}
-
-.title a {
-  display: block;
-}
-
-.title {
-  cursor: pointer;
-  padding: 15px 20px;
-}
-
-li.title:hover {
-  background-color: #eee;
-  font-size: 100%;
-}
-
-.panel {
-  border-radius: 0;
-  font-size: 100%;
-}
-
-.panel-default > .panel-heading {
-  background-image: none;
-  background-color: #fff;
-  font-size: 100%;
-}
-
-.navbar-default {
-  background-image: none;
-  background-color: #fff;
-  box-shadow: none;
-  font-size: 100%;
-}
-
-.navbar-brand, .navbar-nav {
-  font-size: 24px;
-}
-
-body.mobile .navbar-brand {
-  font-size: 36px;
-}
-
-body.mobile .navbar-nav {
-  font-size: 36px;
-}
-
-div.outer {
-  margin: 5% 10% 2% 10%;
-}
-
-div.date {
-  display: inline-block;
-  font-size: 80%;
-  color: darkgray;
-}
-
-body.mobile div.outer {
-  margin: 4% 2% 2% 2%;
-}
+  table tr:nth-child(2n) {
+    background-color: #f6f8fa;
+  }
+  
+  table tr {
+    background-color: #fff;
+    /* border-top: 1px solid #c6cbd1; */
+  }
+  
+  
+  
+  details {
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    padding: 0.5em 0.5em 0;
+  }
+  
+  summary {
+    margin: -0.5em -0.5em 0;
+    padding: 0.5em;
+  }
+  
+  details[open] {
+    padding: 0.5em;
+  }
+  
+  details[open] summary {
+    font-style: italic;
+    border-bottom: 1px solid #aaa;
+    margin-bottom: 0.5em;
+  }
+  
+  p,
+  li {
+    line-height: 1.8;
+  }
+  
+  h1 {
+    font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, Helvetica, STKaiti,
+      SimSun, serif;
+  }
+  
+  h2 {
+    font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, Helvetica, STKaiti,
+      SimSun, serif;
+    margin-bottom: 60px;
+    margin-bottom: 40px;
+    padding: 5px;
+    border-bottom: 2px LightGrey solid;
+    width: 98%;
+    line-height: 150%;
+    color: #666666;
+  }
+  
+  h3 {
+    font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, Helvetica, STKaiti,
+      SimSun, serif;
+    margin-top: 40px;
+    margin-bottom: 30px;
+    border-bottom: 1px LightGrey solid;
+    width: 98%;
+    line-height: 150%;
+    color: #666666;
+  }
+  
+  h4 {
+    font-family: 'Palatino Linotype', 'Book Antiqua', Palatino, Helvetica, STKaiti,
+      SimSun, serif;
+    margin-top: 40px;
+    margin-bottom: 30px;
+    border-bottom: 1px LightGrey solid;
+    width: 98%;
+    line-height: 150%;
+    color: #666666;
+  }
+  
+  .box {
+    padding: 2% 8% 5% 8%;
+    border: 1px solid LightGrey;
+  }
+  
+  li {
+    margin-left: 10px;
+  }
+  
+  blockquote {
+    margin-left: 20px;
+    padding: 0 20px 0 50px;
+    margin-bottom: 15px;
+    border-left: 2px solid #8dc23c;
+  }
+  
+  blockquote p {
+    line-height: 48px;
+    font-style: italic;
+    color: #888;
+  }
+  
+  pre {
+    font-family: monospace, Menlo, Monaco, Consolas, Andale Mono, lucida console, Courier New;
+    font-size: 85%;
+    line-height: 1.45;
+    font-weight: 500;
+    background-color: #f4f4f4;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    padding: 4px;
+    position: relative;
+    display: block;
+    width: 100%;
+    overflow: auto;
+  }
+  
+  pre > code {
+    padding: 12px !important;
+    display: block;
+  }
+  
+  code {
+    width: 100%;
+    font-family: monospace, Menlo, Monaco, Consolas, Andale Mono, lucida console, Courier New;
+    white-space: pre;
+    padding: 1px 5px;
+    font-size: 1em;
+  }
+  
+  li code,
+  p code {
+    background-color: #eff0f1;
+    border-radius: 3px;
+  }
+  
+  img {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+    display: block;
+    box-shadow: 0 0 10px #555;
+    border-radius: 6px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    -webkit-box-shadow: 0 0 10px #555;
+  }
+  
+  img.displayed {
+    text-align: center;
+    display: block;
+  }
+  
+  hr {
+    color: LightGrey;
+  }
+  
+  p.notice {
+    color: #aa4433;
+    font-size: 14px;
+  }
+  
+  div.tweet p {
+    font-size: 16px;
+    border: 1px solid #aaa;
+    border-left: 10px solid #f28500;
+    padding: 2px 0.5em 2px 0.5em;
+    margin-bottom: 20px;
+    background-color: #fbfbfb;
+  }
+  
+  div.tweet i {
+    color: brown;
+    font-size: 14px;
+    font-style: normal;
+    border: 1px solid #aaa;
+    margin-right: 0.5em;
+    padding: 0px 2px;
+  }
+  
+  div.outer {
+    margin: 2% 5% 2% 5%;
+  }
+  
+  body.mobile div.outer {
+    margin: 2% 0% 2% 0%;
+  }
+  
+  div.inner {
+    margin: 0% 14%;
+    padding: 2% 8% 4% 8%;
+    border: 1px solid LightGrey;
+  }
+  
+  body.mobile div.inner {
+    margin: 0;
+    padding: 2% 4% 6% 4%;
+  }
+  
+  div.ad-banner {
+    margin: 0% 14%;
+  }
+  
+  body.mobile div.ad-banner {
+    margin: 0;
+  }
+  
+  .side-ad.mobile {
+    display: none;
+  }
+  
+  body.mobile .side-btn {
+    display: none;
+  }
+  
+  .side-btn {
+    position: fixed;
+    background-color: #fbf6ec;
+    -ms-transform: translate(calc(-8vw - 100%), 0);
+    -webkit-transform: translate(calc(-8vw - 100%), 0);
+    transform: translate(calc(-8vw - 100%), 0);
+    top: 50vh;
+  }
+  .side-btn a {
+    display: block;
+    color: #a57474;
+  }
+  .back {
+    -ms-transform: rotate(7deg);
+    -webkit-transform: rotate(7deg);
+    transform: rotate(7deg);
+  }
+  .side-btn a:hover {
+    -ms-transform: rotate(-7deg);
+    -webkit-transform: rotate(-7deg);
+    transform: rotate(-7deg);
+    color: #930ee4;
+  }
+  
+  kbd {
+    /* Copy from stackoverflow.com */
+    display: inline-block;
+    margin: 0 0.1em;
+    padding: 0.1em 0.6em;
+    font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+    font-size: 11px;
+    line-height: 1.4;
+    color: #242729;
+    text-shadow: 0 1px 0 #fff;
+    background-color: #e1e3e5;
+    border: 1px solid #adb3b9;
+    border-radius: 3px;
+    box-shadow: 0 1px 0 rgba(12, 13, 14, 0.2), 0 0 0 2px #fff inset;
+    white-space: nowrap;
+  }
+  
+  pre .btn {
+    -webkit-transition: opacity 0.3s ease-in-out;
+    -o-transition: opacity 0.3s ease-in-out;
+    transition: opacity 0.3s ease-in-out;
+    opacity: 0;
+    padding: 2px 6px;
+    position: absolute;
+    right: 4px;
+    top: 4px;
+  }
+  
+  pre:hover .btn,
+  pre .btn:focus {
+    opacity: 1;
+  }
+  
+  pre .clippy {
+    margin: 0;
+    margin-top: -3px;
+    position: relative;
+    top: 3px;
+    width: 13px;
+    display: inline;
+    border-radius: unset;
+  }
+  
+  footer {
+    padding-top: 10px !important;
+    overflow: auto;
+  }
+  
+  .link {
+    color: inherit;
+    text-decoration: none !important;
+    cursor: pointer;
+  }
+  
