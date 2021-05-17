@@ -6,7 +6,21 @@
     <description>Recent content in patterns on Negentropy</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Thu, 13 May 2021 19:39:41 +0800</lastBuildDate><atom:link href="https://chengyayu.github.io/tags/patterns/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 17 May 2021 17:14:01 +0800</lastBuildDate><atom:link href="https://chengyayu.github.io/tags/patterns/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Bridge Design Pattern</title>
+      <link>https://chengyayu.github.io/posts/bridge-design-pattern/</link>
+      <pubDate>Mon, 17 May 2021 17:14:01 +0800</pubDate>
+      
+      <guid>https://chengyayu.github.io/posts/bridge-design-pattern/</guid>
+      <description>桥接模式（Bridge Design Pattern）是一种结构型设计模式。意图将抽象和实现解耦，让它们独立变化。
+这里的抽象与实现并非编程语言中的抽象元素（Interface）和具体元素（Struct），而是业务逻辑层面的抽象与实现。 拿业务系统接入数据库相关中间件这个需求来说，任何一个编程语言都需要抽象出一个库，它来对接具体的某个数据库驱动，并封装一组对 SQL 相关的操作。
+比如 Go 语言标准库 database/sql 这个库便是一个“抽象”，而具体的数据库驱动库便是“实现”。 sql 库和 driver 库通过对象之间的组合，组装在一起。sql 的所有逻辑操作，最终委托给 driver 来执行。
+UML Diagram  Abstraction: 提供高层控制逻辑，依赖于完成底层实际工作的实现对象； Refined Abstraction: 一个“抽象类”，内嵌 Implementation 实例，实现 Abstraction; Implementation: 定义具体实现部分通用接口，为 Abstraction 提供实现部分的操作原语； Concrete Implementation: Implementation 的具体实现；  Example Question:
+需要将 N 个不同品牌计算机对接 M 个不同品牌的打印机 Code:
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77  package main import &amp;#34;fmt&amp;#34; // 抽象 type computer interface { print() setPrinter(printer) } // 精确抽象 type mac struct { printer printer } func (m *mac) print() { fmt.</description>
+    </item>
+    
     <item>
       <title>Composite Design Pattern</title>
       <link>https://chengyayu.github.io/posts/composite-design-pattern/</link>
