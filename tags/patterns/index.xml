@@ -14,7 +14,7 @@
       
       <guid>https://chengyayu.github.io/posts/bridge-design-pattern/</guid>
       <description>桥接模式（Bridge Design Pattern）是一种结构型设计模式。意图将抽象和实现解耦，让它们独立变化。
-这里的抽象与实现并非编程语言中的抽象元素（Interface）和具体元素（Struct），而是业务逻辑层面的抽象与实现。 拿业务系统接入数据库中间件这个需求来说，任何一个编程语言都会抽象出一个库，它来对接具体的某个数据库驱动，并封装一组对 SQL 相关的操作。
+这里的抽象与实现并非编程语言中的抽象元素（Interface）和具体元素（Struct），而是业务逻辑层面的抽象与实现。 拿给业务系统接入数据库中间件这个需求来说，任何一个编程语言都会抽象出一个库，它来对接具体的某个数据库驱动，并封装一组对 SQL 相关的操作。
 比如 Go 语言标准库 database/sql 这个库便是一个“抽象”，而具体的数据库驱动库便是“实现”。 sql 库和 driver 库通过对象之间的组合，组装在一起。sql 的所有逻辑操作，最终委托给 driver 来执行。
 UML Diagram  Abstraction: 提供高层控制逻辑，依赖于完成底层实际工作的实现对象； Refined Abstraction: 一个“抽象类”，内嵌 Implementation 实例，实现 Abstraction; Implementation: 定义具体实现部分通用接口，为 Abstraction 提供实现部分的操作原语； Concrete Implementation: Implementation 的具体实现；  Example Question:
 需要将 N 个不同品牌计算机对接 M 个不同品牌的打印机 Code:
