@@ -24,7 +24,7 @@
             <h2>Bridge Design Pattern</h2>
                 <p>桥接模式（Bridge Design Pattern）是一种结构型设计模式。<strong>意图将抽象和实现解耦，让它们独立变化</strong>。</p>
 <p>这里的<strong>抽象</strong>与<strong>实现</strong>并非编程语言中的抽象元素（Interface）和具体元素（Struct），而是业务逻辑层面的抽象与实现。
-拿<strong>业务系统接入数据库相关中间件</strong>这个需求来说，任何一个编程语言都需要抽象出一个库，它来对接具体的某个数据库驱动，并封装一组对 SQL 相关的操作。</p>
+拿<strong>业务系统接入数据库中间件</strong>这个需求来说，任何一个编程语言都会抽象出一个库，它来对接具体的某个数据库驱动，并封装一组对 SQL 相关的操作。</p>
 <p>比如 Go 语言标准库 <a href="https://pkg.go.dev/database/sql@go1.16.4">database/sql</a> 这个库便是一个“<strong>抽象</strong>”，而具体的数据库<a href="https://github.com/golang/go/wiki/SQLDrivers">驱动库</a>便是“<strong>实现</strong>”。
 sql 库和 driver 库通过对象之间的组合，组装在一起。sql 的所有逻辑操作，最终委托给 driver 来执行。</p>
 <h3 id="uml-diagram">UML Diagram</h3>
