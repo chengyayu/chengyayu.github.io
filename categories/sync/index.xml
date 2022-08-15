@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>sync on Negentropy</title>
+    <link>https://chengyayu.github.io/categories/sync/</link>
+    <description>Recent content in sync on Negentropy</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Mon, 15 Aug 2022 14:41:44 +0800</lastBuildDate><atom:link href="https://chengyayu.github.io/categories/sync/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Map</title>
+      <link>https://chengyayu.github.io/posts/sync-map/</link>
+      <pubDate>Mon, 15 Aug 2022 14:41:44 +0800</pubDate>
+      
+      <guid>https://chengyayu.github.io/posts/sync-map/</guid>
+      <description>map[K]V 1. 使用要点 Key 类型 K 必须是可比较类型(comparable)（排除 slice、map、function ）。
+map[K] 返回结果可以是一个值，也可以是两个值。如果获取一个不存在的 key 对应的值时，会返回零值。为了区分真正的零值和 key 不存在这两种情况，可以根据第二个返回值来区分。
+map 是无序的。所以当遍历一个 map 对象的时候，无法保证两次遍历元素的顺序是一样的，也不能保证和插入的顺序一致。想要按照 key 的顺序获取 map 的值，需要先取出所有的 key 进行排序，然后按照这个排序的 key 依次获取对应的值。而如果我们想要保证元素有序，比如按照元素插入的顺序进行遍历，可以使用辅助的数据结构，比如 orderedmap，来记录插入顺序。
+使用前必须初始化 m := make(map[K]V)。
+map 本身非并发安全，遇并发读写需加锁保证其并发安全。
+2. 安全与性能 用锁去同步多个并发执行体是常用的同步手段。为了保证有锁代码的性能，锁的使用原则就是：尽量减少锁的粒度和锁的持有时间。
+我们在业务代码中要尽可能保证临界区内不做耗时操作，这样可以减少锁的持有时间。减少锁的粒度常用方法是分片（shard），把一把锁分成几把锁，每个锁控制一个分片。Go 比较知名的分片并发 map 的实现是 orcaman/concurrent-map
+3. sync.Map Go 1.9 增加了线程安全的 map 即 sync.Map，但是它并不是用来替换内建 map 类型的。 官方文档指出，在以下两个场景中使用 sync.Map，会比使用 map + RWMutex 的方式，性能要好得多：
+只会增长的缓存系统中，一个 key 只写入一次而被读很多次； 多个 goroutine 为不相交的键集读、写和重写键值对。 这两个场景说得都比较笼统，而且，这些场景中还包含了一些特殊的情况。所以，官方建议你针对自己的场景做性能评测，如果确实能够显著提高性能，再使用 sync.Map。</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -13,7 +13,24 @@
       <pubDate>Fri, 21 May 2021 13:01:15 +0800</pubDate>
       
       <guid>https://chengyayu.github.io/posts/design-patterns-in-go/</guid>
-      <description>Structural Patterns  Decorator Design Pattern Adapter Design Pattern Facade Design Pattern Proxy Design Pattern Bridge Design Pattern Composite Design Pattern  Go Patterns  Functional Options Pattern  </description>
+      <description>Structural Patterns Decorator Design Pattern Adapter Design Pattern Facade Design Pattern Proxy Design Pattern Bridge Design Pattern Composite Design Pattern Go Patterns Functional Options Pattern </description>
+    </item>
+    
+    <item>
+      <title>Map</title>
+      <link>https://chengyayu.github.io/posts/sync-map/</link>
+      <pubDate>Mon, 15 Aug 2022 14:41:44 +0800</pubDate>
+      
+      <guid>https://chengyayu.github.io/posts/sync-map/</guid>
+      <description>map[K]V 1. 使用要点 Key 类型 K 必须是可比较类型(comparable)（排除 slice、map、function ）。
+map[K] 返回结果可以是一个值，也可以是两个值。如果获取一个不存在的 key 对应的值时，会返回零值。为了区分真正的零值和 key 不存在这两种情况，可以根据第二个返回值来区分。
+map 是无序的。所以当遍历一个 map 对象的时候，无法保证两次遍历元素的顺序是一样的，也不能保证和插入的顺序一致。想要按照 key 的顺序获取 map 的值，需要先取出所有的 key 进行排序，然后按照这个排序的 key 依次获取对应的值。而如果我们想要保证元素有序，比如按照元素插入的顺序进行遍历，可以使用辅助的数据结构，比如 orderedmap，来记录插入顺序。
+使用前必须初始化 m := make(map[K]V)。
+map 本身非并发安全，遇并发读写需加锁保证其并发安全。
+2. 安全与性能 用锁去同步多个并发执行体是常用的同步手段。为了保证有锁代码的性能，锁的使用原则就是：尽量减少锁的粒度和锁的持有时间。
+我们在业务代码中要尽可能保证临界区内不做耗时操作，这样可以减少锁的持有时间。减少锁的粒度常用方法是分片（shard），把一把锁分成几把锁，每个锁控制一个分片。Go 比较知名的分片并发 map 的实现是 orcaman/concurrent-map
+3. sync.Map Go 1.9 增加了线程安全的 map 即 sync.Map，但是它并不是用来替换内建 map 类型的。 官方文档指出，在以下两个场景中使用 sync.Map，会比使用 map + RWMutex 的方式，性能要好得多：
+只会增长的缓存系统中，一个 key 只写入一次而被读很多次； 多个 goroutine 为不相交的键集读、写和重写键值对。 这两个场景说得都比较笼统，而且，这些场景中还包含了一些特殊的情况。所以，官方建议你针对自己的场景做性能评测，如果确实能够显著提高性能，再使用 sync.Map。</description>
     </item>
     
     <item>
@@ -25,9 +42,9 @@
       <description>桥接模式（Bridge Design Pattern）是一种结构型设计模式。意图将抽象和实现解耦，让它们独立变化。
 这里的抽象与实现并非编程语言中的抽象元素（Interface）和具体元素（Struct），而是业务逻辑层面的抽象与实现。 拿给业务系统接入数据库中间件这个需求来说，任何一个编程语言都会抽象出一个库，它来对接具体的某个数据库驱动，并封装一组对 SQL 相关的操作。
 比如 Go 语言标准库 database/sql 这个库便是一个“抽象”，而具体的数据库驱动库便是“实现”。 sql 库和 driver 库通过对象之间的组合，组装在一起。sql 的所有逻辑操作，最终委托给 driver 来执行。
-UML Diagram  Abstraction: 提供高层控制逻辑，依赖于完成底层实际工作的实现对象； Refined Abstraction: 一个“抽象类”，内嵌 Implementation 实例，实现 Abstraction; Implementation: 定义具体实现部分通用接口，为 Abstraction 提供实现部分的操作原语； Concrete Implementation: Implementation 的具体实现；  Example Question:
+UML Diagram Abstraction: 提供高层控制逻辑，依赖于完成底层实际工作的实现对象； Refined Abstraction: 一个“抽象类”，内嵌 Implementation 实例，实现 Abstraction; Implementation: 定义具体实现部分通用接口，为 Abstraction 提供实现部分的操作原语； Concrete Implementation: Implementation 的具体实现； Example Question:
 需要将 N 个不同品牌计算机对接 M 个不同品牌的打印机 Code:
-1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77  package main import &amp;#34;fmt&amp;#34; // 抽象 type computer interface { print() setPrinter(printer) } // 精确抽象 type mac struct { printer printer } func (m *mac) print() { fmt.</description>
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 package main import &amp;#34;fmt&amp;#34; // 抽象 type computer interface { print() setPrinter(printer) } // 精确抽象 type mac struct { printer printer } func (m *mac) print() { fmt.</description>
     </item>
     
     <item>
@@ -39,10 +56,10 @@ UML Diagram  Abstraction: 提供高层控制逻辑，依赖于完成底层实际
       <description>组合模式（Composite Design Pattern）是一种结构型设计模式。意图通过构建树状数据结构并提供统一的处理方式来解决递归难题。 树状结构中的每个单个对象都可以以相同的方式处理，而不管它们是的复合的还是原子的。
 组合模式的设计思路，与其说是一种设计模式，倒不如说是对业务场景的一种数据结构和算法的抽象。其中，数据可以表示成树这种数据结构，业务需求可以通过在树上的递归遍历算法来实现。 应用场景虽然单一，但是一旦用上就帮了兄弟大忙。
 需要注意的是，管理树状数据结构的过程中，一定要有完备的检查机制，避免数据结构成环。同时需要思考的是，关键的计算型接口在计算环节如何提升性能。
-UML Diagram  Client 为主调方，依赖 Component 接口; Component 表示对结构树中每个节点的接口定义; Leaf 表示内嵌结构，结构树中的叶子节点; Composite 表示组合结构，非叶子节点的“抽象类”：  组合结构必须内嵌一组实现了 Component 接口的实例； 修饰器本身必须实现 Component 接口；   Concrete Composite 为遵循 Composite 约束的组合结构；  有没有发现这个结构图与修饰器模式的结构图几乎一模一样？这就是为什么说 Go 去实现设计模式简单直接。
+UML Diagram Client 为主调方，依赖 Component 接口; Component 表示对结构树中每个节点的接口定义; Leaf 表示内嵌结构，结构树中的叶子节点; Composite 表示组合结构，非叶子节点的“抽象类”： 组合结构必须内嵌一组实现了 Component 接口的实例； 修饰器本身必须实现 Component 接口； Concrete Composite 为遵循 Composite 约束的组合结构； 有没有发现这个结构图与修饰器模式的结构图几乎一模一样？这就是为什么说 Go 去实现设计模式简单直接。
 Example Question:
 设计一个文件目录树管理模块，提供以下操作界面： 1. 以某个文件路径获取一棵文件树； 2. 统计某棵文件树的文件个数； 3. 统计某棵文件树的磁盘占用总和； Code:
-1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97  package main import ( &amp;#34;fmt&amp;#34; &amp;#34;os&amp;#34; ) const BasePath = &amp;#34;.</description>
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 package main import ( &amp;#34;fmt&amp;#34; &amp;#34;os&amp;#34; ) const BasePath = &amp;#34;.</description>
     </item>
     
     <item>
@@ -53,9 +70,9 @@ Example Question:
       <guid>https://chengyayu.github.io/posts/facade-design-pattern/</guid>
       <description>门面（外观）模式（Facade Design Pattern）是一种结构型设计模式。意图隐藏底层系统的复杂性，并为客户端提供一个简单易用的操作界面。
 它为系统中许多底层接口提供了统一的接口，因此从客户端的角度来看，减少了需要操作的系统元素数量，它更易于使用。 业务架构设计层次划分时，BFF（Backend For Frontend）层便是对该模式很好的应用。
-UML Diagram  Internal Subsystem x 为底层系统，各自拥有一套操作接口（doX()，doY()，doZ()）； Facade 为外观层，持有多个 Subsystem 实例，并公开更简洁的操作接口 doSomething()；  Example Question:
+UML Diagram Internal Subsystem x 为底层系统，各自拥有一套操作接口（doX()，doY()，doZ()）； Facade 为外观层，持有多个 Subsystem 实例，并公开更简洁的操作接口 doSomething()； Example Question:
 整合一下服务接口，以服务 A 的 DoSomething 接口对外提供服务： - Sub1 服务的 DoX() - Sub2 服务的 DoY() - Sub3 服务的 DoZ() Code:
-1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48  package main import &amp;#34;fmt&amp;#34; type AFacade struct { bSvc *SubSvc1 cSvc *SubSvc2 dSvc *SubSvc3 } func NewAFacde() *AFacade { return &amp;amp;AFacade{ bSvc: &amp;amp;SubSvc1{}, cSvc: &amp;amp;SubSvc2{}, dSvc: &amp;amp;SubSvc3{}, } } func (a *AFacade) DoSomething() { fmt.</description>
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 package main import &amp;#34;fmt&amp;#34; type AFacade struct { bSvc *SubSvc1 cSvc *SubSvc2 dSvc *SubSvc3 } func NewAFacde() *AFacade { return &amp;amp;AFacade{ bSvc: &amp;amp;SubSvc1{}, cSvc: &amp;amp;SubSvc2{}, dSvc: &amp;amp;SubSvc3{}, } } func (a *AFacade) DoSomething() { fmt.</description>
     </item>
     
     <item>
@@ -67,11 +84,11 @@ UML Diagram  Internal Subsystem x 为底层系统，各自拥有一套操作接�
       <description>修饰器模式（Decorator Design Pattern）是一种结构型设计模式。意图动态地为原始对象添加一层层附加能力，以完成对原始对象既有功能的扩展和增强。
 具体的修饰器应该遵循一个契约：持有 A 接口的实例，同时本身必须实现 A 接口。 由于目标实例和修饰器遵循同一接口，因此可用修饰器来对实例进行无限次的封装。结果实例将获得所有修饰器叠加而来的行为。
 目标对象可以是一个结构，也可以是一个函数。与之相对,可以分别通过结构组合（面向对象编程范式）或者高阶函数（函数式编程范式）的方式实现这个模式。
-UML Diagram  Client 为主调方，依赖 Component 接口； Concrete Component 是实现了 Component 接口的结构； Decorator 定义了实现契约的“抽象类”：  修饰器必须内嵌一个实现了 Component 接口的实例； 修饰器本身必须实现 Component 接口；   Concrete Decorator x 是遵循 Decorator 契约的结构；  修饰器模式也是一种 Wrapper 模式，使用这种设计模式可以很方便得实现“俄罗斯套娃”，完成对既有功能的扩展增强。
+UML Diagram Client 为主调方，依赖 Component 接口； Concrete Component 是实现了 Component 接口的结构； Decorator 定义了实现契约的“抽象类”： 修饰器必须内嵌一个实现了 Component 接口的实例； 修饰器本身必须实现 Component 接口； Concrete Decorator x 是遵循 Decorator 契约的结构； 修饰器模式也是一种 Wrapper 模式，使用这种设计模式可以很方便得实现“俄罗斯套娃”，完成对既有功能的扩展增强。
 Example 1 （面向对象编程范式） Go 实现的版本是通过组合玩法，创建内嵌 Component 实例的 Decorator 结构（本身也实现 Component 接口）来完成对既有接口的包装和扩展。
 Question:
 香河肉饼准备拓展业务卖披萨饼，暂定 原味饼底 10 元， Cocoa 配料 20 元， Fruit 配料 25 元， 饼底和口味(可叠加)随意组合，应如何设计？ Code:
-1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47  package main import &amp;#34;fmt&amp;#34; type IPizza interface { getTaste() []string getPrice() int } type Crepes struct{} func (p *Crepes) getTaste() []string { return []string{&amp;#34;default&amp;#34;} } func (p *Crepes) getPrice() int { return 10 } // Topping 是一个实现了 IPizza 的 decorator type Topping struct { pizza IPizza // 内嵌一个 IPizza 实例 	taste string price int } // WithTopping 通过不同参数创建不同 concrete decorator func WithTopping(pizza IPizza, taste string, price int) *Topping { return &amp;amp;Topping{pizza: pizza, taste: taste, price: price} } func (t *Topping) getTaste() []string { result := t.</description>
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 package main import &amp;#34;fmt&amp;#34; type IPizza interface { getTaste() []string getPrice() int } type Crepes struct{} func (p *Crepes) getTaste() []string { return []string{&amp;#34;default&amp;#34;} } func (p *Crepes) getPrice() int { return 10 } // Topping 是一个实现了 IPizza 的 decorator type Topping struct { pizza IPizza // 内嵌一个 IPizza 实例 taste string price int } // WithTopping 通过不同参数创建不同 concrete decorator func WithTopping(pizza IPizza, taste string, price int) *Topping { return &amp;amp;Topping{pizza: pizza, taste: taste, price: price} } func (t *Topping) getTaste() []string { result := t.</description>
     </item>
     
     <item>
@@ -81,10 +98,10 @@ Question:
       
       <guid>https://chengyayu.github.io/posts/adapter-design-pattern/</guid>
       <description>适配器模式（Adapter Design Pattern）是一种结构型设计模式。意图把一个结构的既有接口转换成客户端所期待的另一种接口，从而使原本因接口不匹配而无法一起工作的两个结构能够一起工作。 对于这个模式，有一个经常被拿来解释它的例子，就是 USB 转接头充当适配器，把两种不兼容的接口，通过转接变得可以一起工作。
-UML Diagram  Client 为主调方，依赖 Target 接口; Target 表示目标接口定义; Adaptee 为一组不兼容 Target 接口定义的接口（被适配的结构）; Adaptor 将 Adaptee 转化成一组符合 Target 接口定义的接口;  适配器模式也可以称为 Wrapper 模式，通过构建（内嵌一个接口不匹配的 Adaptee）Wrapper 结构来对 Adaptee 进行能力转换以实现 Target 接口。 由于 Client 的业务逻辑依赖的是抽象（Target 接口）而非具体的结构类型，原本无法与 Client 对接的 Adaptee 经过 Adapter 包装也可以与 Client 对接了。
+UML Diagram Client 为主调方，依赖 Target 接口; Target 表示目标接口定义; Adaptee 为一组不兼容 Target 接口定义的接口（被适配的结构）; Adaptor 将 Adaptee 转化成一组符合 Target 接口定义的接口; 适配器模式也可以称为 Wrapper 模式，通过构建（内嵌一个接口不匹配的 Adaptee）Wrapper 结构来对 Adaptee 进行能力转换以实现 Target 接口。 由于 Client 的业务逻辑依赖的是抽象（Target 接口）而非具体的结构类型，原本无法与 Client 对接的 Adaptee 经过 Adapter 包装也可以与 Client 对接了。
 Example Question：
 mac 电脑具备接入 Lightning 插头的能力。 windows 电脑具备接入 USB 插头的能力。 client 希望将 Lightning 插头接入两台电脑，应如何处理？ Code:
-1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55  package main import &amp;#34;fmt&amp;#34; // 主调方依赖的目标接口 type computer interface { insertIntoLightningPort() } // 已实现目标接口 type mac struct{} func (m *mac) insertIntoLightningPort() { fmt.</description>
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 package main import &amp;#34;fmt&amp;#34; // 主调方依赖的目标接口 type computer interface { insertIntoLightningPort() } // 已实现目标接口 type mac struct{} func (m *mac) insertIntoLightningPort() { fmt.</description>
     </item>
     
     <item>
@@ -95,9 +112,9 @@ mac 电脑具备接入 Lightning 插头的能力。 windows 电脑具备接入 U
       <guid>https://chengyayu.github.io/posts/proxy-design-pattern/</guid>
       <description>代理模式（Proxy Design Pattern）是一种结构型设计模式。意图为主对象提供额外的一层（代理）以控制对这个对象的访问。
 也是一种 Wrapper 设计模式，与修饰器模式代码结构相似，但是意图不同。
-UML Diagram  Client 为主调方，依赖 Subject 接口； Subject 表示抽象主题，Proxy 和 RealSubject 都需要实现该接口； RealSubject 表示实现 Subject 接口的主题结构，负责主要业务逻辑； Proxy 表示实现 Subject 接口的代理结构，持有 RealSubject 对象，控制着外部对 RealSubject 对象的请求；  Example Question:
+UML Diagram Client 为主调方，依赖 Subject 接口； Subject 表示抽象主题，Proxy 和 RealSubject 都需要实现该接口； RealSubject 表示实现 Subject 接口的主题结构，负责主要业务逻辑； Proxy 表示实现 Subject 接口的代理结构，持有 RealSubject 对象，控制着外部对 RealSubject 对象的请求； Example Question:
 type server interface { handleRequest(string, string) (int, string) } 应用服务器 AppServer 满足 server 接口。 如何为 AppServer 设计一个代理，对 handleRequest 接口进行流量控制？ Code:
-1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69  package main import &amp;#34;fmt&amp;#34; type server interface { handleRequest(string, string) (int, string) } type nginx struct { appServer *appServer maxAllowedRequest int rateLimiter map[string]int } func newNginxServer() *nginx { return &amp;amp;nginx{ appServer: &amp;amp;appServer{}, maxAllowedRequest: 2, rateLimiter: make(map[string]int), } } func (n *nginx) handleRequest(url, method string) (int, string) { allowed := n.</description>
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 package main import &amp;#34;fmt&amp;#34; type server interface { handleRequest(string, string) (int, string) } type nginx struct { appServer *appServer maxAllowedRequest int rateLimiter map[string]int } func newNginxServer() *nginx { return &amp;amp;nginx{ appServer: &amp;amp;appServer{}, maxAllowedRequest: 2, rateLimiter: make(map[string]int), } } func (n *nginx) handleRequest(url, method string) (int, string) { allowed := n.</description>
     </item>
     
     <item>
@@ -108,8 +125,8 @@ type server interface { handleRequest(string, string) (int, string) } 应用服�
       <guid>https://chengyayu.github.io/posts/functional-options-pattern/</guid>
       <description>一个 Server 拥有很多配置选项，创建对象时一部分选项需要强制指定，另一部分选项非强制指定，且有缺省值。 如何设计一个对调用方友好的 NewServer 构造函数 API ？
 Configuration Problem 例如 Addr 和 Port 是需要强制指定的选项，其他选项非强制指定，且有缺省值，该如何设计 New Server 构造函数呢？
-1 2 3 4 5 6 7 8  type Server struct { Addr string Port int Protocol string Timeout time.Duration MaxConns int TLS *tls.Config }   我们可以创建一组针对不同情况的构造函数。
-1 2 3 4 5 6 7 8 9 10 11 12  func NewServer(addr string, port int) (*Server, error) { //... } func NewTLSServer(addr string, port int, tls *tls.</description>
+1 2 3 4 5 6 7 8 type Server struct { Addr string Port int Protocol string Timeout time.Duration MaxConns int TLS *tls.Config } 我们可以创建一组针对不同情况的构造函数。
+1 2 3 4 5 6 7 8 9 10 11 12 func NewServer(addr string, port int) (*Server, error) { //... } func NewTLSServer(addr string, port int, tls *tls.</description>
     </item>
     
     <item>
@@ -121,14 +138,17 @@ Configuration Problem 例如 Addr 和 Port 是需要强制指定的选项，其�
       <description>什么是好代码的特征 评价代码好坏，如同审美，不仅关乎个人品味，而且存在客观标准。 好的代码直接了当，如果需要被修改，能让“修理工”轻易找到修改点，并且快速做出更改，同时不易引入其他错误。 检验标准可以归纳成 ETC（Easy To Change）原则，就是人们是否能轻而易举地修改它。
 遗憾的是，我们面对不断变化的业务需求很难一步到位。只能快速实现，时时修缮，以期达到小步快跑的节奏感。
 何为重构 在不改变软件可观察行为的前提下，调整其结构。使之无限接近 ETC。
-何时重构  预备性重构：添加新功能很费劲 帮助理解的重构：代码看不懂 捡垃圾式重构：代码能看懂，但是烂 长期重构：每次改一点，就算改个名字也是好的 不重构：不需要理解则不必重构  重构的挑战  延缓新功能开发 遗留代码 代码所有权* 测试* 独立系统（数据库）*  尺度大一点
- 是不是不需要做架构了？ 无限增加可读性会不会影响性能？  代码坏味道 1 神秘命名
+何时重构 预备性重构：添加新功能很费劲 帮助理解的重构：代码看不懂 捡垃圾式重构：代码能看懂，但是烂 长期重构：每次改一点，就算改个名字也是好的 不重构：不需要理解则不必重构 重构的挑战 延缓新功能开发 遗留代码 代码所有权* 测试* 独立系统（数据库）* 尺度大一点
+是不是不需要做架构了？ 无限增加可读性会不会影响性能？ 代码坏味道 1 神秘命名
 2 重复代码
 3 过长函数
 4 过长参数列表
 5 全局数据
- 特征：数据不符合预期的被改变，又找不到变动源头 原因：  不可变：相对安全 可变：作用域范围越大，被影响的概率越大，越难以探测影响源   改进：  封装到一个结构中，提供可以修改其值的方法    6 可变数据
- 特征：一个变量拥有不同的语义 原因：  副作用   改进：  将一个（多功能）变量拆分成多个功能单一的变量 将没有副作用的代码和没有副作用的代码拆分开 函数式编程：如果要更新一个数据结构，就返回一份新的数据副本    7 发散式变化</description>
+特征：数据不符合预期的被改变，又找不到变动源头 原因： 不可变：相对安全 可变：作用域范围越大，被影响的概率越大，越难以探测影响源 改进： 封装到一个结构中，提供可以修改其值的方法 6 可变数据
+特征：一个变量拥有不同的语义 原因： 副作用 改进： 将一个（多功能）变量拆分成多个功能单一的变量 将没有副作用的代码和没有副作用的代码拆分开 函数式编程：如果要更新一个数据结构，就返回一份新的数据副本 7 发散式变化
+特征：某个模块需经常因为不同的原因在不同的方向上发生变化 原因：随着软件功能越来越多，上下文边界变得不够清晰 改进： 如果有明显先后次序，拆分阶段 如果两个方向有更多来回调用，将拆分出两个独立的模块 8 霰弹式修改
+特征：如果遇到某种变化，都必须在许多不同的结构内做出许多小修改 原因：模块拆分不合适 改进：先内联到一个大模块，再重新拆分 9 依恋情结
+特征： 一个函数跟另一个模块的函数或者数据格外频繁，远胜于在自己所处模块内部的交流 某个函数为了计算某个值，从另外一个对象那儿调用几乎半打的取值函数。 改进：将函数提炼出来搬到那个对象里去 10 数据泥团</description>
     </item>
     
   </channel>

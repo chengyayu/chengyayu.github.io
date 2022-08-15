@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <meta http-equiv="content-language" content="zh-CN" />
+        <meta name="viewport" content="width=device-width, initial-scale=0.5, maximum-scale=1, user-scalable=no">
+        <meta content="go sync map" name="keywords">
+        <meta content="Map - Negentropy" property="og:title">
+        <meta content=" - map in go" property="og:description">
+        <title>Map</title>
+
+        
+        <link rel="stylesheet" href="https://chengyayu.github.io/css/single.css">
+        <link rel="stylesheet" href="https://chengyayu.github.io/css/copy-to-clipboard.css">
+        
+    </head>
+    
+    <body>
+        
+        
+
+    <div class="inner" style="position:relative;">
+        <div class="blog-post">
+            <h2>Map</h2>
+                <pre tabindex="0"><code>map[K]V
+</code></pre><h3 id="1-使用要点">1. 使用要点</h3>
+<p>Key 类型 K 必须是可比较类型(<strong>comparable</strong>)（排除 <strong>slice</strong>、<strong>map</strong>、<strong>function</strong> ）。</p>
+<p>map[K] 返回结果可以是一个值，也可以是两个值。如果获取一个不存在的 key 对应的值时，会返回零值。为了区分真正的零值和 key 不存在这两种情况，可以根据第二个返回值来区分。</p>
+<p>map 是<strong>无序</strong>的。所以当遍历一个 map 对象的时候，无法保证两次遍历元素的顺序是一样的，也不能保证和插入的顺序一致。想要按照 key 的顺序获取 map 的值，需要先取出所有的 key 进行排序，然后按照这个排序的 key 依次获取对应的值。而如果我们想要保证元素有序，比如按照元素插入的顺序进行遍历，可以使用辅助的数据结构，比如 <a href="https://github.com/elliotchance/orderedmap">orderedmap</a>，来记录插入顺序。</p>
+<p>使用前必须初始化 <code>m := make(map[K]V)</code>。</p>
+<p>map 本身非并发安全，遇并发读写需加锁保证其并发安全。</p>
+<h3 id="2-安全与性能">2. 安全与性能</h3>
+<p>用锁去同步多个并发执行体是常用的同步手段。为了保证有锁代码的性能，锁的使用原则就是：<strong>尽量减少锁的粒度和锁的持有时间</strong>。</p>
+<p>我们在业务代码中要尽可能保证<strong>临界区内不做耗时操作</strong>，这样可以减少锁的持有时间。减少锁的粒度常用方法是<strong>分片（shard）</strong>，把一把锁分成几把锁，每个锁控制一个分片。Go 比较知名的分片并发 map 的实现是 <a href="https://github.com/orcaman/concurrent-map">orcaman/concurrent-map</a></p>
+<h3 id="3-syncmap">3. sync.Map</h3>
+<p>Go 1.9 增加了线程安全的 map 即 <code>sync.Map</code>，但是它并不是用来替换内建 map 类型的。
+<a href="https://pkg.go.dev/sync#Map">官方文档</a>指出，在以下两个场景中使用 sync.Map，会比使用 map + RWMutex 的方式，性能要好得多：</p>
+<ol>
+<li>只会增长的缓存系统中，一个 key 只写入一次而被读很多次；</li>
+<li>多个 goroutine 为不相交的键集读、写和重写键值对。</li>
+</ol>
+<p>这两个场景说得都比较笼统，而且，这些场景中还包含了一些特殊的情况。所以，官方建议你针对自己的场景做性能评测，如果确实能够显著提高性能，再使用 sync.Map。</p>
+
+        </div>
+
+        <br>
+
+        <footer>
+            <hr>
+            
+            <ul class="tags" style="float: left!important;">
+                
+                    <span>分类:</span>
+                    
+                        <li><a class="link" href="https://chengyayu.github.io/categories/go"> #go </a></li>
+                    
+                        <li><a class="link" href="https://chengyayu.github.io/categories/sync"> #sync </a></li>
+                    
+                
+                <br>
+                
+                    <span>标签:</span>
+                    
+                        <li><a class="link" href="https://chengyayu.github.io/tags/sync"> #sync </a></li>
+                    
+                        <li><a class="link" href="https://chengyayu.github.io/tags/map"> #map </a></li>
+                    
+                            
+            </ul>
+            
+        </footer>
+    </div> 
+    
+    
+    
+    <script src="https://chengyayu.github.io/js/copy-to-clipboard.js" defer="defer"></script>
+</body>
+</html>
