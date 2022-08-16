@@ -14,7 +14,7 @@
       
       <guid>https://chengyayu.github.io/posts/sync-map/</guid>
       <description>map[K]V 1. 使用要点 Map 使用前必须初始化 m := make(map[K]V) 。zero value 是 nil，零值 map 可读不可写，写就 panic。
-1 2 3 4 5 6 7 8 9 10 ... var m map[string]struct{} fmt.Println(m == nil) // true m is nil v := m[&amp;#34;a&amp;#34;] // reading from nil map is ok fmt.Println(v) // {} m[&amp;#34;a&amp;#34;] = struct{}{} // panic: assignment to entry in nil map fmt.Println(v) ... Key 类型 K 必须是可比较类型（comparable），即必须可受作用于 == 和 != 操作符，slice、map、function 都不行。Value 类型 V 为任意类型 any。</description>
+1 2 3 4 5 6 7 8 9 10 ... var m map[string]struct{} fmt.Println(m == nil) // true, m is nil v := m[&amp;#34;a&amp;#34;] // reading from nil map is ok fmt.Println(v) // {} m[&amp;#34;a&amp;#34;] = struct{}{} // panic: assignment to entry in nil map fmt.Println(v) ... Key 类型 K 必须是可比较类型（comparable），即必须可受作用于 == 和 != 操作符，slice、map、function 都不行。Value 类型 V 为任意类型 any。</description>
     </item>
     
   </channel>
