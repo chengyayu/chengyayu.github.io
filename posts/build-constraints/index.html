@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <meta http-equiv="content-language" content="zh-CN" />
+        <meta name="viewport" content="width=device-width, initial-scale=0.5, maximum-scale=1, user-scalable=no">
+        <meta content="go, build constraints" name="keywords">
+        <meta content="构建约束 - Negentropy" property="og:title">
+        <meta content=" - 构建约束" property="og:description">
+        <title>构建约束</title>
+
+        
+        <link rel="stylesheet" href="https://chengyayu.github.io/css/single.css">
+        <link rel="stylesheet" href="https://chengyayu.github.io/css/copy-to-clipboard.css">
+        
+    </head>
+    
+    <body>
+        
+        
+
+    <div class="inner" style="position:relative;">
+        <div class="blog-post">
+            <h2>构建约束</h2>
+                <pre tabindex="0"><code>//go:build !go1.17 &amp;&amp; (linux &amp;&amp; 386) || (darwin &amp;&amp; !cgo)
+</code></pre><h3 id="01-什么是构建约束">01 什么是构建约束？</h3>
+<p>构建约束（build constraint）也叫做构建标记（build tag），以文件名形式或注释形式，标记当前文件是否参与构建过程。</p>
+<p>文件名形式的构建约束比较简单，暂且按下不表。Go 中一直存在一种<code>// +build</code> 形式的构建约束语法，约束标记间的组合关系使用空格、逗号或多行来表示，例如：</p>
+<pre tabindex="0"><code>// +build linux,386 darwin,!cgo
+</code></pre><p>然而作为人类中的一员，我的大脑表示很困惑，这种语法示意性非常差！哪怕是下面这种多行形式</p>
+<pre tabindex="0"><code>// +build linux darwin
+// +build amd64
+</code></pre><p>也并不能有多少改进。而 go1.17 引入的新语法示意性就非常棒了。上面的约束用新语法表示成</p>
+<pre tabindex="0"><code>//go:build (linux || darwin) &amp;&amp; amd64
+</code></pre><h3 id="02-如何使用构建约束">02 如何使用构建约束？</h3>
+<h4 id="文件名形式">文件名形式</h4>
+<p>文件名按照以下模式构成构建约束：</p>
+<pre tabindex="0"><code>*_GOOS
+*_GOARCH
+*_GOOS_GOARCH
+</code></pre><p>例如 source_windows_amd64.go 只会在 windows 中 amd64 架构下参与构建。</p>
+<p>想要知道 GOOS 与 GOARCH 所有可选项，可通过 <code>go tool dist list</code> 查看。</p>
+<h4 id="注释形式">注释形式</h4>
+<p>使用要点：</p>
+<ul>
+<li>构建约束可以出现在任何源文件中，例如 <code>.go</code>、<code>.s</code> 等；</li>
+<li>必须在文件顶部附近，它的前面只能有空行或其他注释行；包子句也在约束之后；</li>
+<li>旧版约束 <code>// +build xxx</code> 可以有多行，新版约束 <code>//go:build xxx</code> 只能有一行；</li>
+<li>为了区别约束和包文档，在约束之后必须有空行；</li>
+</ul>
+<p>构建标记 <code>xxx</code>，可用以下备选词：</p>
+<ul>
+<li>特定操作系统，对应 runtime.GOOS 的可用值；</li>
+<li>特定架构，对应 runtime.GOARCH 的可用值；</li>
+<li>编译器，例如 gc、gccgo；</li>
+<li>支持 cgo 命令时，可使用 cgo；</li>
+<li>go 主要发布版本，例如 go1.17、go1.19;</li>
+<li>自定义的 tag，编译时通过 <code>-tags</code> 传递的值；</li>
+<li>用 ignore 来忽略构建；</li>
+</ul>
+<p>标记之间的组合关系用 <code>||</code>、<code>&amp;&amp;</code>、<code>!</code>、<code>(</code>、<code>)</code> 表示。</p>
+<h3 id="09-参考">09 参考</h3>
+<p><a href="https://pkg.go.dev/cmd/go#hdr-Build_constraints">https://pkg.go.dev/cmd/go#hdr-Build_constraints</a>
+<a href="https://go.googlesource.com/proposal/+/master/design/draft-gobuild.md">https://go.googlesource.com/proposal/+/master/design/draft-gobuild.md</a></p>
+
+        </div>
+
+        <br>
+
+        <footer>
+            <hr>
+            
+            <ul class="tags" style="float: left!important;">
+                
+                    <span>分类:</span>
+                    
+                        <li><a class="link" href="https://chengyayu.github.io/categories/go"> #go </a></li>
+                    
+                
+                <br>
+                
+                    <span>标签:</span>
+                    
+                        <li><a class="link" href="https://chengyayu.github.io/tags/build%20constraints"> #build constraints </a></li>
+                    
+                            
+            </ul>
+            
+        </footer>
+    </div> 
+    
+    
+    
+    <script src="https://chengyayu.github.io/js/copy-to-clipboard.js" defer="defer"></script>
+</body>
+</html>

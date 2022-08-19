@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>go on Negentropy</title>
-    <link>https://chengyayu.github.io/categories/go/</link>
-    <description>Recent content in go on Negentropy</description>
+    <title>build constraints on Negentropy</title>
+    <link>https://chengyayu.github.io/tags/build-constraints/</link>
+    <description>Recent content in build constraints on Negentropy</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Fri, 19 Aug 2022 16:35:05 +0800</lastBuildDate><atom:link href="https://chengyayu.github.io/categories/go/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 19 Aug 2022 16:35:05 +0800</lastBuildDate><atom:link href="https://chengyayu.github.io/tags/build-constraints/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>构建约束</title>
       <link>https://chengyayu.github.io/posts/build-constraints/</link>
@@ -22,16 +22,6 @@
 想要知道 GOOS 与 GOARCH 所有可选项，可通过 go tool dist list 查看。
 注释形式 使用要点：
 构建约束可以出现在任何源文件中，例如 .go、.s 等； 必须在文件顶部附近，它的前面只能有空行或其他注释行；包子句也在约束之后； 旧版约束 // +build xxx 可以有多行，新版约束 //go:build xxx 只能有一行； 为了区别约束和包文档，在约束之后必须有空行； 构建标记 xxx，可用以下备选词：</description>
-    </item>
-    
-    <item>
-      <title>Map</title>
-      <link>https://chengyayu.github.io/posts/sync-map/</link>
-      <pubDate>Mon, 15 Aug 2022 14:41:44 +0800</pubDate>
-      
-      <guid>https://chengyayu.github.io/posts/sync-map/</guid>
-      <description>map[K]V 1. 使用要点 Map 使用前必须初始化 m := make(map[K]V) 。zero value 是 nil，零值 map 可读不可写，写就 panic。
-1 2 3 4 5 6 7 8 9 10 ... var m map[string]struct{} fmt.Println(m == nil) // true, m is nil v := m[&amp;#34;a&amp;#34;] // reading from nil map is ok fmt.Println(v) // {} m[&amp;#34;a&amp;#34;] = struct{}{} // panic: assignment to entry in nil map fmt.Println(v) ... Key 类型 K 必须是可比较类型（comparable），即必须可受作用于 == 和 != 操作符，slice、map、function 都不行。Value 类型 V 为任意类型 any。</description>
     </item>
     
   </channel>
