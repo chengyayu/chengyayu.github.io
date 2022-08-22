@@ -13,15 +13,14 @@
       <pubDate>Fri, 19 Aug 2022 16:35:05 +0800</pubDate>
       
       <guid>https://chengyayu.github.io/posts/build-constraints/</guid>
-      <description>//go:build !go1.17 &amp;amp;&amp;amp; (linux &amp;amp;&amp;amp; 386) || (darwin &amp;amp;&amp;amp; !cgo) 01 什么是构建约束？ 构建约束（build constraint）也叫做构建标记（build tag），以文件名形式或注释形式，标记当前文件是否参与构建过程。
-文件名形式的构建约束比较简单，暂且按下不表。Go 中一直存在一种// +build 形式的构建约束语法，约束标记间的组合关系使用空格、逗号或多行来表示，例如：
-// +build linux,386 darwin,!cgo 然而作为人类中的一员，我的大脑表示很困惑，这种语法示意性非常差！哪怕是下面这种多行形式
-// +build linux darwin // +build amd64 也并不能有多少改进。而 go1.17 引入的新语法示意性就非常棒了。上面的约束用新语法表示成
-//go:build (linux || darwin) &amp;amp;&amp;amp; amd64 02 如何使用构建约束？ 文件名形式 文件名按照以下模式构成构建约束：
+      <description>//go:build go1.17 || (linux &amp;amp;&amp;amp; 386) || (darwin &amp;amp;&amp;amp; !cgo) 01 什么是构建约束？ 构建约束（build constraint）也叫做构建标记（build tag），以文件名或注释形式，标记当前文件是否参与构建过程。
+文件名形式的构建约束比较简单，暂且按下不表。Go 中一直存在一种 // +build 形式的构建约束语法，标记间的组合关系通过空格、逗号或多行来表示，例如：
+// +build go1.17 linux,386 darwin,!cgo 这种语法示意性非常差！哪怕是下面这种多行形式，也并没有多少改善。
+// +build go1.17 // +build linux,386 // +build darwin,!cgo 而 go1.17 引入的新语法示意性就非常棒了。上面的约束用新语法表示成:
+//go:build go1.17 || (linux &amp;amp;&amp;amp; 386) || (darwin &amp;amp;&amp;amp; !cgo) 新的约束语法可以理解为，标签表达式为真，当前文件参与构建。
+02 如何使用构建约束？ 文件名形式 文件名按照以下模式构成构建约束：
 *_GOOS *_GOARCH *_GOOS_GOARCH 例如 source_windows_amd64.go 只会在 windows 中 amd64 架构下参与构建。
-想要知道 GOOS 与 GOARCH 所有可选项，可通过 go tool dist list 查看。
-注释形式 使用要点：
-构建约束可以出现在任何源文件中，例如 .go、.s 等； 必须在文件顶部附近，它的前面只能有空行或其他注释行；包子句也在约束之后； 旧版约束 // +build xxx 可以有多行，新版约束 //go:build xxx 只能有一行； 为了区别约束和包文档，在约束之后必须有空行； 构建标记 xxx，可用以下备选词：</description>
+想要知道 GOOS 与 GOARCH 所有可选项，可通过 go tool dist list 查看。</description>
     </item>
     
   </channel>
