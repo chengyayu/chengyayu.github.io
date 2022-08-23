@@ -27,7 +27,7 @@
 <p>构建约束（build constraint）也叫做构建标记（build tag），以文件名或注释形式，标记当前文件是否参与构建过程。</p>
 <p>文件名形式的构建约束比较简单，暂且按下不表。Go 中一直存在一种 <code>// +build</code> 形式的构建约束语法，标记间的组合关系通过空格、逗号或多行来表示，例如：</p>
 <pre tabindex="0"><code>// +build go1.17 linux,386 darwin,!cgo
-</code></pre><p>这种语法示意性非常差！哪怕是下面这种多行形式，也并没有多少改善。</p>
+</code></pre><p>这种语法示意性非常差！哪怕是下面这种多行形式，示意性也并没有得到多少改善。</p>
 <pre tabindex="0"><code>// +build go1.17
 // +build linux,386
 // +build darwin,!cgo
@@ -40,7 +40,7 @@
 <pre tabindex="0"><code>*_GOOS
 *_GOARCH
 *_GOOS_GOARCH
-</code></pre><p>例如 source_windows_amd64.go 只会在 windows 中 amd64 架构下参与构建。</p>
+</code></pre><p>例如 source_windows_amd64.go 只会在 windows 操作系统中 amd64 架构下参与构建。</p>
 <p>想要知道 GOOS 与 GOARCH 所有可选项，可通过 <code>go tool dist list</code> 查看。</p>
 <h4 id="注释形式">注释形式</h4>
 <p>使用要点：</p>
@@ -53,13 +53,13 @@
 </ul>
 <p>构建标记 <code>xxx</code>，可用以下几种类型的备选词：</p>
 <ul>
-<li>特定<strong>操作系统</strong>，对应 runtime.GOOS 的可用值；</li>
-<li>特定<strong>架构</strong>，对应 runtime.GOARCH 的可用值；</li>
+<li><strong>操作系统</strong>，对应 runtime.GOOS 的可用值；</li>
+<li><strong>架构</strong>，对应 runtime.GOARCH 的可用值；</li>
 <li><strong>编译器</strong>，例如 gc、gccgo；</li>
-<li>支持 <strong>cgo</strong> 命令时，可使用 cgo；</li>
+<li><strong>cgo</strong>，支持 cgo 命令时，可使用 cgo；</li>
 <li><strong>go 主要发布版本</strong>，例如 go1.17、go1.19;</li>
-<li><strong>自定义的 tag</strong>，编译时通过 <code>-tags</code> 传递的值；</li>
-<li>用 <strong>ignore</strong> 来忽略构建；</li>
+<li><strong>自定义 tag</strong>，编译时通过 <code>-tags</code> 传递的值；</li>
+<li><strong>ignore</strong> 用来忽略构建；</li>
 </ul>
 <p>标记之间的组合关系用 <code>||</code>、<code>&amp;&amp;</code>、<code>!</code>、<code>(</code>、<code>)</code> 表示。</p>
 <h3 id="03-参考">03 参考</h3>
