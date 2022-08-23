@@ -18,7 +18,7 @@
 // +build go1.17 linux,386 darwin,!cgo 这种语法示意性非常差！哪怕是下面这种多行形式，示意性也并没有得到多少改善。
 // +build go1.17 // +build linux,386 // +build darwin,!cgo 而 go1.17 引入的新语法示意性就非常棒了。上面的约束用新语法表示成:
 //go:build go1.17 || (linux &amp;amp;&amp;amp; 386) || (darwin &amp;amp;&amp;amp; !cgo) 新的约束语法可以理解为，标签表达式为真，当前文件参与构建。
-02 如何使用构建约束？ 文件名形式 文件名按照以下模式构成构建约束：
+02 文件名形式构建约束 文件名按照以下模式构成构建约束：
 *_GOOS *_GOARCH *_GOOS_GOARCH 例如 source_windows_amd64.go 只会在 windows 操作系统中 amd64 架构下参与构建。
 想要知道 GOOS 与 GOARCH 所有可选项，可通过 go tool dist list 查看。</description>
     </item>
