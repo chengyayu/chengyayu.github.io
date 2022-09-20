@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8">
+        <meta http-equiv="content-language" content="zh-CN" />
+        <meta name="viewport" content="width=device-width, initial-scale=0.5, maximum-scale=1, user-scalable=no">
+        <meta content="etcd" name="keywords">
+        <meta content="Etcd 使用笔记 - Negentropy" property="og:title">
+        <meta content=" - etcd 使用笔记" property="og:description">
+        <title>Etcd 使用笔记</title>
+
+        
+        <link rel="stylesheet" href="https://chengyayu.github.io/css/single.css">
+        <link rel="stylesheet" href="https://chengyayu.github.io/css/copy-to-clipboard.css">
+        
+    </head>
+    
+    <body>
+        
+        
+
+    <div class="inner" style="position:relative;">
+        <div class="blog-post">
+            <h2>Etcd 使用笔记</h2>
+                <h2 id="简介">简介</h2>
+<h2 id="server-部署">Server 部署</h2>
+<h2 id="etcdctl-使用">etcdctl 使用</h2>
+<h3 id="对数据基本操作">对数据基本操作</h3>
+<h4 id="增">增</h4>
+<h4 id="删">删</h4>
+<h4 id="查一条">查一条</h4>
+<h4 id="查一组">查一组</h4>
+<h4 id="所有-key">所有 Key</h4>
+<h4 id="watch">Watch</h4>
+<h3 id="对集群基本操作">对集群基本操作</h3>
+<p>查看集群状态</p>
+<p><strong>查看集群成员</strong></p>
+<pre tabindex="0"><code>export ENDPOINTS=&#34;192.168.5.20:12380,192.168.5.21:12380,192.168.5.22:12380&#34;
+etcdctl --write-out=table --endpoints=$ENDPOINTS member list
+</code></pre><p>输出：</p>
+<pre tabindex="0"><code>+------------------+---------+-------+---------------------------+---------------------------+------------+
+|        ID        | STATUS  | NAME  |        PEER ADDRS         |       CLIENT ADDRS        | IS LEARNER |
++------------------+---------+-------+---------------------------+---------------------------+------------+
+|  426b722f256b114 | started | node3 | http://192.168.5.22:12380 | http://192.168.5.22:12379 |      false |
+| e04286035022a495 | started | node2 | http://192.168.5.21:12380 | http://192.168.5.21:12379 |      false |
+| eb59f8bc58cebf56 | started | node1 | http://192.168.5.20:12380 | http://192.168.5.20:12379 |      false |
++------------------+---------+-------+---------------------------+---------------------------+------------+
+</code></pre><h4 id="删除集群成员">删除集群成员</h4>
+
+        </div>
+
+        <br>
+
+        <footer>
+            <hr>
+            
+            <ul class="tags" style="float: left!important;">
+                
+                    <span>分类:</span>
+                    
+                        <li><a class="link" href="https://chengyayu.github.io/categories/etcd"> #etcd </a></li>
+                    
+                
+                <br>
+                
+                    <span>标签:</span>
+                    
+                        <li><a class="link" href="https://chengyayu.github.io/tags/etcd"> #etcd </a></li>
+                    
+                            
+            </ul>
+            
+        </footer>
+    </div> 
+    
+    
+    
+    <script src="https://chengyayu.github.io/js/copy-to-clipboard.js" defer="defer"></script>
+</body>
+</html>

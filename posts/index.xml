@@ -6,7 +6,7 @@
     <description>Recent content in Posts on Negentropy</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Fri, 19 Aug 2022 16:35:05 +0800</lastBuildDate><atom:link href="https://chengyayu.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 09 Sep 2022 15:32:14 +0800</lastBuildDate><atom:link href="https://chengyayu.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Design Patterns in Go</title>
       <link>https://chengyayu.github.io/posts/design-patterns-in-go/</link>
@@ -14,6 +14,18 @@
       
       <guid>https://chengyayu.github.io/posts/design-patterns-in-go/</guid>
       <description>Structural Patterns Decorator Design Pattern Adapter Design Pattern Facade Design Pattern Proxy Design Pattern Bridge Design Pattern Composite Design Pattern Go Patterns Functional Options Pattern </description>
+    </item>
+    
+    <item>
+      <title>Etcd 使用笔记</title>
+      <link>https://chengyayu.github.io/posts/etcd-01/</link>
+      <pubDate>Fri, 09 Sep 2022 15:32:14 +0800</pubDate>
+      
+      <guid>https://chengyayu.github.io/posts/etcd-01/</guid>
+      <description>简介 Server 部署 etcdctl 使用 对数据基本操作 增 删 查一条 查一组 所有 Key Watch 对集群基本操作 查看集群状态
+查看集群成员
+export ENDPOINTS=&amp;#34;192.168.5.20:12380,192.168.5.21:12380,192.168.5.22:12380&amp;#34; etcdctl --write-out=table --endpoints=$ENDPOINTS member list 输出：
++------------------+---------+-------+---------------------------+---------------------------+------------+ | ID | STATUS | NAME | PEER ADDRS | CLIENT ADDRS | IS LEARNER | +------------------+---------+-------+---------------------------+---------------------------+------------+ | 426b722f256b114 | started | node3 | http://192.168.5.22:12380 | http://192.168.5.22:12379 | false | | e04286035022a495 | started | node2 | http://192.168.5.21:12380 | http://192.168.5.21:12379 | false | | eb59f8bc58cebf56 | started | node1 | http://192.</description>
     </item>
     
     <item>
