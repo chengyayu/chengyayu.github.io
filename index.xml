@@ -17,6 +17,15 @@
     </item>
     
     <item>
+      <title>Go Generics</title>
+      <link>https://chengyayu.github.io/posts/go-generics/</link>
+      <pubDate>Fri, 18 Nov 2022 11:17:57 +0800</pubDate>
+      
+      <guid>https://chengyayu.github.io/posts/go-generics/</guid>
+      <description>References https://go.dev/ref/spec https://go.dev/blog/intro-generics https://go.dev/blog/when-generics https://coolshell.cn/articles/21615.html </description>
+    </item>
+    
+    <item>
       <title>Etcd 使用笔记</title>
       <link>https://chengyayu.github.io/posts/etcd-01/</link>
       <pubDate>Fri, 09 Sep 2022 15:32:14 +0800</pubDate>

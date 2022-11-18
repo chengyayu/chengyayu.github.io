@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>generics on Negentropy</title>
+    <link>https://chengyayu.github.io/tags/generics/</link>
+    <description>Recent content in generics on Negentropy</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Fri, 18 Nov 2022 11:17:57 +0800</lastBuildDate><atom:link href="https://chengyayu.github.io/tags/generics/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Go Generics</title>
+      <link>https://chengyayu.github.io/posts/go-generics/</link>
+      <pubDate>Fri, 18 Nov 2022 11:17:57 +0800</pubDate>
+      
+      <guid>https://chengyayu.github.io/posts/go-generics/</guid>
+      <description>References https://go.dev/ref/spec https://go.dev/blog/intro-generics https://go.dev/blog/when-generics https://coolshell.cn/articles/21615.html </description>
+    </item>
+    
+  </channel>
+</rss>
