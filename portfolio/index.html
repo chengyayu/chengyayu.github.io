@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>仪表主题设计</title>
+<style>
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:#F4F5F7;padding:64px 24px 88px}
+main{max-width:900px;margin:0 auto;display:flex;flex-direction:column;gap:64px}
+figure{margin:0}
+figure svg{width:100%;height:auto;display:block;border-radius:20px;box-shadow:0 4px 24px rgba(20,24,31,.13)}
+figcaption{margin-top:16px;text-align:center;font-size:14px;letter-spacing:.08em;color:#8A94A6;
+  font-family:"MiSans","PingFang SC","Hiragino Sans GB","Microsoft YaHei",-apple-system,BlinkMacSystemFont,sans-serif}
+@media (max-width:720px){
+  body{padding:32px 14px 56px}
+  main{gap:40px}
+  figcaption{font-size:12.5px}
+}
+@media print{body{background:#fff;padding:0}main{gap:24px}figure svg{box-shadow:none}}
+</style>
+</head>
+<body>
+<main>
+
+  <figure>
+    <svg viewBox="0 0 854 480" role="img" aria-label="霓虹夜行主题仪表界面">
+      <defs>
+        <linearGradient id="aRing" x1="0" y1="1" x2="1" y2="0">
+          <stop offset="0" stop-color="#0E7A8C"/><stop offset="1" stop-color="#7FE3F0"/>
+        </linearGradient>
+        <radialGradient id="aGlow" cx="50%" cy="60%" r="45%">
+          <stop offset="0" stop-color="#22B8CF" stop-opacity=".18"/>
+          <stop offset="1" stop-color="#22B8CF" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <rect width="854" height="480" rx="20" fill="#0B1220"/>
+      <rect x="1" y="1" width="852" height="478" rx="19" fill="none" stroke="#1B2740"/>
+      <circle cx="427" cy="290" r="240" fill="url(#aGlow)"/>
+
+      <path d="M227 330 A200 200 0 0 1 627 330" fill="none" stroke="#16324A" stroke-width="14" stroke-linecap="round"/>
+      <path d="M227 330 A200 200 0 0 1 627 330" fill="none" stroke="url(#aRing)" stroke-width="14" stroke-linecap="round" stroke-dasharray="440 700"/>
+
+      <text x="427" y="312" text-anchor="middle" font-size="190" font-weight="600" fill="#E9FBFF" letter-spacing="-6">42</text>
+      <text x="427" y="358" text-anchor="middle" font-size="26" fill="#5E8CA0" letter-spacing="8">KM/H</text>
+
+      <text x="40" y="72" font-size="42" font-weight="500" fill="#E9FBFF" letter-spacing="1">20:41</text>
+      <text x="40" y="110" font-size="24" fill="#5E8CA0" letter-spacing="1">夜间模式 · 已降亮</text>
+
+      <rect x="618" y="36" width="196" height="84" rx="18" fill="#101A2B" stroke="#1F3B4E"/>
+      <text x="642" y="70" font-size="24" fill="#5E8CA0" letter-spacing="2">电量</text>
+      <text x="788" y="78" text-anchor="end" font-size="48" font-weight="600" fill="#22B8CF">82</text>
+      <text x="800" y="78" font-size="24" fill="#22B8CF">%</text>
+      <rect x="642" y="88" width="148" height="8" rx="4" fill="#16324A"/>
+      <rect x="642" y="88" width="121" height="8" rx="4" fill="#22B8CF"/>
+
+      <path d="M50 236 L78 252 L50 268 Z" fill="#22B8CF" opacity=".45"/>
+      <path d="M804 236 L776 252 L804 268 Z" fill="#22B8CF" opacity=".45"/>
+
+      <rect x="40" y="372" width="216" height="76" rx="18" fill="#101A2B" stroke="#1F3B4E"/>
+      <text x="64" y="404" font-size="24" fill="#5E8CA0" letter-spacing="2">档位</text>
+      <text x="64" y="436" font-size="30" font-weight="600" fill="#7FE3F0" letter-spacing="1">D · 运动</text>
+
+      <text x="814" y="404" text-anchor="end" font-size="42" font-weight="500" fill="#CFE9F2">126.4</text>
+      <text x="814" y="436" text-anchor="end" font-size="24" fill="#5E8CA0" letter-spacing="3">ODO KM</text>
+    </svg>
+    <figcaption>霓虹夜行 · Neon Night</figcaption>
+  </figure>
+
+  <figure>
+    <svg viewBox="0 0 854 480" role="img" aria-label="机甲脉冲主题仪表界面">
+      <defs>
+        <pattern id="bHex" width="36" height="32" patternUnits="userSpaceOnUse">
+          <path d="M18 0 L36 9 L36 23 L18 32 L0 23 L0 9 Z" fill="none" stroke="#22272F" stroke-width="0.8"/>
+        </pattern>
+        <linearGradient id="bBar" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#8A6200"/><stop offset="1" stop-color="#E8A400"/>
+        </linearGradient>
+      </defs>
+      <rect width="854" height="480" rx="20" fill="#14171C"/>
+      <rect width="854" height="480" rx="20" fill="url(#bHex)" opacity=".5"/>
+
+      <path d="M24 76 L24 24 L76 24" fill="none" stroke="#E8A400" stroke-width="3"/>
+      <path d="M830 76 L830 24 L778 24" fill="none" stroke="#E8A400" stroke-width="3"/>
+      <path d="M24 404 L24 456 L76 456" fill="none" stroke="#2A2F37" stroke-width="3"/>
+      <path d="M830 404 L830 456 L778 456" fill="none" stroke="#2A2F37" stroke-width="3"/>
+
+      <rect x="44" y="40" width="200" height="78" rx="8" fill="#1C2128" stroke="#2A2F37"/>
+      <text x="66" y="74" font-size="24" fill="#8B95A1" letter-spacing="2">动力输出</text>
+      <text x="66" y="104" font-size="28" font-weight="600" fill="#E8A400" letter-spacing="1">PWR 78%</text>
+
+      <rect x="268" y="40" width="200" height="78" rx="8" fill="#1C2128" stroke="#2A2F37"/>
+      <text x="290" y="74" font-size="24" fill="#8B95A1" letter-spacing="2">累计里程</text>
+      <text x="290" y="104" font-size="28" font-weight="600" fill="#F5F7FA" letter-spacing="1">ODO 3.2K</text>
+
+      <rect x="492" y="40" width="180" height="78" rx="8" fill="#1C2128" stroke="#2A2F37"/>
+      <text x="514" y="74" font-size="24" fill="#8B95A1" letter-spacing="2">电量</text>
+      <text x="514" y="104" font-size="28" font-weight="600" fill="#F5F7FA" letter-spacing="1">BAT 64%</text>
+
+      <text x="814" y="80" text-anchor="end" font-size="38" font-weight="500" fill="#F5F7FA" letter-spacing="1">21:06</text>
+      <text x="814" y="112" text-anchor="end" font-size="24" fill="#8B95A1" letter-spacing="2">SPORT</text>
+
+      <text x="427" y="288" text-anchor="middle" font-size="190" font-weight="600" fill="#F5F7FA" letter-spacing="-5">58</text>
+      <text x="427" y="334" text-anchor="middle" font-size="26" fill="#8B95A1" letter-spacing="10">KM/H</text>
+
+      <text x="90" y="342" font-size="24" fill="#8B95A1" letter-spacing="2">能量充能</text>
+      <rect x="90" y="352" width="674" height="22" rx="4" fill="#1C2128" stroke="#2A2F37"/>
+      <rect x="90" y="352" width="512" height="22" rx="4" fill="url(#bBar)"/>
+
+      <text x="90" y="408" font-size="24" fill="#8B95A1" letter-spacing="2">档位</text>
+      <text x="90" y="440" font-size="30" font-weight="600" fill="#E8A400" letter-spacing="2">D / SPORT</text>
+
+      <text x="560" y="408" font-size="24" fill="#C98A8A" letter-spacing="2">状态</text>
+      <text x="560" y="440" font-size="30" font-weight="600" fill="#FF6B6B" letter-spacing="2">TCS 已介入</text>
+    </svg>
+    <figcaption>机甲脉冲 · Mecha Pulse</figcaption>
+  </figure>
+
+  <figure>
+    <svg viewBox="0 0 854 480" role="img" aria-label="晴日漫游主题仪表界面">
+      <defs>
+        <filter id="cSoft" x="-20%" y="-20%" width="140%" height="140%">
+          <feDropShadow dx="0" dy="3" stdDeviation="7" flood-color="#C9A87C" flood-opacity=".18"/>
+        </filter>
+      </defs>
+      <rect width="854" height="480" rx="20" fill="#FDF6EC"/>
+      <circle cx="758" cy="72" r="38" fill="#FAC775" opacity=".5"/>
+
+      <text x="44" y="78" font-size="42" font-weight="600" fill="#4A3B2A">08:12</text>
+      <rect x="44" y="94" width="182" height="46" rx="23" fill="#FFFFFF" filter="url(#cSoft)"/>
+      <text x="66" y="125" font-size="24" fill="#7A6A56" letter-spacing="1">晴 · 24°C</text>
+
+      <rect x="44" y="168" width="440" height="212" rx="28" fill="#FFFFFF" filter="url(#cSoft)"/>
+      <text x="80" y="212" font-size="24" fill="#9C8B76" letter-spacing="2">当前时速</text>
+      <text x="80" y="330" font-size="150" font-weight="700" fill="#4A3B2A" letter-spacing="-4">24</text>
+      <text x="308" y="330" font-size="28" fill="#9C8B76">km/h</text>
+      <text x="80" y="364" font-size="24" fill="#B4A48E" letter-spacing="1">今日已骑 8.6 km</text>
+
+      <rect x="500" y="168" width="310" height="100" rx="24" fill="#E1F5EE" filter="url(#cSoft)"/>
+      <text x="528" y="208" font-size="24" fill="#4E9C86" letter-spacing="2">电量</text>
+      <text x="528" y="252" font-size="46" font-weight="700" fill="#0F6E56">68%</text>
+      <rect x="658" y="220" width="128" height="14" rx="7" fill="#FFFFFF"/>
+      <rect x="658" y="220" width="87" height="14" rx="7" fill="#5DCAA5"/>
+
+      <rect x="500" y="280" width="310" height="100" rx="24" fill="#FBEAF0" filter="url(#cSoft)"/>
+      <text x="528" y="320" font-size="24" fill="#B5728F" letter-spacing="2">今日足迹</text>
+      <text x="528" y="364" font-size="46" font-weight="700" fill="#8E2C4E">8.6</text>
+      <text x="620" y="364" font-size="26" fill="#B5728F">km</text>
+
+      <rect x="44" y="392" width="248" height="56" rx="24" fill="#FFFFFF" filter="url(#cSoft)"/>
+      <text x="74" y="429" font-size="26" font-weight="600" fill="#4A3B2A">舒适模式</text>
+
+      <path d="M772 412 L802 428 L772 444 Z" fill="#F0A94A"/>
+    </svg>
+    <figcaption>晴日漫游 · Sunny Ride</figcaption>
+  </figure>
+
+</main>
+</body>
+</html>
