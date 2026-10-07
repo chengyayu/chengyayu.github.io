@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>九号电动车显示屏主题 · 设计与上架计划</title>
+<style>
+:root{
+  --ink:#14181F; --ink2:#4A5464; --ink3:#8A94A6;
+  --bg:#F6F7F9; --card:#FFFFFF; --line:#E6E9EF; --line2:#F0F2F6;
+  --a1:#3FBFA0;  /* 凡人修仙传 */
+  --a2:#E8A400;  /* 牧神记 */
+  --a3:#D4537E;  /* 晴日漫游 */
+  --brand:#1F6FEB;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Segoe UI",Roboto,sans-serif;
+  font-size:14px; line-height:1.72; letter-spacing:.01em;
+}
+.wrap{max-width:1060px;margin:0 auto;padding:56px 28px 96px}
+
+/* ---------- header ---------- */
+.hero{
+  background:var(--card);border:1px solid var(--line);border-radius:20px;
+  padding:38px 40px 34px;margin-bottom:22px;
+}
+.eyebrow{font-size:12px;letter-spacing:.16em;color:var(--ink3);text-transform:uppercase;margin:0 0 14px}
+h1{font-size:30px;line-height:1.35;font-weight:600;margin:0 0 14px;letter-spacing:-.01em}
+.lede{font-size:14.5px;color:var(--ink2);margin:0;max-width:74ch}
+.hero-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.chip{
+  display:inline-block;font-size:12px;color:var(--ink2);
+  background:#F3F5F8;border:1px solid var(--line);border-radius:999px;padding:4px 12px;
+}
+
+/* ---------- toc ---------- */
+.toc{
+  background:var(--card);border:1px solid var(--line);border-radius:20px;
+  padding:24px 28px;margin-bottom:22px;
+}
+.toc h2{font-size:13px;font-weight:600;color:var(--ink3);letter-spacing:.08em;margin:0 0 12px;text-transform:uppercase}
+.toc ol{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:8px 24px}
+.toc a{color:var(--ink);text-decoration:none;font-size:13.5px;display:flex;gap:10px;padding:3px 0}
+.toc a:hover{color:var(--brand)}
+.toc a b{color:var(--ink3);font-weight:500;font-variant-numeric:tabular-nums}
+
+/* ---------- section ---------- */
+section{margin-top:26px}
+.sec-head{display:flex;align-items:flex-start;gap:14px;margin:0 0 16px}
+.sec-num{
+  flex:0 0 auto;width:30px;height:30px;border-radius:9px;background:var(--ink);color:#fff;
+  font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;margin-top:4px;
+}
+.sec-head h2{font-size:21px;font-weight:600;margin:0;letter-spacing:-.005em}
+.sec-head p{margin:2px 0 0;font-size:13px;color:var(--ink3)}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:26px 30px;margin-bottom:16px}
+.card>h3{font-size:15.5px;font-weight:600;margin:0 0 14px;display:flex;align-items:center;gap:9px}
+.card>h3::before{content:"";width:3px;height:15px;border-radius:2px;background:var(--ink);display:block}
+.card>h3.plain::before{display:none}
+.card p{margin:0 0 12px;color:var(--ink2)}
+.card p:last-child{margin-bottom:0}
+.card ul,.card ol{margin:0 0 12px;padding-left:20px;color:var(--ink2)}
+.card li{margin:4px 0}
+.card li strong,.card p strong{color:var(--ink);font-weight:600}
+.card ul:last-child,.card ol:last-child{margin-bottom:0}
+.hl{background:#FFF8E1;padding:1px 5px;border-radius:4px;color:var(--ink);font-weight:500}
+
+/* ---------- table ---------- */
+table{width:100%;border-collapse:separate;border-spacing:0;font-size:13px;margin:0 0 6px}
+th,td{text-align:left;padding:11px 13px;border-bottom:1px solid var(--line2);vertical-align:top}
+thead th{
+  background:#F3F5F8;color:var(--ink2);font-weight:600;font-size:12.5px;white-space:nowrap;
+  border-bottom:1px solid var(--line);
+}
+thead th:first-child{border-top-left-radius:10px}
+thead th:last-child{border-top-right-radius:10px}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover{background:#FAFBFC}
+td strong{font-weight:600}
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch}
+
+/* ---------- metric grid ---------- */
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:0 0 6px}
+.metric{background:#F8F9FB;border:1px solid var(--line2);border-radius:14px;padding:16px 18px}
+.metric .v{font-size:24px;font-weight:600;letter-spacing:-.02em;line-height:1.2;font-variant-numeric:tabular-nums}
+.metric .l{font-size:12.5px;color:var(--ink3);margin-top:4px}
+.metric .s{font-size:11.5px;color:var(--ink3);margin-top:6px;opacity:.85}
+
+/* ---------- persona ---------- */
+.personas{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.persona{background:#F8F9FB;border:1px solid var(--line2);border-radius:14px;padding:18px 20px}
+.persona h4{margin:0 0 4px;font-size:14px;font-weight:600}
+.persona .tag{font-size:11.5px;color:var(--ink3);margin:0 0 10px}
+.persona ul{margin:0;padding-left:16px;font-size:12.5px;color:var(--ink2)}
+.persona li{margin:3px 0}
+
+/* ---------- theme cards ---------- */
+.themes{display:grid;grid-template-columns:1fr;gap:16px}
+.theme{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.theme-top{display:grid;grid-template-columns:230px 1fr;gap:0}
+.theme-vis{padding:24px;background:#F8F9FB;border-right:1px solid var(--line2);display:flex;flex-direction:column;gap:12px;align-items:center;justify-content:center}
+.theme-body{padding:24px 28px}
+.theme-body h3{margin:0 0 6px;font-size:17px;font-weight:600;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.pill{font-size:11.5px;font-weight:600;padding:3px 10px;border-radius:999px;border:1px solid;white-space:nowrap}
+.price-tag{margin-left:auto;font-size:15px;font-weight:600;font-variant-numeric:tabular-nums}
+.theme-body .sub{font-size:12.5px;color:var(--ink3);margin:0 0 14px}
+.spec{display:grid;grid-template-columns:76px 1fr;gap:6px 14px;font-size:13px}
+.spec dt{color:var(--ink3);font-size:12.5px}
+.spec dd{margin:0;color:var(--ink2)}
+.swatches{display:flex;gap:6px;margin-top:2px}
+.sw{width:22px;height:22px;border-radius:6px;border:1px solid rgba(0,0,0,.07)}
+.theme.t1 .pill{border-color:var(--a1);color:#0E7A8C;background:#E4F7FA}
+.theme.t2 .pill{border-color:var(--a2);color:#8A6200;background:#FDF3DC}
+.theme.t3 .pill{border-color:var(--a3);color:#8E2C4E;background:#FCEAF0}
+.theme.t1 .price-tag{color:#0E7A8C}
+.theme.t2 .price-tag{color:#8A6200}
+.theme.t3 .price-tag{color:#8E2C4E}
+.theme.t1{border-left:3px solid var(--a1)}
+.theme.t2{border-left:3px solid var(--a2)}
+.theme.t3{border-left:3px solid var(--a3)}
+
+/* ---------- flow steps ---------- */
+.steps{counter-reset:s;margin:0;padding:0;list-style:none}
+.steps li{
+  counter-increment:s;position:relative;padding:0 0 18px 42px;border-left:1px solid var(--line);
+  margin-left:12px;
+}
+.steps li:last-child{border-left-color:transparent;padding-bottom:0}
+.steps li::before{
+  content:counter(s);position:absolute;left:-13px;top:0;width:26px;height:26px;border-radius:50%;
+  background:#fff;border:1px solid var(--line);color:var(--ink2);font-size:12px;font-weight:600;
+  display:flex;align-items:center;justify-content:center;
+}
+.steps b{display:block;font-size:13.5px;font-weight:600;margin-bottom:2px}
+.steps span{font-size:12.5px;color:var(--ink2)}
+
+/* ---------- callout ---------- */
+.note{
+  background:#F1F6FF;border:1px solid #D6E4FF;border-left:3px solid var(--brand);
+  border-radius:12px;padding:16px 20px;margin:14px 0 0;
+}
+.note.warn{background:#FFF8E8;border-color:#F5E2B8;border-left-color:#D99A00}
+.note h4{margin:0 0 6px;font-size:13.5px;font-weight:600}
+.note p,.note ul{margin:0;font-size:13px;color:var(--ink2)}
+.note ul{padding-left:18px}
+.note li{margin:3px 0}
+
+/* ---------- misc ---------- */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.kv{font-size:13px;color:var(--ink2)}
+.kv b{color:var(--ink)}
+footer{margin-top:34px;padding-top:22px;border-top:1px solid var(--line);font-size:12px;color:var(--ink3);line-height:1.9}
+footer a{color:var(--ink2)}
+@media (max-width:760px){
+  .wrap{padding:32px 16px 64px}
+  h1{font-size:23px}
+  .hero{padding:28px 22px}
+  .card{padding:22px 18px}
+  .theme-top{grid-template-columns:1fr}
+  .theme-vis{border-right:none;border-bottom:1px solid var(--line2)}
+  .two{grid-template-columns:1fr}
+  .spec{grid-template-columns:1fr;gap:2px 0}
+  .spec dd{margin-bottom:8px}
+}
+@media print{
+  body{background:#fff}
+  .wrap{max-width:none;padding:0}
+  .card,.hero,.toc,.theme{break-inside:avoid;box-shadow:none}
+  section{break-inside:auto}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <p class="eyebrow">Ninebot · 仪表皮肤 / 主题商城 · 项目计划书</p>
+  <h1>九号电动车显示屏主题<br>设计与上架计划</h1>
+  <p class="lede">围绕九号主题开发者平台（Nimble OS）生态，完成 3 款仪表主题的调研、创意设计、制作、测试与上架。三款主题<strong>统一定价 ¥6</strong>——即平台「<strong>精致进阶</strong>」档（6–12 元）的<strong>下限</strong>，分别覆盖「仙侠 IP」「洪荒 IP」「情绪场景」三个供给缺口，以最低的决策门槛换取最大的装机量与评价基数。</p>
+  <div class="hero-meta">
+    <span class="chip">3 款主题</span>
+    <span class="chip">6 个阶段 · 约 8 周</span>
+    <span class="chip">主渠道：九号出行 App 主题商城</span>
+    <span class="chip">统一定价 ¥6（精致进阶档下限）</span>
+  </div>
+</header>
+
+<nav class="toc">
+  <h2>目录</h2>
+  <ol>
+    <li><a href="#s1"><b>01</b> 产品与用户调研</a></li>
+    <li><a href="#s2"><b>02</b> 目标用户与使用场景</a></li>
+    <li><a href="#s3"><b>03</b> 三款主题设计方向</a></li>
+    <li><a href="#s4"><b>04</b> 测试方案</a></li>
+    <li><a href="#s5"><b>05</b> 上架流程与渠道</a></li>
+    <li><a href="#s6"><b>06</b> 定价策略</a></li>
+    <li><a href="#s7"><b>07</b> 分阶段执行计划</a></li>
+    <li><a href="#s8"><b>08</b> 风险与待确认</a></li>
+  </ol>
+</nav>
+
+<!-- ================= 01 ================= -->
+<section id="s1">
+  <div class="sec-head">
+    <div class="sec-num">01</div>
+    <div>
+      <h2>产品与用户调研</h2>
+      <p>九号（Segway-Ninebot）两轮车产品矩阵、屏幕形态与主题生态现状</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>1.1 与显示屏相关的产品矩阵</h3>
+    <p>主题的载体是仪表屏。九号两轮车按「屏幕能力」可分为三类：<strong>7 英寸动态仪表</strong>（旗舰，支持动效皮肤）、<strong>彩屏仪表</strong>（4.3 英寸级 TFT，支持静态/轻动效皮肤）、<strong>基础屏</strong>（点阵/单色，暂不支持主题）。设计资源应优先投向前两类。</p>
+    <div class="tw">
+    <table>
+      <thead>
+        <tr><th>系列</th><th>代表车型</th><th>产品定位</th><th>屏幕与主题支持</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>E 系列</strong></td><td>E300P MK2 / E200P MK2 / E125 MK2</td><td>高性能电摩，运动骑行进阶之选</td><td>7 英寸动态仪表，主题支持最完整</td></tr>
+        <tr><td><strong>M 系列</strong></td><td>M5 200 / M1 85 / M85c+ MK2</td><td>都市通勤电摩，头号旗舰</td><td>大尺寸彩屏，支持主题</td></tr>
+        <tr><td><strong>N 系列</strong></td><td>N1 70 / N1 85</td><td>「年轻人的第一台酷玩电摩」，次世代机甲风</td><td>4.3 英寸彩屏（联名款已采用专属仪表 UI）</td></tr>
+        <tr><td><strong>C 系列</strong></td><td>C80c</td><td>城市设计语言，颜值通勤</td><td>彩屏，支持主题</td></tr>
+        <tr><td><strong>Q 系列</strong></td><td>Q3 85c</td><td>「个性女王」，女性向</td><td>彩屏，支持主题</td></tr>
+        <tr><td><strong>A 系列</strong></td><td>A2 60</td><td>实用出行基本款</td><td>基础屏，主题能力有限</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="margin-top:14px">共性能力底座：<strong>RideyGo! 2.0 智能车机系统</strong>与 <strong>Nimble OS</strong> 软件生态，仪表与 App 主题可联动（切换仪表皮肤后 App 界面同步生效）。</p>
+    <div class="note warn">
+      <h4>调研口径说明</h4>
+      <p>平台未公开「支持主题的完整机型清单」与屏幕规格参数。上表为公开产品线整理，<strong>具体适配机型必须在入驻开发者平台后，以平台内「适配机型 / 屏幕规格」清单为最终依据</strong>，不可直接按本表投产。</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>1.2 用户群体：一群为「个性」付费的年轻人</h3>
+    <div class="metrics">
+      <div class="metric"><div class="v">65%</div><div class="l">线上购买用户为 18–35 岁</div><div class="s">公开市场数据</div></div>
+      <div class="metric"><div class="v">52%</div><div class="l">Z 世代车主选购偏好选择九号</div><div class="s">高于传统品牌</div></div>
+      <div class="metric"><div class="v">&gt;40%</div><div class="l">女性用户因外观选择九号</div><div class="s">颜值驱动决策</div></div>
+      <div class="metric"><div class="v">500万+</div><div class="l">用户 UGC 内容量</div><div class="s">1800+ 场线下骑行活动</div></div>
+    </div>
+    <p style="margin-top:18px">九号的核心差异不在硬件参数，而在于把电动车做成了<strong>可表达自我的社交载体</strong>：改装文化活跃、九友会与城市骑行路书形成社群、与《蛋仔派对》《无畏契约》等 IP 联名，官方代言人强化「不随波逐流」的品牌调性。这意味着——<strong>用户对「换皮肤」这类低成本个性化改造的接受度极高</strong>，且已经具备「游戏皮肤」式的付费心智锚点。</p>
+    <p>三类核心人群（公开资料归纳）：</p>
+    <div class="personas">
+      <div class="persona">
+        <h4>科技尝鲜者</h4>
+        <p class="tag">对智能化与新交互敏感</p>
+        <ul>
+          <li>在意 App 联动、动效、开机仪式感</li>
+          <li>乐于第一时间试用内测功能</li>
+          <li>价格不敏感，对「独家」敏感</li>
+        </ul>
+      </div>
+      <div class="persona">
+        <h4>年轻通勤群体</h4>
+        <p class="tag">大学生 / 初入职场，城市短途</p>
+        <ul>
+          <li>追求颜值与品牌调性</li>
+          <li>单次决策成本敏感，6 元几乎无门槛</li>
+          <li>骑行中需快速读取时速与电量</li>
+        </ul>
+      </div>
+      <div class="persona">
+        <h4>性能追求者</h4>
+        <p class="tag">动力、制动、操控控</p>
+        <ul>
+          <li>关注功率、扭矩、圈速类数据</li>
+          <li>偏好赛道 / 机甲 / 机能视觉</li>
+          <li>愿为「专业感」支付溢价</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>1.3 主题商城现状与供给缺口</h3>
+    <p>九号出行 App 主题商城已上线仪表皮肤、App 皮肤、车机音效三类资源，并已在公开渠道出现付费购买行为；平台侧由<strong>九号主题开发者平台</strong>承接创作者入驻、开发、上传与结算。当前商城头部供给以<strong>二次元人物立绘</strong>为主（如《怦然心动》甜妹狐系风、《Stare Me》街头竞速红瞳、《盛世华诞》国风、《凌冲》机能赛道、《City Pop Night》美式复古、棒球少女红/蓝队系列）。</p>
+    <div class="tw">
+    <table>
+      <thead><tr><th>观察到的缺口</th><th>表现</th><th>对应主题</th></tr></thead>
+      <tbody>
+        <tr><td><strong>仙侠题材缺位</strong></td><td>现有供给集中在二次元人物立绘与机能风，几乎没有以「云海仙山」为意象的清冷仙侠款</td><td>主题 A</td></tr>
+        <tr><td><strong>洪荒 / 玄幻题材缺位</strong></td><td>暗黑科技风有少量供给，但缺少以图腾、雷纹为核心的洪荒玄幻方案</td><td>主题 B</td></tr>
+        <tr><td><strong>场景化动效刚起步</strong></td><td>动态仪表刚开放，几乎没有「随时段 / 天气自动变化」的情绪化主题</td><td>主题 C</td></tr>
+        <tr><td><strong>低价高完成度款稀缺</strong></td><td>缺少 6 元级、且能一次覆盖仙侠 / 洪荒 / 情绪三种题材的高完成度成套供给</td><td>A/B/C 组合</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 02 ================= -->
+<section id="s2">
+  <div class="sec-head">
+    <div class="sec-num">02</div>
+    <div>
+      <h2>目标用户与使用场景</h2>
+      <p>把调研结论收敛为可指导设计的定位</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>2.1 目标用户定位</h3>
+    <p>主题商城的<strong>核心付费人群</strong>定义为：<span class="hl">18–30 岁、持有彩屏或 7 英寸动态仪表车型的九号车主</span>。他们已为「个性化」支付过硬件溢价（如联名款），因此对 6 元级的软件皮肤几乎不存在决策阻力。</p>
+    <div class="tw">
+    <table>
+      <thead><tr><th>细分人群</th><th>占比预期</th><th>核心诉求</th><th>付费敏感度</th></tr></thead>
+      <tbody>
+        <tr><td><strong>年轻男性通勤 + 性能党</strong></td><td>主力盘（约 55%）</td><td>酷、速度感、数据专业感</td><td>低，看重「值不值这个调性」</td></tr>
+        <tr><td><strong>女性用户</strong></td><td>增长盘（约 30%）</td><td>颜值、情绪价值、拍照好看</td><td>中，看重「一眼心动」</td></tr>
+        <tr><td><strong>学生 / 尝鲜党</strong></td><td>机会盘（约 15%）</td><td>低价、新鲜、可炫耀</td><td>高，6 元是理想入口价</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>2.2 六类真实使用场景</h3>
+    <div class="tw">
+    <table>
+      <thead><tr><th>场景</th><th>典型时刻</th><th>对屏幕的核心要求</th></tr></thead>
+      <tbody>
+        <tr><td><strong>城市通勤</strong></td><td>早晚高峰、短途代步</td><td>时速/电量一眼可读，强光下不反白</td></tr>
+        <tr><td><strong>夜间骑行</strong></td><td>加班晚归、夜骑</td><td>低亮度不刺眼，暗色不晃眼</td></tr>
+        <tr><td><strong>周末跑山 / 长距离</strong></td><td>环湖、城郊路线</td><td>功率、里程、能耗数据完整</td></tr>
+        <tr><td><strong>社交展示 / 停车打卡</strong></td><td>车友聚会、拍照发圈</td><td>画面「上镜」，风格辨识度高</td></tr>
+        <tr><td><strong>女性日常出行</strong></td><td>通勤、买菜、接娃</td><td>柔和不攻击性，有情绪陪伴感</td></tr>
+        <tr><td><strong>校园短途</strong></td><td>宿舍—教学楼往返</td><td>轻量、干净、不花哨</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="margin-top:14px">设计硬约束由此推出：<strong>无论风格多强，时速、电量、里程、档位、转向/故障提示等安全相关字段必须始终清晰可见且不被遮挡</strong>。这是审核与用户口碑的共同底线。</p>
+  </div>
+</section>
+
+<!-- ================= 03 ================= -->
+<section id="s3">
+  <div class="sec-head">
+    <div class="sec-num">03</div>
+    <div>
+      <h2>三款主题设计方向</h2>
+      <p>一款仙侠题材、一款洪荒题材、一款情绪场景，三款统一定价 ¥6</p>
+    </div>
+  </div>
+
+  <div class="themes">
+
+    <!-- A -->
+    <article class="theme t1">
+      <div class="theme-top">
+        <div class="theme-vis">
+          <svg viewBox="0 0 190 108" width="100%" role="img" aria-label="凡人修仙传主题仪表示意">
+            <rect x="1" y="1" width="188" height="106" rx="14" fill="#08131C" stroke="#12303C"/>
+            <path d="M22 96 q14 -18 28 -9 q14 9 28 -7 q14 -16 28 -3 q14 13 28 -9 q14 -22 28 -6 v26 H22 Z" fill="#0E2C38"/>
+            <circle cx="95" cy="56" r="38" fill="none" stroke="#3FBFA0" stroke-width="1" stroke-dasharray="2 5" opacity=".45"/>
+            <circle cx="95" cy="56" r="30" fill="none" stroke="#1E7F8C" stroke-width="1.6" opacity=".8"/>
+            <circle cx="64" cy="32" r="7" fill="#8FE8D8" opacity=".25"/>
+            <circle cx="64" cy="32" r="3.2" fill="#F0FFFC" opacity=".8"/>
+            <path d="M74 42 q5 -5 10 0 q5 -5 10 0" fill="none" stroke="#CFEDE8" stroke-width="1.2" opacity=".5"/>
+            <text x="95" y="64" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="32" font-weight="600" fill="#E6F7F5">24</text>
+            <text x="95" y="78" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="8" fill="#7FA8B0" letter-spacing="1.5">KM/H</text>
+            <rect x="24" y="18" width="38" height="11" rx="3" fill="#123440"/>
+            <text x="43" y="26" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="8" fill="#8FE8D8" letter-spacing=".5">100%</text>
+            <rect x="128" y="18" width="38" height="11" rx="3" fill="#123440"/>
+            <text x="147" y="26" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="8" fill="#8FA6B8" letter-spacing=".5">ODO 5.1</text>
+          </svg>
+        </div>
+        <div class="theme-body">
+          <h3>主题 A · 凡人修仙传 <span class="pill">仙侠 · 青云</span><span class="price-tag">¥6</span></h3>
+          <p class="sub">仙侠题材款 · 青碧云海 + 符文刻度环</p>
+          <dl class="spec">
+            <dt>创意方向</dt><dd>把「修仙」的意境搬进仪表——云海、仙山、灵月、符文刻度。速度环化作修炼境界的刻度盘，数据退到云雾之后，整屏只留一片清冷的青碧。</dd>
+            <dt>视觉风格</dt><dd>青墨底（#08131C）+ 青碧描边（#3FBFA0），三层仙山由远及近递进压暗，灵月与飞鸟点缀留白；符文刻度环以等距短线环绕速度区，克制而不喧哗。
+              <div class="swatches"><i class="sw" style="background:#08131C"></i><i class="sw" style="background:#3FBFA0"></i><i class="sw" style="background:#E6F7F5"></i><i class="sw" style="background:#8FE8D8"></i></div>
+            </dd>
+            <dt>关键动效</dt><dd>云带缓慢横移；速度提升时符文环逐段点亮；夜间自动降低亮度。</dd>
+            <dt>适用场景</dt><dd>夜间与清晨通勤、长距离巡航、偏好清冷氛围的骑行</dd>
+            <dt>目标人群</dt><dd>仙侠题材受众、《凡人修仙传》读者与动画观众</dd>
+            <dt>定价与角色</dt><dd>统一定价 ¥6（精致进阶档下限）。视觉层级中等、动效克制，是覆盖面最广的题材款，承担装机量与评价基数。</dd>
+          </dl>
+        </div>
+      </div>
+    </article>
+
+    <!-- B -->
+    <article class="theme t2">
+      <div class="theme-top">
+        <div class="theme-vis">
+          <svg viewBox="0 0 190 108" width="100%" role="img" aria-label="牧神记主题仪表示意">
+            <rect x="1" y="1" width="188" height="106" rx="10" fill="#120E09" stroke="#2C2318"/>
+            <circle cx="95" cy="56" r="38" fill="none" stroke="#E8A400" stroke-width="1" stroke-dasharray="2 5" opacity=".5"/>
+            <circle cx="95" cy="56" r="30" fill="none" stroke="#8A5A12" stroke-width="1.6" opacity=".85"/>
+            <path d="M22 96 L34 78 L48 90 L62 70 L76 86 L95 68 L114 86 L128 70 L142 90 L156 78 L168 96 Z" fill="#2A1E12"/>
+            <path d="M76 36 q-14 -12 -8 -26 q4 12 12 18" fill="none" stroke="#E8A400" stroke-width="1.6" opacity=".6"/>
+            <path d="M114 36 q14 -12 8 -26 q-4 12 -12 18" fill="none" stroke="#E8A400" stroke-width="1.6" opacity=".6"/>
+            <path d="M95 28 l-7 13 h5 l-4 11 10 -14 h-5 z" fill="#E8A400" opacity=".6"/>
+            <text x="95" y="64" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="32" font-weight="600" fill="#F7F0E4">58</text>
+            <text x="95" y="78" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="8" fill="#9A8C74" letter-spacing="2">KM/H</text>
+            <rect x="24" y="18" width="38" height="11" rx="3" fill="#2C2318"/>
+            <text x="43" y="26" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="8" fill="#E8A400" letter-spacing=".5">PWR 89%</text>
+            <rect x="128" y="18" width="38" height="11" rx="3" fill="#2C2318"/>
+            <text x="147" y="26" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="8" fill="#9A8C74" letter-spacing=".5">ODO 3.2</text>
+          </svg>
+        </div>
+        <div class="theme-body">
+          <h3>主题 B · 牧神记 <span class="pill">洪荒 · 大墟</span><span class="price-tag">¥6</span></h3>
+          <p class="sub">洪荒题材款 · 玄黑赤金 + 图腾环</p>
+          <dl class="spec">
+            <dt>创意方向</dt><dd>以「牧神踏荒原」为意象。牛角图腾与雷纹构成主视觉，速度环化作图腾环，日轮悬于荒原山脊之上，整体苍凉而有神性。</dd>
+            <dt>视觉风格</dt><dd>玄墨底（#120E09）+ 赤金（#E8A400），牛角图腾左右对称、雷纹居中点睛；荒原山脊以两层硬边剪影压住底栏，图腾环由三圈疏密不同的刻度构成。
+              <div class="swatches"><i class="sw" style="background:#120E09"></i><i class="sw" style="background:#E8A400"></i><i class="sw" style="background:#F7F0E4"></i><i class="sw" style="background:#8A5A12"></i></div>
+            </dd>
+            <dt>关键动效</dt><dd>图腾环随速度逐圈点亮；雷纹在急加速时闪烁；日轮亮度随电量盈亏变化。</dd>
+            <dt>适用场景</dt><dd>周末跑山、长途巡航、车友聚会与拍照展示</dd>
+            <dt>目标人群</dt><dd>洪荒 / 玄幻题材受众、《牧神记》读者与动画观众</dd>
+            <dt>定价与角色</dt><dd>统一定价 ¥6（精致进阶档下限）。图腾与动效成本高于 A 款，但同价上架，定位为「以完成度取胜」的题材款。</dd>
+          </dl>
+        </div>
+      </div>
+    </article>
+
+    <!-- C -->
+    <article class="theme t3">
+      <div class="theme-top">
+        <div class="theme-vis">
+          <svg viewBox="0 0 190 108" width="100%" role="img" aria-label="晴日漫游主题仪表示意">
+            <rect x="1" y="1" width="188" height="106" rx="16" fill="#FDF6EC" stroke="#EFDFCC"/>
+            <circle cx="150" cy="30" r="15" fill="#FAC775"/>
+            <rect x="18" y="52" width="88" height="42" rx="10" fill="#FFFFFF" stroke="#EFDFCC"/>
+            <text x="32" y="76" font-family="-apple-system,sans-serif" font-size="22" font-weight="600" fill="#4A3B2A">24</text>
+            <text x="32" y="88" font-family="-apple-system,sans-serif" font-size="8" fill="#B09A80" letter-spacing="1.5">KM/H</text>
+            <rect x="116" y="52" width="56" height="19" rx="9.5" fill="#E1F5EE"/>
+            <text x="144" y="65" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="8" fill="#0F6E56" letter-spacing=".5">电量 68%</text>
+            <rect x="116" y="75" width="56" height="19" rx="9.5" fill="#FBEAF0"/>
+            <text x="144" y="88" text-anchor="middle" font-family="-apple-system,sans-serif" font-size="8" fill="#993556" letter-spacing=".5">里程 8.6km</text>
+            <path d="M18 30 h34" stroke="#EFDFCC" stroke-width="1.5" stroke-linecap="round"/>
+            <text x="18" y="24" font-family="-apple-system,sans-serif" font-size="8" fill="#B09A80" letter-spacing="1">08:12 · 晴</text>
+          </svg>
+        </div>
+        <div class="theme-body">
+          <h3>主题 C · 晴日漫游 <span class="pill">Sunny Ride</span><span class="price-tag">¥6</span></h3>
+          <p class="sub">情绪场景款 · 多时段自动切换 + 节日彩蛋</p>
+          <dl class="spec">
+            <dt>创意方向</dt><dd>把骑行数据变成「生活日记」。主题随时段自动换装：清晨是薄雾奶油、白天是晴日暖阳、傍晚是暮色橘粉；雨天与夜间另有专属氛围层。</dd>
+            <dt>视觉风格</dt><dd>奶油底（#FDF6EC）+ 莫兰迪柔和渐变，圆角卡片承载数据，手绘插画点缀；里程做成「足迹」、能耗做成「花朵」，信息柔和但分区清晰。
+              <div class="swatches"><i class="sw" style="background:#FDF6EC"></i><i class="sw" style="background:#FAC775"></i><i class="sw" style="background:#5DCAA5"></i><i class="sw" style="background:#D4537E"></i></div>
+            </dd>
+            <dt>关键动效</dt><dd>晨/昼/暮三套皮肤随系统时间平滑切换；雨天出现雨滴层；节日触发限定彩蛋（如中秋、春节）。</dd>
+            <dt>适用场景</dt><dd>女性用户日常通勤、周末 City Ride、停车打卡与社交分享</dd>
+            <dt>目标人群</dt><dd>女性用户、年轻通勤群体；为「情绪价值」付费的用户</dd>
+            <dt>定价与角色</dt><dd>统一定价 ¥6。制作复杂度最高（3 套时段皮肤 + 2 套天气层 + 彩蛋），作为差异化与口碑资产，而非利润款。</dd>
+          </dl>
+        </div>
+      </div>
+    </article>
+
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <h3>3.1 三款主题的矩阵关系</h3>
+    <div class="tw">
+    <table>
+      <thead><tr><th>维度</th><th>主题 A 凡人修仙传</th><th>主题 B 牧神记</th><th>主题 C 晴日漫游</th></tr></thead>
+      <tbody>
+        <tr><td><strong>价格</strong></td><td>¥6</td><td>¥6</td><td>¥6</td></tr>
+        <tr><td><strong>风格角色</strong></td><td>仙侠题材款</td><td>洪荒题材款</td><td>情绪场景款</td></tr>
+        <tr><td><strong>情绪</strong></td><td>清冷 · 飘逸</td><td>苍凉 · 神性</td><td>温柔 · 陪伴</td></tr>
+        <tr><td><strong>主色调</strong></td><td>青墨底青碧</td><td>玄黑底赤金</td><td>奶油底莫兰迪</td></tr>
+        <tr><td><strong>核心意象</strong></td><td>云海仙山 · 灵月 · 符文环</td><td>荒原山脊 · 牛角图腾 · 雷纹</td><td>晴日 · 山丘 · 云朵</td></tr>
+        <tr><td><strong>动效量级</strong></td><td>低（2 处）</td><td>中（4 组状态）</td><td>高（5 套场景层）</td></tr>
+        <tr><td><strong>主打人群</strong></td><td>仙侠题材受众</td><td>洪荒 / 玄幻题材受众</td><td>女性 / 情绪向用户</td></tr>
+        <tr><td><strong>核心场景</strong></td><td>夜骑 · 长巡航</td><td>跑山 · 展示</td><td>日常 · 打卡</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="margin-top:14px">三款主题<strong>风格互斥、人群互补、统一定价</strong>。同价上架意味着用户完全按审美偏好选择，而不是按预算妥协；三款共同覆盖夜骑、跑山展示、日常情绪三类场景，且不在同一审美区间内互相蚕食。</p>
+  </div>
+
+  <div class="card">
+    <h3>3.2 共同设计规范（三款通用）</h3>
+    <ul>
+      <li><strong>安全字段优先</strong>：时速、电量、里程、档位、转向指示、故障码在全部主题与全部状态下均不得被装饰元素遮挡，且不得与背景同色。</li>
+      <li><strong>多屏适配</strong>：每款主题需同时交付 7 英寸动态仪表与彩屏（4.3 英寸级）两套画布版本，圆角半径、安全区、字段密度分别处理，禁止简单缩放。</li>
+      <li><strong>一键识别</strong>：骑行中 1 秒内应能读到时速与电量，时速字号为画布内最大元素。</li>
+      <li><strong>强光可读</strong>：正午直射下关键信息对比度不低于 4.5:1，禁止纯浅色低对比配色承担关键数据。</li>
+      <li><strong>双端联动</strong>：仪表皮肤与 App 皮肤保持同一视觉体系，切换后 App 界面同步生效。</li>
+      <li><strong>版权干净</strong>：仅使用自有或已授权字体、图形、插画，不使用任何未授权 IP 形象（含动漫角色、游戏素材、品牌 logo）。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= 04 ================= -->
+<section id="s4">
+  <div class="sec-head">
+    <div class="sec-num">04</div>
+    <div>
+      <h2>测试方案</h2>
+      <p>五个测试维度、五步测试流程、可量化的通过标准</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>4.1 测试内容（五个维度）</h3>
+    <div class="tw">
+    <table>
+      <thead><tr><th>维度</th><th>测什么</th><th>方法</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>兼容与适配</strong></td>
+          <td>机型/屏型适配、固件与 App 版本兼容、安全区与圆角、各数据字段是否完整显示</td>
+          <td>真机矩阵测试，逐屏型截图核对</td>
+        </tr>
+        <tr>
+          <td><strong>可读性</strong></td>
+          <td>强光/夜间/雨天可读性、字号与对比度、色弱友好、1 秒识别率、动效是否干扰读数</td>
+          <td>户外实景测试 + 计时识别测试 + 对比度取值</td>
+        </tr>
+        <tr>
+          <td><strong>性能与稳定</strong></td>
+          <td>帧率、切换耗时、内存与耗电、长时间骑行稳定性、连续切换是否崩溃</td>
+          <td>性能埋点 + 2 小时连续骑行 + 100 次循环切换</td>
+        </tr>
+        <tr>
+          <td><strong>用户体验</strong></td>
+          <td>主观喜好、付费意愿、风格辨识度、是否愿意推荐给车友</td>
+          <td>内测用户问卷（NPS + 5 分制满意度）+ 同款风格 A/B 对比</td>
+        </tr>
+        <tr>
+          <td><strong>合规与审核</strong></td>
+          <td>素材版权、内容合规（无违规/敏感元素）、是否符合平台设计规范与命名要求</td>
+          <td>素材来源清单自查 + 平台审核规则逐条比对</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>4.2 测试流程（五步）</h3>
+    <ol class="steps">
+      <li><b>内部自测</b><span>设计与制作人员按自检清单逐项核对（字段完整、无遮挡、无错别字、素材齐全）。3 款主题各产出《自测记录表》。</span></li>
+      <li><b>真机适配测试</b><span>在覆盖 7 英寸动态仪表与彩屏两类屏型的真机矩阵上安装验证，每款主题至少覆盖 3 台不同车型设备，逐屏截图归档。</span></li>
+      <li><b>小范围内测</b><span>通过九号出行 App 测试中心 / 圈子 / 九友会渠道招募 20–50 名车主，试用 7 天，回收问卷与使用反馈（含夜间、雨天、强光实拍）。</span></li>
+      <li><b>修复与回归</b><span>反馈按 P0 / P1 / P2 分级录入看板，逐项修复并回归验证；P0 必须清零，P1 必须收敛到有明确结论。</span></li>
+      <li><b>提审前终检</b><span>按平台审核规则做最终合规与规范核对，产出《测试报告》与《终检清单》，随后提交审核。</span></li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h3>4.3 通过标准（量化）</h3>
+    <div class="tw">
+    <table>
+      <thead><tr><th>类别</th><th>指标</th><th>通过标准</th></tr></thead>
+      <tbody>
+        <tr><td rowspan="3"><strong>功能与适配</strong></td><td>P0 级缺陷</td><td>= 0</td></tr>
+        <tr><td>P1 级缺陷</td><td>≤ 2 且均有明确修复计划或规避方案</td></tr>
+        <tr><td>数据字段显示</td><td>全部字段 100% 正确显示，无遮挡、无裁切、无溢出</td></tr>
+        <tr><td rowspan="3"><strong>可读性</strong></td><td>关键信息对比度</td><td>正午强光下 ≥ 4.5:1</td></tr>
+        <tr><td>1 秒识别率</td><td>时速与电量识别通过率 ≥ 90%</td></tr>
+        <tr><td>夜间舒适度</td><td>无「刺眼/晃眼」类负反馈，或占比 &lt; 10%</td></tr>
+        <tr><td rowspan="3"><strong>性能</strong></td><td>动效帧率</td><td>≥ 30 fps，无明显掉帧</td></tr>
+        <tr><td>切换耗时</td><td>≤ 1 秒</td></tr>
+        <tr><td>稳定性</td><td>2 小时连续骑行 + 100 次循环切换，崩溃次数 = 0</td></tr>
+        <tr><td rowspan="3"><strong>用户反馈</strong></td><td>满意度</td><td>≥ 4.0 / 5.0</td></tr>
+        <tr><td>付费意愿</td><td>「愿意以目标价格购买」占比 ≥ 30%</td></tr>
+        <tr><td>高频负反馈</td><td>无集中出现的「看不清 / 太花」类问题（单一问题占比 &lt; 10%）</td></tr>
+        <tr><td><strong>合规</strong></td><td>版权与内容</td><td>素材来源可追溯且全部合法授权，合规风险 = 0</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="note">
+      <h4>未达标怎么办</h4>
+      <p>任一主题未达标即<strong>不进入提审</strong>。优先级：可读性 &gt; 功能适配 &gt; 合规 &gt; 性能 &gt; 用户反馈。若仅用户反馈未达标但硬指标全部通过，允许以降价或调整封面/描述后重新内测，而非直接放弃。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 05 ================= -->
+<section id="s5">
+  <div class="sec-head">
+    <div class="sec-num">05</div>
+    <div>
+      <h2>上架流程与渠道</h2>
+      <p>唯一官方通道：九号主题开发者平台 → 九号出行 App 主题商城</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>5.1 上架流程（八步）</h3>
+    <ol class="steps">
+      <li><b>入驻申请</b><span>在九号主题开发者平台提交入驻意向与资质/作品集，等待平台资格审核。被驳回会注明原因，需按反馈改进后重新提交。</span></li>
+      <li><b>获得开发者身份</b><span>审核通过后进入工作台，确认编辑器权限、素材规范与「适配机型 / 屏幕规格」清单。</span></li>
+      <li><b>主题开发</b><span>使用平台的可视化、无代码编辑器完成三款主题，含动效与多屏版本。</span></li>
+      <li><b>上传主题并定价</b><span>上传主题包，填写名称、简介、封面与适配机型，并将三款主题统一设定为 ¥6。</span></li>
+      <li><b>提交审核</b><span>提交后进入平台审核，<strong>常规审核周期约 7 个工作日</strong>，遇问题可能延长。未通过可在工作台点击主题名称查看审核意见。</span></li>
+      <li><b>审核通过并上架</b><span>通过后在九号出行 App 主题商城曝光，面向千万级 App 用户。</span></li>
+      <li><b>运营与迭代</b><span>跟踪下载/购买与评价数据，做节日限定、季节版本、用户共创投票等持续运营。</span></li>
+      <li><b>自助结算</b><span>按平台分润体系在开发者平台完成自助结算。</span></li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h3>5.2 渠道矩阵</h3>
+    <div class="tw">
+    <table>
+      <thead><tr><th>层级</th><th>渠道</th><th>作用</th><th>备注</th></tr></thead>
+      <tbody>
+        <tr><td><strong>主渠道</strong></td><td>九号出行 App · 主题商城</td><td>承接全部购买转化，是唯一官方付费入口</td><td>审核通过后自动曝光</td></tr>
+        <tr><td><strong>预热渠道</strong></td><td>App 圈子 / 测试中心 / 九友会</td><td>招募内测用户、收集反馈、做上架前种草</td><td>测试阶段即开始使用</td></tr>
+        <tr><td><strong>内容种草</strong></td><td>抖音 / 小红书 / 百度贴吧（九号吧）</td><td>以「换肤前后对比」「夜间实拍」等短视频引流</td><td>九号车主内容生态活跃</td></tr>
+        <tr><td><strong>线下场景</strong></td><td>九友会城市骑行活动、门店</td><td>车友聚会现场演示换肤，转化高意向用户</td><td>可做限定主题联动</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="note warn">
+      <h4>必须遵守的平台规则</h4>
+      <ul>
+        <li><strong>定价可改</strong>：主题类资源上架后仍可修改定价（其它类型资源上架后不可改价），这为后续促销留出了空间。</li>
+        <li><strong>下架不等于失效</strong>：同一九号账号下已购买/下载的主题永久可用，付费主题即使下架，已购买用户仍能正常使用。</li>
+        <li><strong>未全量上架可撤回</strong>：若资源尚未全量上架，可自行撤回，或通过在线提单联系工作人员下架。</li>
+        <li><strong>咨询渠道</strong>：问题可邮件至 <span class="hl">theme_dev@ninebot.com</span>，一般 1–2 个工作日回复。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 06 ================= -->
+<section id="s6">
+  <div class="sec-head">
+    <div class="sec-num">06</div>
+    <div>
+      <h2>定价策略</h2>
+      <p>三款主题统一定价 ¥6，差异由风格而非价格承担</p>
+    </div>
+  </div>
+  <div class="card">
+    <h3>6.1 统一定价：三款均为 ¥6</h3>
+    <div class="tw">
+    <table>
+      <thead><tr><th>主题</th><th>价格</th><th>风格角色</th><th>差异来源</th><th>预期作用</th></tr></thead>
+      <tbody>
+        <tr><td><strong>A · 凡人修仙传</strong></td><td><strong>¥6</strong></td><td>仙侠题材款</td><td>青墨青碧 · 云海仙山 · 轻动效</td><td>承接仙侠受众，覆盖面最广的题材款</td></tr>
+        <tr><td><strong>B · 牧神记</strong></td><td><strong>¥6</strong></td><td>洪荒题材款</td><td>玄黑赤金 · 图腾环 · 多状态动效</td><td>打动洪荒玄幻受众，强化题材纵深</td></tr>
+        <tr><td><strong>C · 晴日漫游</strong></td><td><strong>¥6</strong></td><td>情绪场景款</td><td>奶油莫兰迪 · 时段与天气自动切换</td><td>撬动女性与情绪向人群，提升口碑与分享</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="margin-top:14px">统一定价 ¥6 的三条理由：<strong>决策成本归零</strong>——6 元低于用户的比价阈值，购买动作不再需要「值不值」的判断；<strong>最大化装机与评价基数</strong>——三款站在同一起跑线，避免低价款吸走全部流量、高价款缺少曝光，而下载量与评分正是主题商城里最值钱的资产；<strong>差异由风格承担</strong>——三款的区分度来自视觉与场景，用户按审美而非预算选择，不会因为价格暗示而产生「低配」联想。</p>
+    <div class="note warn">
+      <h4>档位已对齐：¥6 属「精致进阶」，动效合规；IP 授权仍是最高优先项</h4>
+      <p>平台价格区间 3–18 元分三档：<strong>基础简约 3–6 元</strong>（无 App 主题、<strong>无动效、无 IP</strong>）、<strong>精致进阶 6–12 元</strong>（含 App 主题<strong>或</strong>动态效果）、<strong>高端全配 12–18 元</strong>（App 主题 + 动态交互 / <strong>正版授权 IP</strong>）。¥6 是精致进阶档的下限，三款主题都含动效，<strong>档位要求已完全对齐</strong>——原先「按 3 元申报就得砍动效」的矛盾解除。</p>
+      <ul>
+        <li><strong>动效：合规。</strong>精致进阶档允许动效，A 款云带横移、B 款图腾环点亮、C 款时段与天气切换可全部保留。</li>
+        <li><strong>IP 授权：与定价无关，需单独解决。</strong>「正版授权 IP」在平台档位表里属<strong>高端全配 12–18 元</strong>的特征；更关键的是，授权是使用前提，跟标价多少没有关系。未经授权使用他人作品名称、角色形象或标志性道具，会触发「素材非原创比例 &gt;30% 即不视为原创」的红线，属单项否决。</li>
+        <li><strong>建议：</strong>① 拿到正版授权 → 价格上探至 12–18 元高端全配档；② 改为「同题材原创设计」→ 保留仙侠 / 洪荒的意境与配色，不使用 IP 名称，价格维持 ¥6；③ 先按 ¥6 提交原创版本，授权谈成后再上架 IP 版并调价（平台支持上架后改价）。</li>
+      </ul>
+    </div>
+    <div class="note warn">
+      <h4>统一定价的代价与应对</h4>
+      <ul>
+        <li><strong>ARPU 上限被压低。</strong>缺少高价款，单用户收入天花板降低。应对：把收入预期从「单价」转向「装机量 × 复购」，用季节限定、节日主题持续拉动二次购买。</li>
+        <li><strong>无法用价格验证旗舰价值。</strong>制作成本最高的 C 款与 A 款同价，投入产出比不对等。应对：把 C 款明确定位为「差异化与口碑资产」而非利润款，它的回报体现在评分、分享与拉新上。</li>
+        <li><strong>失去打包促销空间。</strong>三款同价无法做「¥6 全套包」式组合。应对：改用「集齐三款解锁限定款」「节日限免」等运营手段替代。</li>
+        <li><strong>好消息是可逆。</strong>平台的主题类资源支持上架后修改定价，统一 ¥6 是随时可调整的决策——若后续数据证明需求分层明显，可单独上调高成本款。</li>
+      </ul>
+    </div>
+    <div class="note">
+      <h4>关于收入的说明</h4>
+      <p>平台采用「优厚分润体系」，但<strong>具体分成比例、结算周期、最低结算门槛均未公开</strong>。因此本文中的价格是<strong>用户侧售价</strong>，不含分润测算。建议入驻后第一时间确认分润条款，再评估 6 元定价的可持续性。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 07 ================= -->
+<section id="s7">
+  <div class="sec-head">
+    <div class="sec-num">07</div>
+    <div>
+      <h2>分阶段执行计划</h2>
+      <p>六个阶段，每阶段明确目标、所需资源与预计产出</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="tw">
+    <table>
+      <thead>
+        <tr><th style="min-width:104px">阶段</th><th style="min-width:170px">目标</th><th style="min-width:200px">关键任务</th><th style="min-width:180px">所需资源</th><th style="min-width:190px">预计产出</th><th>周期</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>阶段 0<br>洞察与立项</strong></td>
+          <td>锁定目标用户、使用场景与三主题定位</td>
+          <td>产品线与屏幕能力梳理；用户画像与场景归纳；主题商城竞品盘点与缺口分析；确定统一定价策略</td>
+          <td>九号官网/开发者平台公开资料；市场数据与用户调研；商城竞品截图；策略/产品 1 人</td>
+          <td>《用户与场景洞察报告》；《三主题定位与定价策略一页纸》</td>
+          <td>W1<br>约 3 人天</td>
+        </tr>
+        <tr>
+          <td><strong>阶段 1<br>概念与视觉方向</strong></td>
+          <td>三款主题的创意方向、视觉风格与动效脚本定稿</td>
+          <td>情绪板收集；配色与字体系统定义；布局草图；动效脚本撰写；概念评审与定稿</td>
+          <td>UI/视觉设计师 1–2 人；情绪板素材；可商用字体清单；评审人（产品 + 运营）</td>
+          <td>3 份《主题概念提案》（含情绪板、配色规范、字体、布局草图、动效脚本）</td>
+          <td>W2<br>约 5 人天</td>
+        </tr>
+        <tr>
+          <td><strong>阶段 2<br>高保真设计与多屏适配</strong></td>
+          <td>完成 3 主题 × 2 屏型的高保真界面稿与设计规范</td>
+          <td>高保真界面设计；7 英寸与彩屏双画布适配；安全区与字段规范；切图与素材导出；内部设计评审</td>
+          <td>Figma / Sketch 等设计工具；平台设计规范与适配机型清单；UI 设计师 2 人；车型屏幕参数</td>
+          <td>3×2 套高保真界面稿；《设计规范 / Design Token 文档》；素材包与切图</td>
+          <td>W3–W4<br>约 10 人天</td>
+        </tr>
+        <tr>
+          <td><strong>阶段 3<br>编辑器制作与动效实现</strong></td>
+          <td>在开发者平台内产出可安装运行的主题包</td>
+          <td>平台编辑器内搭建；动效实现（开机动画、状态切换、时段皮肤）；性能初调；打包与自测</td>
+          <td>开发者平台账号与编辑器；动效/前端 1 人；动效素材（序列帧/Lottie 等）；测试机 ≥ 3 台</td>
+          <td>3 个可安装主题包（v0.9 内测版）；动效素材源文件</td>
+          <td>W4–W5<br>约 8 人天</td>
+        </tr>
+        <tr>
+          <td><strong>阶段 4<br>测试与迭代</strong></td>
+          <td>三款主题全部达到通过标准，具备提审条件</td>
+          <td>内部自测；真机适配测试；招募 20–50 名车主内测 7 天；Bug 分级修复与回归；终检</td>
+          <td>真机测试矩阵（覆盖 2 类屏型 ≥ 3 款车型）；内测用户 20–50 人；测试用例表；Bug 看板；测试 1 人</td>
+          <td>《测试报告》；《Bug 清单与修复记录》；达标主题包（v1.0）；《终检清单》</td>
+          <td>W6–W7<br>约 10 人天</td>
+        </tr>
+        <tr>
+          <td><strong>阶段 5<br>上架与运营</strong></td>
+          <td>三款主题完成上架并启动推广与数据追踪</td>
+          <td>入驻申请与资质提交；上传主题与定价；提交审核（约 7 个工作日）；上架后内容种草与数据复盘</td>
+          <td>开发者平台账号与资质；商店素材（封面/截图/演示视频）；推广素材；运营 1 人</td>
+          <td>3 款主题上架（统一定价 ¥6）；《推广内容包》；《运营数据周报》</td>
+          <td>W8 起<br>持续</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="margin-top:14px"><strong>整体节奏：</strong>阶段 0–2 为设计与定义期（约 3 周），阶段 3–4 为制作与验证期（约 4 周），阶段 5 起进入上架与长期运营。总投入约 <strong>46 人天</strong>，核心团队 3–4 人即可覆盖（策略/产品 1、UI 设计 1–2、动效 1、测试与运营可由设计与产品兼岗）。</p>
+  </div>
+
+  <div class="card">
+    <h3>7.1 阶段依赖关系</h3>
+    <ul>
+      <li><strong>阶段 2 依赖阶段 1</strong>：视觉方向未定稿不得进入高保真，否则返工成本极高。</li>
+      <li><strong>阶段 3 依赖阶段 0</strong>：必须在入驻后拿到平台的屏幕规格与适配机型清单，才能确定画布尺寸，否则主题包可能整体不兼容。</li>
+      <li><strong>阶段 4 依赖阶段 3</strong>：只有可安装的主题包才能做真机与内测。</li>
+      <li><strong>阶段 5 依赖阶段 4</strong>：未达标不提审。同时入驻申请可与阶段 1–3 并行推进，以缩短整体周期（入驻审核时间不可控，应尽早启动）。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ================= 08 ================= -->
+<section id="s8">
+  <div class="sec-head">
+    <div class="sec-num">08</div>
+    <div>
+      <h2>风险与待确认事项</h2>
+      <p>启动前必须闭环的信息，以及主要风险应对</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>8.1 待确认事项（建议第一步就联系平台）</h3>
+    <ol>
+      <li><strong>编辑器规格</strong>：画布尺寸/分辨率、支持的素材格式与大小上限、动效支持形式与帧率要求。</li>
+      <li><strong>适配机型清单</strong>：哪些车型/屏型支持主题，是否存在 7 英寸与彩屏两套规范。</li>
+      <li><strong>分润与结算</strong>：分成比例、结算周期、最低结算门槛、是否需要资质/税务信息。</li>
+      <li><strong>定价规则</strong>：是否有价格区间限制、是否支持促销/打包。</li>
+      <li><strong>审核细则</strong>：完整审核规则文档，尤其是版权与内容合规的判定尺度。</li>
+      <li><strong>入驻资质</strong>：个人设计师与团队/公司入驻的差异要求。</li>
+    </ol>
+    <p style="margin-top:12px">以上均可通过开发者平台或 <span class="hl">theme_dev@ninebot.com</span> 咨询，建议在阶段 0 内完成闭环。</p>
+  </div>
+
+  <div class="card">
+    <h3>8.2 主要风险与应对</h3>
+    <div class="tw">
+    <table>
+      <thead><tr><th>风险</th><th>影响</th><th>应对</th></tr></thead>
+      <tbody>
+        <tr><td>审核未通过</td><td>上架延期</td><td>提审前按审核规则逐条自查；保留至少一轮修改时间；注意工作台可查看驳回原因</td></tr>
+        <tr><td>素材版权问题</td><td>直接驳回，甚至封禁账号</td><td>全部素材自有或已授权；不使用任何 IP 形象；建立素材来源台账</td></tr>
+        <tr><td>适配机型不足</td><td>潜在用户基数被大幅压缩</td><td>阶段 0 就确认机型清单；优先适配装机量最大的彩屏与 7 英寸屏</td></tr>
+        <tr><td>动效拖累性能</td><td>卡顿、掉帧、耗电，负评</td><td>设置帧率与切换耗时硬指标；高成本动效只放在 C 款</td></tr>
+        <tr><td>统一定价压低收入天花板</td><td>单用户收入上限偏低，高成本款投入产出不对等</td><td>把收入预期从「单价」转向「装机量 × 复购」，用季节与节日限定主题持续拉动；必要时利用「主题可改价」规则对高成本款单独调价</td></tr>
+        <tr><td>同质化竞争</td><td>被已有热门主题压制</td><td>刻意避开纯人物立绘赛道，主打仙侠、洪荒、情绪场景三个题材缺口</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>8.3 交付物清单</h3>
+    <ul>
+      <li>《用户与场景洞察报告》·《三主题定位与定价策略》</li>
+      <li>3 份主题概念提案（情绪板 / 配色 / 字体 / 布局 / 动效脚本）</li>
+      <li>3×2 套高保真界面稿 + 设计规范文档 + 素材包</li>
+      <li>3 个可安装主题包（内测版 → v1.0）</li>
+      <li>《测试报告》《Bug 修复记录》《终检清单》</li>
+      <li>上架素材包（封面 / 截图 / 演示视频）+《推广内容包》+《运营数据周报》</li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  <p><strong>资料来源</strong>：九号主题开发者平台（developer-home.ninebot.com / developer.ninebot.com）；九号公司官网产品页与官方新闻稿（2026 年 4 月《共创出行新次元》）；九号出行 App 主题商城公开信息；公开市场与用户调研报道。</p>
+  <p><strong>免责说明</strong>：平台的分润比例、编辑器技术规格、完整适配机型清单、定价区间等未公开信息，均已在文中标注为「待确认」。本计划中的屏幕尺寸、车型与主题商城供给描述来自公开渠道整理，投产前请以开发者平台官方文档为最终依据。文中提及的第三方主题名称为公开信息中的实例，仅用于供给分析，不涉及任何素材使用。</p>
+</footer>
+
+</div>
+</body>
+</html>

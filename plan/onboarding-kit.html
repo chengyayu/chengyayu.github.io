@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>九号主题开发者平台 · 入驻材料包</title>
+<style>
+:root{
+  --ink:#14181F; --ink2:#4A5464; --ink3:#8A94A6;
+  --bg:#F6F7F9; --card:#FFFFFF; --line:#E6E9EF; --line2:#F0F2F6;
+  --red:#C0392B; --amber:#B7791F; --green:#1D9E75; --brand:#1F6FEB;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Segoe UI",Roboto,sans-serif;
+  font-size:14px;line-height:1.72;letter-spacing:.01em}
+.wrap{max-width:1080px;margin:0 auto;padding:56px 28px 96px}
+.hero{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:38px 40px 34px;margin-bottom:22px}
+.eyebrow{font-size:12px;letter-spacing:.16em;color:var(--ink3);text-transform:uppercase;margin:0 0 14px}
+h1{font-size:29px;line-height:1.35;font-weight:600;margin:0 0 14px;letter-spacing:-.01em}
+.lede{font-size:14.5px;color:var(--ink2);margin:0;max-width:76ch}
+.hero-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.chip{display:inline-block;font-size:12px;color:var(--ink2);background:#F3F5F8;border:1px solid var(--line);border-radius:999px;padding:4px 12px}
+
+section{margin-top:30px}
+.sec-head{display:flex;align-items:flex-start;gap:14px;margin:0 0 16px}
+.sec-num{flex:0 0 auto;width:30px;height:30px;border-radius:9px;background:var(--ink);color:#fff;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;margin-top:4px}
+.sec-num.alert{background:var(--red)}
+.sec-head h2{font-size:21px;font-weight:600;margin:0;letter-spacing:-.005em}
+.sec-head p{margin:2px 0 0;font-size:13px;color:var(--ink3)}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:26px 30px;margin-bottom:16px}
+.card>h3{font-size:15.5px;font-weight:600;margin:0 0 14px;display:flex;align-items:center;gap:9px}
+.card>h3::before{content:"";width:3px;height:15px;border-radius:2px;background:var(--ink);display:block}
+.card p{margin:0 0 12px;color:var(--ink2)}
+.card p:last-child{margin-bottom:0}
+.card ul,.card ol{margin:0 0 12px;padding-left:20px;color:var(--ink2)}
+.card li{margin:5px 0}
+.card li strong,.card p strong{color:var(--ink);font-weight:600}
+.hl{background:#FFF8E1;padding:1px 5px;border-radius:4px;color:var(--ink);font-weight:500}
+.hl-red{background:#FDECEA;padding:1px 5px;border-radius:4px;color:#8E2418;font-weight:600}
+
+table{width:100%;border-collapse:separate;border-spacing:0;font-size:12.5px;margin:0}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line2);vertical-align:top}
+thead th{background:#F3F5F8;color:var(--ink2);font-weight:600;font-size:12px;white-space:nowrap;border-bottom:1px solid var(--line)}
+thead th:first-child{border-top-left-radius:10px}
+thead th:last-child{border-top-right-radius:10px}
+tbody tr:last-child td{border-bottom:none}
+.tw{overflow-x:auto}
+td strong{font-weight:600}
+
+.note{background:#F1F6FF;border:1px solid #D6E4FF;border-left:3px solid var(--brand);border-radius:12px;padding:16px 20px;margin:14px 0 0}
+.note.warn{background:#FFF8E8;border-color:#F5E2B8;border-left-color:var(--amber)}
+.note.danger{background:#FDECEA;border-color:#F5C6C0;border-left-color:var(--red)}
+.note.ok{background:#F0FBF6;border-color:#C6EBD9;border-left-color:var(--green)}
+.note h4{margin:0 0 6px;font-size:13.5px;font-weight:600}
+.note p,.note ul{margin:0;font-size:13px;color:var(--ink2)}
+.note ul{padding-left:18px}
+.note li{margin:3px 0}
+
+/* field block */
+.field{border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:12px;background:#FCFDFE}
+.field-head{display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+.field-no{flex:0 0 auto;width:24px;height:24px;border-radius:7px;background:#EAF1FE;color:#1F6FEB;font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center}
+.field-name{font-size:14px;font-weight:600}
+.field-type{font-size:11.5px;color:var(--ink3);border:1px solid var(--line);border-radius:999px;padding:2px 9px}
+.field-req{margin-left:auto;font-size:11.5px;color:#8E2418;background:#FDECEA;border-radius:999px;padding:2px 9px}
+.field dl{margin:0;display:grid;grid-template-columns:72px 1fr;gap:5px 14px;font-size:13px}
+.field dt{color:var(--ink3);font-size:12.5px}
+.field dd{margin:0;color:var(--ink2)}
+.copy{background:#F4F6F9;border:1px solid var(--line);border-radius:10px;padding:13px 16px;margin-top:8px;font-size:13px;color:var(--ink);white-space:pre-wrap;line-height:1.85;position:relative}
+.copy::before{content:"可直接复制";position:absolute;top:-9px;left:14px;background:#fff;border:1px solid var(--line);border-radius:6px;padding:0 7px;font-size:10.5px;color:var(--ink3)}
+
+/* checklist */
+.check{list-style:none;margin:0;padding:0}
+.check li{position:relative;padding:7px 0 7px 30px;border-bottom:1px solid var(--line2);font-size:13px;color:var(--ink2)}
+.check li:last-child{border-bottom:none}
+.check li::before{content:"";position:absolute;left:2px;top:12px;width:14px;height:14px;border:1.5px solid #C4CAD4;border-radius:4px}
+.check li strong{color:var(--ink)}
+
+.steps{counter-reset:s;margin:0;padding:0;list-style:none}
+.steps li{counter-increment:s;position:relative;padding:0 0 16px 40px;border-left:1px solid var(--line);margin-left:12px}
+.steps li:last-child{border-left-color:transparent;padding-bottom:0}
+.steps li::before{content:counter(s);position:absolute;left:-13px;top:0;width:26px;height:26px;border-radius:50%;background:#fff;border:1px solid var(--line);color:var(--ink2);font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center}
+.steps b{display:block;font-size:13.5px;font-weight:600;margin-bottom:2px}
+.steps span{font-size:12.5px;color:var(--ink2)}
+
+footer{margin-top:34px;padding-top:22px;border-top:1px solid var(--line);font-size:12px;color:var(--ink3);line-height:1.9}
+footer a,.card a,.note a{color:var(--ink2);text-decoration:underline;text-decoration-color:#C4CAD4;text-underline-offset:2px}
+footer a:hover,.card a:hover{color:var(--brand)}
+@media (max-width:760px){
+  .wrap{padding:32px 16px 64px}
+  h1{font-size:23px}
+  .hero{padding:28px 22px}
+  .card{padding:22px 18px}
+  .field dl{grid-template-columns:1fr;gap:2px 0}
+  .field dd{margin-bottom:8px}
+}
+@media print{body{background:#fff}.wrap{max-width:none;padding:0}.card,.hero,.field{break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <p class="eyebrow">Ninebot Theme Developer Platform · Onboarding Kit</p>
+  <h1>入驻材料包</h1>
+  <p class="lede">基于官方文档中心的 19 份规范与协议 PDF 整理。这份文件把你报名时需要填的每一个字段、要上传的每一份材料、以及提交前必须核对的红线，全部准备好。你只需复制、上传、点提交。</p>
+  <div class="hero-meta">
+    <span class="chip">报名表仅 5 个字段</span>
+    <span class="chip">29 个来源 · 全部官方一手</span>
+    <span class="chip">含 3 处必须修正的冲突</span>
+  </div>
+</header>
+
+<!-- ====== 00 三条必须立刻知道的事 ====== -->
+<section>
+  <div class="sec-head">
+    <div class="sec-num alert">!</div>
+    <div><h2>三条必须立刻知道的发现</h2><p>它们推翻了我们之前的三个设定，其中一条会直接影响你的定价决策</p></div>
+  </div>
+
+  <div class="note danger">
+    <h4>① 定价红线：平台最低 3 元，你原本的「统一定价 ¥1」不可行 → 已定为 ¥6</h4>
+    <p>平台统一价格区间为 <span class="hl-red">3–18 元</span>，共三档：<strong>基础简约 3–6 元</strong>（无 App 主题 / 无动效 / 无 IP）、<strong>精致进阶 6–12 元</strong>（含 App 主题或动态效果）、<strong>高端全配 12–18 元</strong>（App 主题 + 动态交互 / 正版授权 IP）。定价不合理或超出区间属于明确驳回项。且<strong>平台保留最终定价决策权，价格变更须审批</strong>。</p>
+    <p style="margin-top:8px">来源：<a href="https://oms-oss-public.ninebot.com/h5/theme/official/documentCenter/1_1_PlatformProductIntroduction.pdf">平台产品介绍</a>、<a href="https://oms-oss-public.ninebot.com/h5/theme/official/documentCenter/2_4_StandardsForProductReleaseReview.pdf">作品上架审核标准</a></p>
+  </div>
+
+  <div class="note warn">
+    <h4>② 画布尺寸：当前是 5 寸屏 854 × 480 px，不是我之前假设的 800 × 450</h4>
+    <p>仪表主题设计规范明确：<strong>D2X 5 寸屏，画布 854 px × 480 px</strong>，主题背景全屏铺满。官方同时提供了 <a href="https://oms-oss-public.ninebot.com/h5/theme/official/instrumentTemplate/5_inchPerspectiveTemplate.zip">5 寸透视模板</a> 与 <a href="https://oms-oss-public.ninebot.com/h5/theme/official/instrumentTemplate/7_inchPerspectiveTemplate.zip">7 寸透视模板</a>，以及 <a href="https://www.figma.com/design/TD5kkmIpjNJLmGK8XPaLmq/">官方 Figma 设计模板</a>。</p>
+    <p style="margin-top:8px">好消息：854×480 同样是 16:9，我之前的构图逻辑可以直接复用，但<strong>尺寸和字号必须重排</strong>。另外我之前做的 4.3 英寸小屏版属于超前设计——当前平台只支持 5 寸（7 寸有模板但未公布像素规格），小屏版暂时用不上。</p>
+  </div>
+
+  <div class="note warn">
+    <h4>③ 字体与字号：只能用官方 MiSans，且关键文字 ≥ 24 号</h4>
+    <p>设计规范要求<strong>文本只能使用官方提供的 MiSans 字体</strong>，<strong>关键文字字号不低于 24 号</strong>。我设计稿里用的 DIN、Roboto Mono、Chakra Petch、Orbitron、Nunito 全部不合规，需要整体替换。同时我定的 13 pt 单位标签也低于 24 号下限，字号阶梯要重做。</p>
+    <p style="margin-top:8px">来源：<a href="https://oms-oss-public.ninebot.com/h5/theme/official/documentCenter/2_2_InstrumentThemeDesignSpecification.pdf">仪表主题设计规范</a></p>
+  </div>
+</section>
+
+<!-- ====== 01 报名表逐字段 ====== -->
+<section>
+  <div class="sec-head">
+    <div class="sec-num">01</div>
+    <div><h2>报名：5 个字段的填写建议</h2><p>官方报名入口是问卷星表单，只有 5 题，全部必填</p></div>
+  </div>
+
+  <div class="card">
+    <h3>1.1 入口与路径</h3>
+    <p>当前平台处于<strong>建设阶段</strong>，尚未开放完整创作功能。正确路径是走「入驻意向收集」报名：</p>
+    <ol class="steps">
+      <li><b>进入官网</b><span>developer-home.ninebot.com，点击首页「入驻意向收集」按钮</span></li>
+      <li><b>点击「立即报名」</b><span>跳转至官方问卷星表单</span></li>
+      <li><b>填写 5 个字段并提交</b><span>表单地址：ninebotapp.wjx.cn/vm/mo3ROgr.aspx</span></li>
+      <li><b>等待审核</b><span>以周为单位集中处理，最长 7 个工作日内反馈。结果三选一：入选首批 / 进入备选池 / 暂未通过</span></li>
+    </ol>
+    <div class="note">
+      <h4>另外可以先做的事：注册开发者账号</h4>
+      <p>你可以在 developer.ninebot.com 用<strong>手机号 + 验证码</strong>注册开发者账号（密码 8–20 位含字母数字，<strong>一个手机号仅可注册一个开发者账号</strong>），注册后可<strong>先行免费体验开发工具</strong>。注意：<strong>实名认证入口目前尚未开放是正常的</strong>——官方说明入驻系统含实名认证仍在开发建设中，上线后通过企微群通知。</p>
+      <p style="margin-top:8px">来源：<a href="https://oms-oss-public.ninebot.com/h5/theme/official/documentCenter/1_3_PlatformRegistrationAndEntry.pdf">平台注册与入驻</a>、<a href="https://oms-oss-public.ninebot.com/h5/theme/official/documentCenter/1_4_CommonQuestionsRegardingEntryInclusion.pdf">入驻常见问题</a></p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>1.2 五个字段，逐个给你答案</h3>
+
+    <div class="field">
+      <div class="field-head"><span class="field-no">1</span><span class="field-name">您的姓名</span><span class="field-type">文本</span><span class="field-req">必填</span></div>
+      <dl>
+        <dt>怎么填</dt><dd>填<strong>真实姓名</strong>，与后续实名认证、银行卡保持一致。官方规定「一张身份证仅可绑定一个开发者账号」，且手机号 / 身份证 / 银行卡须同一实名。</dd>
+        <dt>注意</dt><dd>不要填笔名或工作室名。这是资质核验字段，不是展示字段。</dd>
+      </dl>
+    </div>
+
+    <div class="field">
+      <div class="field-head"><span class="field-no">2</span><span class="field-name">联系方式（手机号）</span><span class="field-type">文本</span><span class="field-req">必填</span></div>
+      <dl>
+        <dt>怎么填</dt><dd>填<strong>本人实名手机号</strong>，与姓名同一实名。</dd>
+        <dt>注意</dt><dd>审核结果通过<strong>预留手机号短信</strong>或企微邀请通知，这个号码填错就等于收不到结果。</dd>
+      </dl>
+    </div>
+
+    <div class="field">
+      <div class="field-head"><span class="field-no">3</span><span class="field-name">您运营的平台主页链接（展示您的作品）</span><span class="field-type">文本</span><span class="field-req">必填</span></div>
+      <dl>
+        <dt>怎么填</dt><dd>填一个<strong>公开可访问、能直接看到你原创作品</strong>的主页。优先级建议：站酷 / Behance &gt; 个人作品集网站 &gt; 小红书 / 抖音（需确保作品清晰可见）&gt; 微博。</dd>
+        <dt>注意</dt><dd>这是审核方判断「设计能力 + 原创性」的<strong>核心入口</strong>。如果链接需要登录才能看、或页面里混着大量非本人作品，会直接影响初筛。建议先把主页整理一遍再提交。</dd>
+      </dl>
+    </div>
+
+    <div class="field">
+      <div class="field-head"><span class="field-no">4</span><span class="field-name">您擅长什么题材和方向？</span><span class="field-type">文本</span><span class="field-req">必填</span></div>
+      <dl>
+        <dt>怎么填</dt><dd>这是你唯一能主动「推销自己」的字段。建议按「能力 + 方向 + 方法」三段式写，明确对齐九号仪表场景。</dd>
+        <dt>可直接复制</dt>
+      </dl>
+      <div class="copy">我专注智能出行场景的界面视觉设计，具备从概念到落地的完整设计能力，熟练使用 Figma / Photoshop / Illustrator，能独立完成仪表主题的界面设计、图标绘制与动效脚本定义。
+
+擅长三个方向：
+一、暗色氛围类——以极简构图与光感线条强化夜间骑行的速度感，用超大字号数字保证一秒可读；
+二、机甲性能类——以金属质感、能量条与状态动效构建座舱式 HUD，强调力量感与专业数据感；
+三、情绪生活类——以柔和配色与卡片化布局承载日常骑行数据，让仪表具备情绪陪伴属性。
+
+设计方法上，我坚持"安全字段优先"：时速、电量、档位、转向等关键信息在强光与夜间场景下均保持高对比度，所有装饰元素不侵占功能区域。已围绕九号仪表 5 寸屏（854×480）完成三套主题的完整界面设计与动效脚本，可直接进入制作环节。</div>
+    </div>
+
+    <div class="field">
+      <div class="field-head"><span class="field-no">5</span><span class="field-name">请上传您过往的代表作用于审核</span><span class="field-type">文件上传 · 单文件 ≤ 10MB</span><span class="field-req">必填</span></div>
+      <dl>
+        <dt>怎么填</dt><dd>见下一节《代表作文件准备》。核心要求：必须是<strong>完整可落地的成品</strong>，不接受草稿、概念图、半成品；须标注创作时间、使用场景与设计说明。</dd>
+      </dl>
+    </div>
+
+    <div class="note warn">
+      <h4>补充信息没地方填怎么办</h4>
+      <p>官方《准入规则》另列了「过往创作经验、可投入创作时间」等补充信息，但<strong>实际问卷里没有这两个字段</strong>。建议把它们并进第 4 题「擅长方向」的文案里（上面的模板已包含设计能力与项目进度描述），或写进代表作文件的设计说明页。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ====== 02 代表作 ====== -->
+<section>
+  <div class="sec-head">
+    <div class="sec-num">02</div>
+    <div><h2>代表作文件准备</h2><p>唯一的上传字段，也是决定初筛结果的关键</p></div>
+  </div>
+  <div class="card">
+    <h3>2.1 建议的文件形式</h3>
+    <p>表单限制<strong>单文件 ≤ 10MB</strong>，且要求「完整成品 + 创作时间 + 使用场景 + 设计说明」。推荐做一个 <strong>PDF 作品集</strong>（而非 JPG 拼图或 ZIP），理由：PDF 可以同时容纳设计说明文字与高保真图，且 10MB 内可放 8–12 页 A4 尺寸的高清稿。</p>
+    <div class="tw">
+    <table>
+      <thead><tr><th>页</th><th>内容</th><th>作用</th></tr></thead>
+      <tbody>
+        <tr><td>封面</td><td>姓名 / 方向 / 一句话定位</td><td>建立专业印象</td></tr>
+        <tr><td>P2</td><td>能力概览：工具、流程、擅长方向、设计原则</td><td>回应第 4 题，强化一致性</td></tr>
+        <tr><td>P3–P5</td><td><strong>主题 A 凡人修仙传</strong>：成品图 + 配色系统 + 设计说明（创作时间、适用场景、可读性处理）</td><td>主作品 1</td></tr>
+        <tr><td>P6–P8</td><td><strong>主题 B 牧神记</strong>：成品图 + 图腾环与状态动效说明</td><td>主作品 2</td></tr>
+        <tr><td>P9–P11</td><td><strong>主题 C 晴日漫游</strong>：成品图 + 时段皮肤与卡片系统说明</td><td>主作品 3</td></tr>
+        <tr><td>P12</td><td>设计方法：安全字段优先原则、五区固定布局、强光可读性验证</td><td>证明方法论而非只会画图</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="note ok">
+      <h4>你有独特优势：这三套是「为九号量身定做」的</h4>
+      <p>绝大多数报名者的作品集是通用 UI 或插画。你的三套主题<strong>直接针对九号 5 寸仪表场景设计</strong>，还附带了五区固定布局与安全字段优先的方法论——这在复评阶段（考察「设计质量 / 风格适配性 / 原创性」）是强信号。务必在作品集里把这个差异化讲清楚。</p>
+    </div>
+    <div class="note warn">
+      <h4>提交前必须做的两件事</h4>
+      <ul>
+        <li><strong>把设计稿重排到 854×480 并换成 MiSans 字体</strong>，否则作品集里的成品图与平台规范不符，反而暴露「没读规范」。这一步我可以帮你做。</li>
+        <li><strong>保留创作过程记录</strong>：官方《内容创作规则》要求提交设计源文件（PSD/AI/Sketch/fig）+ 创作过程记录（草图/中间版本截图）。现在就把过程文件归档好，正式入驻时会用到。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ====== 03 定价修正 ====== -->
+<section>
+  <div class="sec-head">
+    <div class="sec-num">03</div>
+    <div><h2>定价决策：统一 ¥6</h2><p>已定为「精致进阶」档下限——动效合规，只剩 IP 授权待解决</p></div>
+  </div>
+  <div class="card">
+    <h3>3.1 三档价格区间</h3>
+    <div class="tw">
+    <table>
+      <thead><tr><th>档位</th><th>价格区间</th><th>包含内容</th></tr></thead>
+      <tbody>
+        <tr><td><strong>基础简约</strong></td><td>3–6 元</td><td>无 App 主题、<strong>无动效、无 IP</strong></td></tr>
+        <tr><td><strong>精致进阶</strong></td><td>6–12 元</td><td>含 App 主题<em>或</em>动态效果</td></tr>
+        <tr><td><strong>高端全配</strong></td><td>12–18 元</td><td>App 主题 + 动态交互 / <strong>正版授权 IP</strong></td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="margin-top:14px">另外两条硬规则：<strong>所有上架主题必须包含基础仪表主题</strong>；设计师可自主填原价 + 特价，但<strong>平台有最终定价决策权</strong>，价格变更须审批。</p>
+  </div>
+
+  <div class="card">
+    <h3>3.2 三种方案对照（已选定方案一）</h3>
+    <div class="tw">
+    <table>
+      <thead><tr><th>方案</th><th>A 凡人修仙传</th><th>B 牧神记</th><th>C 晴日漫游</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>方案一 · 统一低价</strong><br><span style="color:#1D9E75;font-weight:600">已选定</span></td>
+          <td>6 元</td><td>6 元</td><td>6 元</td>
+          <td>保留「统一定价」的策略意图，取精致进阶档下限。三款都含动效，<strong>完全符合 6–12 元档位要求</strong>。</td>
+        </tr>
+        <tr>
+          <td><strong>方案二 · 按完成度分档</strong></td>
+          <td>6 元</td><td>8 元</td><td>12 元</td>
+          <td>按制作复杂度定价。C 款含多时段皮肤 + 天气层 + 彩蛋，进 12 元档更合理，也更能覆盖制作成本。备选。</td>
+        </tr>
+        <tr>
+          <td><strong>方案三 · 降到最低档</strong></td>
+          <td>3 元</td><td>3 元</td><td>3 元</td>
+          <td>基础简约档要求「无动效、无 IP」，必须砍掉全部动效，牺牲三款的差异化。<strong>已排除</strong>。</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="note">
+      <h4>为什么 ¥6 是对的选择</h4>
+      <p>6 元是三款主题在<strong>保留动效</strong>前提下能做到的最低价，正好卡在精致进阶档的下限：既守住了「统一定价、低门槛换装机量」的策略意图，又完全满足档位对动效的要求，不必砍掉任何一款的卖点。</p>
+    </div>
+    <div class="note warn">
+      <h4>但 IP 授权这条没被价格解决，仍需单独处理</h4>
+      <p>定价解决的是「动效能不能留」的问题，<strong>解决不了「能不能用别人的 IP」</strong>——授权是使用前提，跟标价多少无关。平台档位表里「正版授权 IP」属<strong>高端全配 12–18 元</strong>的特征，且未经授权使用他人作品名称、角色形象或标志性道具，会触发「素材非原创比例 &gt;30% 即不视为原创」的红线，属单项否决。</p>
+      <ul>
+        <li><strong>路径 ①：拿到正版授权</strong> → 价格上探至 12–18 元高端全配档，题材与价格都站得住。</li>
+        <li><strong>路径 ②：改为「同题材原创设计」</strong> → 保留仙侠 / 洪荒的意境与配色（现有画面本就是纯几何原创，未使用任何角色形象），只把作品名称换掉，价格维持 ¥6。</li>
+        <li><strong>路径 ③：先上原创版</strong> → 按 ¥6 提交原创版本占位，授权谈成后再上架 IP 版并调价（平台支持上架后改价）。</li>
+      </ul>
+    </div>
+    <div class="note">
+      <h4>收入预期</h4>
+      <p>分润比例已经明确：<strong>发布者到手 63%</strong>，平台服务方 10%，九号公司 27%。按 ¥6 定价，你每笔实得约 <strong>3.78 元</strong>——要摸到 100 元提现门槛，需售出约 <strong>27 份</strong>。提现门槛 ≥100 元（官方两份文档分别写 100 元和 50 元，存在不一致），每月 15–20 日开放提现、每月最多 1 次。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ====== 04 设计稿对照 ====== -->
+<section>
+  <div class="sec-head">
+    <div class="sec-num">04</div>
+    <div><h2>设计稿与官方规范对照</h2><p>哪些要改、哪些能留</p></div>
+  </div>
+  <div class="card">
+    <div class="tw">
+    <table>
+      <thead><tr><th>规范项</th><th>官方要求</th><th>当前设计稿</th><th>处理</th></tr></thead>
+      <tbody>
+        <tr><td><strong>画布尺寸</strong></td><td>5 寸 854 × 480 px</td><td>假设 800 × 450 pt</td><td style="color:#B7791F;font-weight:600">需重排</td></tr>
+        <tr><td><strong>字体</strong></td><td>只能用官方 MiSans</td><td>DIN / Chakra Petch / Nunito 等</td><td style="color:#B7791F;font-weight:600">需整体替换</td></tr>
+        <tr><td><strong>关键文字字号</strong></td><td>≥ 24 号</td><td>部分标签 13 pt</td><td style="color:#B7791F;font-weight:600">需上调</td></tr>
+        <tr><td><strong>图片格式</strong></td><td>仅 png / jpg</td><td>矢量 SVG 设计稿</td><td style="color:#1D9E75;font-weight:600">导出即可</td></tr>
+        <tr><td><strong>挡位配色</strong></td><td>E 挡绿 / C 挡蓝 / F 挡红 / R 倒车挡黄（法规要求）</td><td>未区分挡位配色</td><td style="color:#B7791F;font-weight:600">需新增规范</td></tr>
+        <tr><td><strong>背景色</strong></td><td>须规避与功能图标相近色</td><td>已注意</td><td style="color:#1D9E75;font-weight:600">保持</td></tr>
+        <tr><td><strong>动效</strong></td><td>支持，含动效可定更高档位</td><td>已定义 12 条动效脚本</td><td style="color:#1D9E75;font-weight:600">保留</td></tr>
+        <tr><td><strong>商城封面</strong></td><td>160×100（@2x 上传 320×200，≤5MB）</td><td>未制作</td><td style="color:#B7791F;font-weight:600">上架前补齐</td></tr>
+        <tr><td><strong>商城主图</strong></td><td>375×375（@2x 上传 750×750，≤5MB，1–5 张）</td><td>未制作</td><td style="color:#B7791F;font-weight:600">上架前补齐</td></tr>
+        <tr><td><strong>详情图</strong></td><td>宽 375（@2.88x）高 ≤2500px；上传宽 1080 高 ≤1600，≤5MB，统一 3 张</td><td>未制作</td><td style="color:#B7791F;font-weight:600">上架前补齐</td></tr>
+        <tr><td><strong>音乐封面 / 电量条</strong></td><td>音乐封面 80×80；电量条单/双/三电 160×12 / 64×12 / 40×12</td><td>未制作</td><td style="color:#B7791F;font-weight:600">需补充</td></tr>
+        <tr><td><strong>AI 素材</strong></td><td>使用 AI 须提交《AI 素材声明》（工具名/版本、人工修改范围、生成时间用途）</td><td>原创矢量设计</td><td style="color:#1D9E75;font-weight:600">无需声明</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p style="margin-top:14px">来源：<a href="https://oms-oss-public.ninebot.com/h5/theme/official/documentCenter/2_2_InstrumentThemeDesignSpecification.pdf">仪表主题设计规范</a>、<a href="https://oms-oss-public.ninebot.com/h5/theme/official/documentCenter/2_3_ThemeMallMaterialSpecifications.pdf">主题商城素材规范</a>、<a href="https://oms-oss-public.ninebot.com/h5/theme/official/documentCenter/3_2_SubjectSubmissionOfUpload.pdf">主题上传提交</a></p>
+  </div>
+</section>
+
+<!-- ====== 05 检查清单 ====== -->
+<section>
+  <div class="sec-head">
+    <div class="sec-num">05</div>
+    <div><h2>提交前检查清单</h2><p>逐项打勾，避免因低级问题被退回</p></div>
+  </div>
+  <div class="card">
+    <h3>5.1 报名阶段</h3>
+    <ul class="check">
+      <li><strong>姓名</strong>已确认为真实姓名，与手机号、后续身份证、银行卡同一实名</li>
+      <li><strong>手机号</strong>为本人实名号，且能正常接收短信</li>
+      <li><strong>平台主页链接</strong>已亲自打开测试过：公开可访问、无需登录、作品清晰、全部为本人原创</li>
+      <li><strong>擅长方向文案</strong>已填写，覆盖能力 / 方向 / 方法三层</li>
+      <li><strong>代表作文件</strong>已准备，≤10MB，为完整成品（非草稿/概念图），含创作时间与使用场景说明</li>
+      <li>作品集中的成品图<strong>已重排至 854×480 并替换为 MiSans 字体</strong></li>
+      <li>创作过程记录（草图 / 中间版本 / 源文件）已归档，供正式入驻时使用</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h3>5.2 正式入驻阶段（报名通过后）</h3>
+    <ul class="check">
+      <li>身份证在有效期内，且为<strong>中国大陆二代身份证</strong></li>
+      <li>已准备身份证正反面照片 + <strong>手持身份证照片</strong>（手写「用于九号主题开发者认证 + 日期」）</li>
+      <li>已准备本人<strong>同名银行卡</strong>（个人开发者单笔提现上限 5 万元）</li>
+      <li>已确认年满 18 周岁、具备完全民事行为能力</li>
+      <li>已确认<strong>此前未用同一身份证绑定过其他九号开发者账号</strong></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ====== 06 时间线与分润 ====== -->
+<section>
+  <div class="sec-head">
+    <div class="sec-num">06</div>
+    <div><h2>审核时间线与分润结算</h2><p>报名之后会发生什么</p></div>
+  </div>
+  <div class="card">
+    <h3>6.1 时间线</h3>
+    <div class="tw">
+    <table>
+      <thead><tr><th>环节</th><th>周期</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td><strong>报名审核</strong></td><td>最长 7 个工作日</td><td>两轮：初筛（资料完整性 + 作品基础合规）+ 复评（设计质量 / 风格适配性 / 原创性）。以周为单位集中处理</td></tr>
+        <tr><td><strong>报名结果</strong></td><td>—</td><td>三选一：① 入选首批 ② 进入备选池 ③ 暂未通过（可补资料后重新申请，未见次数限制）</td></tr>
+        <tr><td><strong>正式入驻申请</strong></td><td>3–5 个工作日</td><td>人工审核</td></tr>
+        <tr><td><strong>实名认证</strong></td><td>个人：实时通过</td><td>人脸识别；个体工商户 1–3 个工作日</td></tr>
+        <tr><td><strong>主题作品审核</strong></td><td>常规 7 个工作日</td><td>两阶段：初审（版权 / 内容 / 信息规范）+ 复审（功能 / 质量 / 体验）。<strong>百分制 ≥80 分准出</strong></td></tr>
+        <tr><td><strong>结算</strong></td><td>每月</td><td>10 日前出电子账单；15 日 00:00 – 20 日 23:59 开放提现；审核通过后 3–5 个工作日到账</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>6.2 分润与权益</h3>
+    <div class="tw">
+    <table>
+      <thead><tr><th>项目</th><th>内容</th></tr></thead>
+      <tbody>
+        <tr><td><strong>分润比例</strong></td><td>发布者 <strong>63%</strong> · 平台服务方 10% · 九号公司 27%（<strong>不因个人 / 企业身份不同</strong>）</td></tr>
+        <tr><td><strong>免费主题</strong></td><td>无下载分成，靠流量扶持与商业合作</td></tr>
+        <tr><td><strong>IP 联名主题</strong></td><td>分成单独约定</td></tr>
+        <tr><td><strong>提现门槛</strong></td><td>个人 / 个体工商户 / 艺术家 ≥100 元（另一份文档写 50 元，存在不一致）；每月最多 1 次</td></tr>
+        <tr><td><strong>单笔上限</strong></td><td>个人 5 万元；个体工商户 / 艺术家 50 万元</td></tr>
+        <tr><td><strong>税务</strong></td><td>个人开发者由平台代扣代缴个税；个体工商户需自行开票（小规模 1%）</td></tr>
+        <tr><td><strong>独家要求</strong></td><td>普通发布者<strong>无独家要求</strong>；仅「签约艺术家」需签《独家合作协议》</td></tr>
+        <tr><td><strong>义务</strong></td><td>对已发布作品及时更新维护、保证稳定运行、及时处理用户反馈</td></tr>
+        <tr><td><strong>用户侧授权</strong></td><td>用户一经购买永久使用，主题下架不影响已购用户</td></tr>
+        <tr><td><strong>流量扶持</strong></td><td>千万级九号 App 用户触达、全渠道流量扶持、<strong>周五上新日主推资源位</strong>；首批创作者享专属运营对接与优先审核</td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+</section>
+
+<!-- ====== 07 风险 ====== -->
+<section>
+  <div class="sec-head">
+    <div class="sec-num">07</div>
+    <div><h2>风险提示</h2><p>提交前请逐条确认</p></div>
+  </div>
+  <div class="card">
+    <ol>
+      <li><strong>报名 ≠ 入驻。</strong>当前是「意向报名 + 分批灰度」，结果可能是备选池或暂未通过，且实名认证入口尚未开放。不要预期即时上架。</li>
+      <li><strong>定价已定 ¥6，档位已对齐。</strong>6 元是「精致进阶」档（6–12 元）下限，该档要求「含 App 主题或动态效果」，三款都含动效，合规。切勿再降到 3 元——那会落进要求「无动效、无 IP」的基础简约档。</li>
+      <li><strong>IP 题材是最高风险项。</strong>《凡人修仙传》《牧神记》均为他人版权作品。未获授权就使用其名称、角色形象或标志性道具，会直接触发第 5 条的原创红线，属单项否决。授权未落地前，请以「同题材原创设计」提交。</li>
+      <li><strong>实名认证要求严格。</strong>一张身份证仅绑一个账号；手机号 / 身份证 / 银行卡须同一实名。</li>
+      <li><strong>作品必须是完整成品。</strong>不接受草稿、概念图、半成品，且须能提供设计源文件与创作过程记录。</li>
+      <li><strong>原创红线：素材非原创比例 &gt; 30% 即不视为原创。</strong>禁止未授权 IP、品牌、明星形象；字体只能用官方 MiSans 或已授权字体。</li>
+      <li><strong>AI 创作须声明。</strong>若主题使用 AI 辅助，须主动提交《AI 素材声明》，否则可能被加标识或追责。目前三套主题为原创矢量设计，无需声明——但如果后续用 AI 出图，务必申报。</li>
+      <li><strong>审核采用「单项否决前置 + 百分制打分」。</strong>素材过亮/过暗致不可读、装饰遮挡功能区域、字体布局严重违反规范、预览图与实际效果不符，都是直接否决项。</li>
+    </ol>
+  </div>
+</section>
+
+<!-- ====== 08 待确认 ====== -->
+<section>
+  <div class="sec-head">
+    <div class="sec-num">08</div>
+    <div><h2>仍需向官方确认的问题</h2><p>官方文档之间或与实际情况存在出入的地方</p></div>
+  </div>
+  <div class="card">
+    <div class="tw">
+    <table>
+      <thead><tr><th>#</th><th>问题</th><th>为什么重要</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td><strong>提现门槛到底是 100 元还是 50 元？</strong>《收益结算规则》写 100 元，《提现流程》表格写 50 元</td><td>影响你对回款周期的预期</td></tr>
+        <tr><td>2</td><td>「暂未通过」后重新申请的<strong>冷却期与次数限制</strong></td><td>决定你要不要一次准备充分再提交</td></tr>
+        <tr><td>3</td><td>首批 / 备选池的<strong>容量与扩容节奏</strong></td><td>影响上架时间预期</td></tr>
+        <tr><td>4</td><td><strong>7 寸仪表的像素规格</strong>（官方有模板但未公布尺寸）</td><td>决定要不要现在就做 7 寸版本</td></tr>
+        <tr><td>5</td><td>平台等级 / 升级为「优质开发者」的<strong>具体条件与对应分成</strong></td><td>FAQ 提及每月 1 日自动统计升级，但标准未公开</td></tr>
+        <tr><td>6</td><td>首批个人设计师的<strong>结算方式</strong>（官方称结算系统仍在建设中，或有调整）</td><td>影响现金流预期</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="note">
+      <h4>建议先发一封邮件问清楚</h4>
+      <p>邮箱 <strong>theme_dev@ninebot.com</strong>（1–2 个工作日回复）。企业微信 <strong>18911220156</strong>（周一至周五 10:00–18:00）。认证信息变更联系 devConnect@ninebot.com。帮助中心：<a href="https://developer-home.ninebot.com/help-center">developer-home.ninebot.com/help-center</a></p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p><strong>资料来源</strong>：九号主题开发者平台官方文档中心（19 份规范与协议 PDF）、官方问卷星报名表单、官方新闻稿、官方配套模板，共 29 个来源，全部为官方一手信息。社区创作者一手经验目前缺失——平台 2026 年 4 月上线，贴吧 / 知乎 / 小红书 / B 站尚无系统的入驻与驳回经验分享，这是客观现状而非调研不足。</p>
+  <p><strong>时效说明</strong>：平台处于建设阶段，规则与入口可能变动。报名前建议先访问 <a href="https://developer-home.ninebot.com/">developer-home.ninebot.com</a> 复核当前入口与最新文档。</p>
+  <p><strong>免责声明</strong>：本材料包由 AI 深度研究团队整理，重要决策请以官方文档为准。涉及资质、税务、合同的部分请经专业人员核验。</p>
+</footer>
+
+</div>
+</body>
+</html>
